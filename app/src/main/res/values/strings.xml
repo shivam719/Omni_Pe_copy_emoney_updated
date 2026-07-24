@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OmniPe</string>
+    <string name="welcome_to_app">Welcome to EMoneyRecharge</string>
+    <string name="powered_by_app">Powered By EMoneyRecharge</string>
+    <string name="title_recharge">Dashboard</string>
+    <string name="newpass_error">New password not matched!</string>
+    <string name="samepass_error">New password cann\'t be same as old password!</string>
+    <string name="previouspass_error">Incorrect current password!</string>
+    <string name="password_error">Please enter valid password</string>
+    <string name="pincode_error">Enter valid pincode</string>
+    <string name="mobilenumber_error">Enter Valid Mobile Number</string>
+    <string name="name_error">Enter name</string>
+    <string name="attention_error_title">Attention!</string>
+    <string name="successful_title">Successful!</string>
+    <string name="name_digits">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz 0123456789</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_invalid_amount">Invalid Amount</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_beneficiary">Beneficiary List</string>
+    <string name="title_changepass">Change Password</string>
+    <string name="title_rechrage_report">Recharge Report</string>
+    <string name="title_ledger_transaction_report">Ledger Transaction Report</string>
+    <string name="title_dispute_report">Dispute Report</string>
+    <string name="title_fund_receive_report">Fund Receive Report</string>
+    <string name="user_profile_photo">http://baobaoloveyou.com/flowingdrawer_icon.png</string>
+    <string name="server">server</string>
+    <string name="api_intermediary_path">api_intermediary_path</string>
+    <string name="rechage_note">Note : Please verify all information before doing transacitons. After transaction our company will not responsible.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
+    <string name="bene_name_error">Enter beneficiary name</string>
+    <string name="bene_bank_error">Please select bank name</string>
+    <string name="bene_acc_error">Please enter valid account number</string>
+    <string name="bene_ifsc_error">Please enter valid ifsc number</string>
+
+    <!-- TODO: error strings -->
+    <string name="player_error">Error initializing YouTube player: %s</string>
+    <string name="err_msg_network_title">Sorry!</string>
+    <string name="err_attention_error_title">Attention!</string>
+    <string name="err_empty_list_message">No data history found!</string>
+    <string name="err_successful_title">Sucessful!</string>
+    <string name="err_msg_network">Please check your network connection and try again.</string>
+    <string name="err_dmr_login">Please first login in DMR!!!</string>
+    <string name="err_bank">No Bank Available...</string>
+    <string name="err_msg_name">Please Enter Your Valid Name</string>
+    <string name="err_msg_email_blank">Email Can not be Blank.</string>
+    <string name="err_msg_email">Please Enter Valid Email Id</string>
+    <string name="err_msg_mobile">Please Enter Your Mobile No.</string>
+    <string name="err_msg_mobile_userid">Please Enter Your Mobile No or User Id.</string>
+    <string name="err_msg_otp">Please Enter a Valid Otp</string>
+    <string name="err_msg_mobile_length">Please Enter Your Mobile No.of 10 Digits.</string>
+    <string name="err_msg_mobile_length_userid">Please Enter Your Mobile No.of 10 Digits or User Id.</string>
+    <string name="err_msg_pass">Please Enter Your Password.</string>
+    <string name="err_msg_text">Please Enter the Text.</string>
+    <string name="err_msg_account">Please Enter Valid AccountNo.</string>
+    <string name="err_msg_trans_id">Please Enter TransactionId</string>
+    <string name="transaction_empty_message">No transaction history found!</string>
+
+    <string name="err_msg_old_pass">Please Enter Your Old Password.</string>
+    <string name="err_msg_new_pass">Please Enter Your New Password.</string>
+    <string name="err_msg_cnf_pass">Please Enter Your Confirm Password.</string>
+    <string name="err_msg_pass_length">Password should be Minimum 6 digits.</string>
+    <string name="err_msg_match_pass">New Password and Confirm Password does not match.</string>
+    <string name="action_dmrreport_search">DMR Report Filter</string>
+
+    <string name="action_about">About</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_deleted">Deleted</string>
+    <string name="str_ShowOnPermisstion">Please Allow permissions to using all functionality of this app.</string>
+    <string name="str_ShowOnPermisstionDenied">To using all functionality of this app, please allow permissions. Go to App Setting -> Permissions enable all permissions.</string>
+
+    <string name="dialog_title">Swipeable-RecyclerView</string>
+    <string name="dialog_message">A library that provides an easy and customizable way to implement a swipe to dismiss pattern with RecyclerView.</string>
+    <string name="dialog_neutral_button">View on Github</string>
+    <string name="dialog_negative_button">Dismiss</string>
+    <string name="update_available">A newer version of this application is available,</string>
+    <string name="click_ok">Click OK to update now.</string>
+
+
+    <string name="action_exit">Exit</string>
+    <string name="action_next">Next</string>
+    <string name="action_demo">Demo</string>
+    <string name="title_activity_base">BaseActivity</string>
+    <string name="title_activity_net_banking">NetBankingActivity</string>
+    <string name="title_activity_cash_card">CashCardActivity</string>
+    <string name="title_activity_emi">EmiActivity</string>
+    <string name="title_activity_card">CardActivity</string>
+    <string name="title_activity_user_cards">UserCardsActivity</string>
+    <string name="title_activity_payments">PaymentsActivity</string>
+    <string name="pay_now">Pay</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">Ok</string>
+    <string name="rupiya">\u20B9</string>
+    <!--  <string name="cancel">\u274C</string>
+    <string name="delete">\u2718</string>-->
+    <string name="click_here">Click here</string>
+    <string name="if_cvv_and_expiry_on_card"> &#160;if you have CVV and Expiry on your card</string>
+    <string name="if_dont_cvv_and_expiry_on_card"> &#160;if you don\'t have CVV and Expiry on your card</string>
+    <string name="net_banking">Net Banking</string>
+    <string name="title_activity_merchant_payment">MerchantPaymentActivity</string>
+    <string name="title_activity_verify_api">VerifyApiActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+
+
+    <string name="delete">\u2718</string>
+
+    <string name="test">Test</string>
+    <string name="production">Production</string>
+
+    <string-array name="environment_array">
+        <item>@string/test</item>
+        <item>@string/production</item>
+    </string-array>
+    <string name="login_error_title">Error!</string>
+    <string name="network_error_message">Please check your network connection and try again.</string>
+    <string name="network_error_title">Network Error!</string>
+
+    <string name="str_Note">Note: Always make sure your Account Number \u0026 IFSC Code is correct. Company will not be liable for any wrong transactions.</string>
+    <string name="use_live_key_in_production_environment">Please use your live merchant key in production environment</string>
+    <string name="could_not_receive_data">Could not receive data</string>
+    <string name="err_msg_ben_name">Please Enter Beneficiary Name</string>
+    <string name="err_msg_valid_mobile">Please Enter Valid Mobile No</string>
+    <string name="err_msg_bank">Please select Bank</string>
+    <string name="pay_termsa">I agree that Bank/UIDAI may share my details with each other for the purpose of authenticating my Aadhaar Number</string>
+    <string name="paymentoptioncode">payment option code</string>
+
+    //payneer
+
+    <string name="no_error">Please enter valid info</string>
+    <string name="network_error">Slow Network Connection,Please check your network connection and try again!!!</string>
+    <string name="radio_bluetooth">Bluetooth</string>
+    <string name="radio_usb">USB</string>
+    <string name="Recharge_string">Recharge, Pay Bills &amp; Money Transfer</string>
+    <string name="reports">Reports</string>
+    <string name="err_something_went_wrong">Temporary server error has been occurred.</string>
+    <string name="vpn_conn_err">Please disconnect your VPN connection or Insert Sim</string>
+    <string name="NotAuthorized">You are not authorized to use this service.</string>
+    <string name="mobile_tollfree">Mobile Tollfree </string>
+    <string name="dth_tollfree">DTH Tollfree </string>
+
+
+    <string name="aboutus1"> Company is providing its services in 18 states of India and has approx 60000 retailers.</string>
+
+
+    <string name="aboutus2">
+    CELLBIZ - is providing only the prepaid services of all the telecom service providers, data card and DTH.
+    </string>
+
+
+    <string name="Bank_string">In order to make an money transfer and Payment request , you will need the following details relating to your recipient\'s bank account</string>
+    <string name="Contact_string">Start a new case. Just send us your questions or concerns by starting a new case and we will give you the help you need.</string>
+    <string name="About_string">No need of Any investment to start online recharges service. Boom in telecom industry favours\' promising results.</string>
+    <string name="some_thing_error">Some thing error please try after some time</string>
+    <string name="err_empty_field">Field can\'t be empty</string>
+    <string name="invalid_aadhar">Invalid AADHAR no.</string>
+    <string name="invalid_pan">Enter Valid PAN no</string>
+    <string name="profile_update_notice">For KYC update please update user with all given fields</string>
+    <string name="start_date">From Date</string>
+    <string name="end_date">To Date</string>
+    <string name="wallet_type">Wallet Type</string>
+    <string name="action_filter">Filter</string>
+    <string name="debit_credit">Debit/Credit</string>
+    <string name="received_by">Received By</string>
+    <string name="choose_top">Choose Top</string>
+    <string name="choose_refund_status">Choose Refund Status</string>
+    <string name="choose_date_type">Choose Date Type</string>
+    <string name="choose_criteria">Choose Criteria</string>
+    <string name="enter_criteria">Enter Criteria</string>
+    <string name="password_expired_msg">Your password has been expired, Please change before using this app</string>
+    <string name="pin_password_expired_msg">Your have not created Pin Password, Please create first before using this app.</string>
+    <string name="mob_num">Mobile Number</string>
+    <string name="valid_mobile">Please enter 10 digit mobile number</string>
+    <string name="dispute_msg">Are you sure you want to Dispute to this transaction</string>
+    <string name="rs_0_0_0">\u20B9 0.0 (0)</string>
+    <string name="set_pin">Set EPRS PIN (will be used while making transactions)</string>
+    <string name="SERVICEDOWN">SERVICEDOWN</string>
+    <string name="UNDERSCREENING">UNDERSCREENING</string>
+    <string name="REJECT">REJECT</string>
+    <string name="UNAUTHORISED">UNAUTHORISED</string>
+    <string name="INCOMPLETE">INCOMPLETE</string>
+    <string name="Redirection">Redirection</string>
+    <string name="FAILED">FAILED</string>
+    <string name="SUCCESS">SUCCESS</string>
+    <string name="AepsNotApproved">Your Aeps status is not approved.</string>
+
+    <string-array name="nonActualDeviceSimArray">
+        <item>Android</item>
+        <item>android</item>
+        <item>emulator</item>
+        <item>Emulator</item>
+        <item>T-Mobile</item>
+
+    </string-array>
+
+
+    <string-array name="Qualification">
+        <item>Choose Qualification</item>
+        <item>SSC</item>
+        <item>HSC</item>
+        <item>Graduate</item>
+        <item>Post Graduate</item>
+        <item>Diploma</item>
+
+    </string-array>
+
+
+    <string-array name="Poupulation">
+        <item>Choose Poupulation</item>
+        <item>0 to 2000</item>
+        <item>2000 to 5000</item>
+        <item>5000 to 10000</item>
+        <item>10000 to 50000</item>
+        <item>50000 to 100000</item>
+        <item>100000+</item>
+
+    </string-array>
+
+    <string-array name="ShopType">
+        <item>Choose Shop Type</item>
+        <item>Kirana Shop</item>
+        <item>Mobile Shop</item>
+        <item>Copier Shop</item>
+        <item>Internate Cafe</item>
+
+    </string-array>
+
+
+    <string-array name="LocationType">
+        <item>Choose LocationType</item>
+        <item>Rural</item>
+        <item>Urban</item>
+        <item>Metro</item>
+        <item>Semi Urban</item>
+    </string-array>
+
+
+    <string name="Physical">Physical</string>
+    <string name="Digital">Digital</string>
+
+
+    <string name="pan_tc"><![CDATA[<body><strong>Terms &amp; Conditions</strong><br>\n\n
+                               PSA shall take written approval from UTI before organizing any PAN Card camp.</br>\n
+                                <ul class=anclnk>\n
+                                    <li>\n
+                                      PSA shall not charge any extra fees/convenience charges for PAN card application.\n
+                                   </li>\n\n
+                                   <li>\n
+                                      PSA Shall not issue any hand written/self-designed/created receipt to customer.\n
+                                   </li>\n
+                                    <li>\n
+                                        Proper process has to be followed while applying PAN card. (Refer manual)\n
+                                    </li>\n
+                                    <li>\n
+                                        PSA shall not be blacklisted by any bank, government, private organizations.\n
+                                    </li>\n
+                                    <li>\n
+                                        PSA should not have any criminal record.\n
+                                    </li>\n
+                                    <li>\n
+                                        PSA Is authorized to collect PAN applications at Rs.107 (inclusive of GST)\n
+                                        You may download any one of the following app (from google store) in your Smart Phone at your own discretion.\n
+                                       Cam Scanner\n
+                                        Smart Docs Scanner\n
+                                        Convert JPG to PDF &amp; Scanner\n
+                                    </li>\n
+                                    <li>\n
+                                      To merge Two or More .PDF pages use following links\n
+                                    </li>\n
+                                  <li>\n
+                                       <a href=\'https://www.pdfmerge.com\'>https://www.pdfmerge.com</a>\n
+                                   </li>\n
+                                   <li>\n
+                                        <a href=\'https://www.pdfjoiner.com\'>http://pdfjoiner.com</a>\n\n
+                                    </li>\n
+                        <li>\n
+                            Click the photo of following customer documents, using above app and send it to your own email in .PDF format\n
+                            PAN Application form, signed by customer with his photograph\n
+                            ID proof\n
+                            Address Proof\n
+                            Date of Birth document\n
+                       </li>\n
+                       <li>\n
+                            Click photo of following documents in .JPEG/.JPG format with defined specification and send it to your email address\n
+                            Photo Scanning 300 dpi,Colour,213 X 213 px (Size:less than 30 kb)\n
+                            Signature scanning 600 dpi black and white (Size:less than 60 kb)\n
+                        </li>\n
+                        <li>\n
+                            To convert the scanned image as per above specification you may use following links or any software like photoshop etc or link as per your wish\n
+                        </li>\n
+                        <li>\n
+                            <a href=\'https://online-converting.com/image\'>https://online-converting.com/image</a>\n
+                        </li>\n
+                        <li>\n
+                        <a href=\'https://www.imgonline.com.ua/eng/resize-image.php\'>https://www.imgonline.com.ua/eng/resize-image.php</a>\n
+                       </li>\n
+                        <li>Save all of the above documents in your computer and Upload on UTIISL website</li>\n
+                    </ul></body>]]></string>
+    <string name="child_mobile_number">Child Mobile Number</string>
+    <string name="choose_mode">Choose Mode</string>
+    <string name="contact_us"><u>Contact Us</u></string>
+    <string name="address">Address</string>
+    <string name="upload_multidoc_notice">Choose %1$s image Of %2$s for KYC</string>
+    <string name="slab_range_details">Slab Range Details</string>
+    <string name="quick_links">Quick Links</string>
+    <string name="rs_0_0">₹ 0.0</string>
+    <string name="toast_image_intent_null">Image picker option is missing!</string>
+    <string name="lbl_set_profile_photo">Set profile image</string>
+    <string name="lbl_take_camera_picture">Take a picture</string>
+    <string name="lbl_choose_from_gallery">Choose from gallery</string>
+    <string name="dialog_permission_title">Grant Permissions</string>
+    <string name="dialog_permission_message">This app needs permission to use this feature. You can grant them in app settings.</string>
+    <string name="go_to_settings">GOTO SETTINGS</string>
+    <string name="view_channel"><u><i>View Channel</i></u></string>
+    <string name="refer_program">Invite your friends and start business with EMoneyRecharge to get attractive commission on every transaction.\n \n You will get Reward on first Wallet Topup of your referrals.</string>
+    <string name="share_app">Invite your friends and start business with EMoneyRecharge</string>
+    <string name="view_charges">View Charges</string>
+    <string name="aeps_report">Transaction History</string>
+    <string name="steps_for_e_kyc_verification"><u>Process for E-KYC verification</u></string>
+    <string name="ekyc_steps">2. After installing the application the merchant has to enter their Username &lt;b>(%1$s)&lt;/b> &amp; super merchant id &lt;b>(%2$s)&lt;/b> then click on Next.&lt;br>&lt;br>
+
+3. Then merchant needs to enter their respective Aadhar number, Active Mobile number, PAN Number, and the MPOS Serial number (optional - if the Mpos is allocated to the merchant).&lt;br>&lt;br>
+
+4. After entering the details by merchant needs to acknowledge the below undertaking by selecting the tick-box and need to click on Next.&lt;br>&lt;br>
+
+5. After clicking on Next the verification OTP will be received by the merchant on the mobile number which he/she has entered.&lt;br>&lt;br>
+
+6. Once the correct OTP is entered and validated, the merchant will have to do the biometric authentication by providing a thumb impression through the connected biometric device.&lt;br>&lt;br>
+
+7. After the biometric authentication a Success/Failure message will appear on the screen, then the merchant E-KYC verification will be completed.</string>
+    <string name="microATMApproved">Status is not approved.</string>
+    <string name="upi_text_lable">Your <font color='#2196F3'> Virtual Payment Address (VPA) </font></string>
+    <string name="amt_text_lable">Amount to be paid</string>
+    <string name="beneName_text_lable">Beneficiary Name</string>
+    <string name="note_vpa_text_lable">VPA is a unique payment address that can be linked to a person\'s bank account to make a payment.</string>
+    <string name="view_slab_charges"><u>View Charges</u></string>
+    <string name="account_settelemrnt_note">Payment Will Be Settled in Default Account.</string>
+    <string name="confirmation_delete_account">Are you sure you want to delete following Account</string>
+    <string name="verify_otp_notice">An <b>OTP</b> has been sent on your registered <b>Mobile number</b> or <b>Email id</b> to verify mobile number, please enter it below.</string>
+    <string name="unique_not_found">Client Unique Reference Id not found!</string>
+    <string name="security_key_text_lable">Security key</string>
+    <string name="err_vpa_invalid">Invalid VPA</string>
+    <string name="vpa_text_msg">Tell us your <b>Mobile Number</b> which you have been registered as a sender and we will figure out the rest</string>
+    <string name="sender_number">Sender Number</string>
+    <string name="recharge_paybills">Recharge and Pay Bills</string>
+    <string name="fund_banking">Fund &amp; Banking</string>
+    <string name="plan_note"><b>Disclaimer:</b> We support most types of recharges, but please check with your operator before you proceed.</string>
+    <string name="device_AF60s">AF60s</string>
+    <string name="device_MP63">MP63</string>
+    <string name="pin_password_text_lable">Security Key</string>
+    <string name="err_vpa_field">Enter a valid UPI Id</string>
+    <string name="customerNo_text_lable" />
+    <string name="remark_text_lable" />
+    <string name="term_privacy_text">You agree with our <a href="https://bubleid.in/privacy">Privacy Policy</a> by tapping Sign In button</string>
+    <string name="privacy_text"><a href="https://bubleid.in/privacy">Privacy  Policy</a> &amp; </string>
+    <string name="term_txt"><a href="https://bubleid.in/term">Term &amp; Condition</a></string>
+    <string name="nsdl_terms_String">I have no objection in authenticating myself and fully understand that information provided by me shall be used for authenticating my identity through Aadhaar Authentication System for the purpose stated above and no other purpose.</string>
+    <string name="confirmation_str">We are waiting for Payment Confirmation. Please stay with Us</string>
+    <string name="money_transfer">Money Transfer</string>
+    <string name="enter_mobile_number">Enter Mobile Number</string>
+    <string name="enter_last_name">Enter last name</string>
+    <string name="enter_first_name">Enter first name</string>
+    <string name="enter_otp">Enter OTP</string>
+    <string name="number">Number</string>
+
+    <integer name="viewfinder_border_width">4</integer>
+    <integer name="viewfinder_border_length">60</integer>
+
+
+</resources>

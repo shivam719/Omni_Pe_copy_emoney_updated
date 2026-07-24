@@ -1,0 +1,687 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-sdk tools:overrideLibrary="org.egram.aepslib" />
+
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+
+    <queries>
+        <!-- Explicit apps you know in advance about: -->
+        <package android:name="com.whatsapp" />
+        <package android:name="org.egram.microatm" />
+        <package android:name="com.mantra.rdservice" />
+        <package android:name="com.scl.rdservice" />
+        <package android:name="com.tatvik.bio.tmf20" />
+        <package android:name="com.acpl.registersdk" />
+        <package android:name="com.precision.pb510.rdservice" />
+        <package android:name="com.secugen.rdservice" />
+        <package android:name="com.nextbiometrics.onetouchrdservice" />
+
+        <!-- List of apps which you want to support for Intent pay -->
+        <package android:name="com.google.android.apps.nbu.paisa.user" />
+        <package android:name="com.phonepe.app" />
+        <package android:name="in.org.npci.upiapp" />
+        <package android:name="net.one97.paytm" />
+        <package android:name="com.whatsapp.w4b" />
+        <package android:name="com.csam.icici.bank.imobile" />
+        <package android:name="com.sbi.upi" />
+        <package android:name="com.upi.axispay" />
+        <package android:name="com.samsung.android.spaymini" />
+        <package android:name="com.samsung.android.spay" />
+        <package android:name="com.snapwork.hdfc" />
+        <package android:name="com.fss.pnbpsp" />
+        <package android:name="com.icicibank.pockets" />
+        <package android:name="com.bankofbaroda.upi" />
+        <package android:name="com.freecharge.android" />
+        <package android:name="com.fss.unbipsp" />
+        <package android:name="com.whatsapp" />
+        <package android:name="com.mipay.wallet.in" />
+        <package android:name="in.amazon.mShop.android.shopping" />
+        <package android:name="com.axis.mobile" />
+        <package android:name="com.mycompany.kvb" />
+        <package android:name="com.fss.vijayapsp" />
+        <package android:name="com.dena.upi.gui" />
+        <package android:name="com.fss.jnkpsp" />
+        <package android:name="com.olive.kotak.upi" />
+        <package android:name="com.enstage.wibmo.hdfc" />
+        <package android:name="com.bsb.hike" />
+        <package android:name="com.fss.idfcpsp" />
+        <package android:name="com.YesBank" />
+        <package android:name="com.abipbl.upi" />
+        <package android:name="com.microsoft.mobile.polymer" />
+        <package android:name="com.finopaytech.bpayfino" />
+        <package android:name="com.mgs.obcbank" />
+        <package android:name="com.upi.federalbank.org.lotza" />
+        <package android:name="com.mgs.induspsp" />
+        <package android:name="ai.wizely.android" />
+        <package android:name="com.olive.dcb.upi" />
+        <package android:name="com.mgs.yesmerchantnative.prod" />
+        <package android:name="com.dbs.in.digitalbank" />
+        <package android:name="com.mobikwik_new" />
+        <package android:name="com.rblbank.mobank" />
+        <package android:name="in.chillr" />
+        <package android:name="com.citrus.citruspay" />
+        <package android:name="com.SIBMobile" />
+        <package android:name="com.truecaller" />
+        <package android:name="com.olacabs.customer" />
+        <package android:name="com.myairtelapp" />
+        <package android:name="com.paytmmall" />
+        <package android:name="com.gbwhatsapp" />
+        <package android:name="com.msf.angelmobile" />
+        <package android:name="com.fundsindia" />
+        <package android:name="com.muthootfinance.imuthoot" />
+        <package android:name="com.angelbroking.angelwealth" />
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+        </intent>
+    </queries>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:remove="maxSdkVersion" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+    <application
+        android:name="androidx.multidex.MultiDexApplication"
+        android:allowBackup="false"
+        android:allowClearUserData="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:replace="android:icon,name,allowBackup,android:theme">
+        <activity
+            android:name="com.fintech.omnipe.AppUser.WebViewUrlActivity"
+            android:exported="false"
+            android:theme="@style/Appnew"/>
+        <activity
+            android:name="com.fintech.omnipe.GetAdvertisement.activity.GetAdvertisementByCity"
+            android:exported="false"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.DMRNew.AddBeneficiary"
+            android:exported="false" />
+        <activity
+            android:name="com.fintech.omnipe.DMRNew.DMRNewLogin"
+            android:exported="false" />
+        <activity
+            android:name="com.fintech.omnipe.DMRNew.NewBankListScreen"
+            android:exported="false" />
+        <activity
+            android:name="com.fintech.omnipe.MicroATM.PAYSPRINT.PaySprintMATMActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.MicroATM.PAYSPRINT.PaySprintMATMReceiptActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.DthPlan.UI.DthPlanInfoNewActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.DthPlan.UI.DthPlanChannelListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.DthPlan.UI.DthPlanInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.UPIPayment.Activity.UPIPayActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMaterialUPITheme"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.UPIPayment.Activity.UPIListActivity"
+            android:label="UPI List"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.UPIPayment.Activity.UPISenderLoginActivity"
+            android:label="UPI Payment"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.AccountSettlement.UI.AddUpdateSettlementAccountActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/MaterialAppTheme"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.AccountSettlement.UI.SettlementBankListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.MoveToWallet.UI.MoveToWalletActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.MoveToWallet.UI.MoveToWalletReportActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.AEPS.FingPay.UI.AEPSBankListScreen"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.AEPS.FingPay.UI.AEPSDashboardActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.AEPS.FingPay.UI.AEPSDepositStatusActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.AEPS.FingPay.UI.AEPSMiniStatementActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.AEPS.FingPay.UI.AEPSStatusActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.AEPS.FingPay.UI.EKYCProcessActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.MicroATM.UI.MicroAtmActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.MicroATM.UI.MicroATMStatusActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.MicroATM.UI.MicroATMBalanceStatusActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.UPIPayment.Activity.QRCodePaymentActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.UPIPayment.Activity.QRScannerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.AccountOpen.ui.AccountOpenActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.AppUser.Activity.AppUserListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.AppUser.Activity.AccountStatementReportActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.AppUser.Activity.AccountStatementServiceWiseActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.AppUser.Activity.VoucherEntryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.AppUser.Activity.VoucherEntryUserListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.AppUser.Activity.ChannelReportActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.AppUser.Activity.FosUserListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.AppUser.Activity.ReportForClickFosActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.AppUser.Activity.FOSAccStmtAndCollActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.AppUser.Activity.FosAreaReportActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.AppUser.Activity.FosChannelReportActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.AppUser.Activity.FosCollectionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.AppUser.Activity.FosCollectionBankListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.AppUser.Activity.FosReportActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.DTHSubscription.Activity.DthPackageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.DTHSubscription.Activity.DTHSubscriptionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.DTHSubscription.Activity.DthChannelActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.DTHSubscription.Activity.DthSubscriptionReportActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.W2RHistory"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.InsurenceWebview"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity android:name="com.fintech.omnipe.Activities.ImagePickerActivity" />
+        <!--
+ <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        -->
+        <activity
+            android:name="com.fintech.omnipe.Activities.UpdateBankActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MaterialAppTheme"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.BillFetchInfoScreen"
+            android:screenOrientation="portrait"
+            android:theme="@style/MaterialAppTheme"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.AchievedTargetActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.fintech.omnipe.DashBoard.UI.DashBoardLayout"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.MultiImageUploadActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.fintech.omnipe.CallBackReport.AEPSBalanceActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppPopUpTheme"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.CallBackReport.MiniStatementActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.CallBackReport.SlipActivityMicroAtmReport"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.AEPSReportActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.AepsCashWithDrawlAtivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.AddMoneyActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.VirtualAccountActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.ShareActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.Auth.ContactUsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.UpgradePackageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.QrBankActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.QrCodeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.fintech.omnipe.PSA.ui.PurchaseToken"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.PSA.ui.PanApplicationActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.PSA.ui.UTILogin"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.BankDetailActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.DthSupportActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.ReportActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.SupportActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.SlipActivityRechargeReport"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.UserDayBookActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.RechargeActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.UpdateProfileActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.CreateUserActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.FundOrderPendingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.Notification.NotificationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name="com.fintech.omnipe.Splash.Splash"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.fintech.omnipe.Auth.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.Auth.SignupActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.SelectZoneOption"
+            android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" /> <!-- Include the AdActivity configChanges and theme. -->
+        <activity
+            android:name="com.fintech.omnipe.Activities.BrowsePlan.ui.BrowsePlanScreen"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.DMROld.ui.DMRLogin"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.DMROld.ui.DMRReciept"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.DMROld.ui.BeneficiaryListScreen"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.DMROld.ui.MoneyTransfer"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.DMROld.ui.AddBeneficiary"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.DMRPipe.ui.DMRLoginNew"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.DMRPipe.ui.BeneficiaryListScreenNew"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.DMRPipe.ui.MoneyTransferNew"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.DMRPipe.ui.AddBeneficiaryNew"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_launcher_foreground" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
+
+        <service
+            android:name="com.fintech.omnipe.Notification.service.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name="com.fintech.omnipe.Activities.RechargeProviderActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.DashBoard.UI.WalletToWalletTransferActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew_Wallettowallet"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.FundRecReport"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.DisputeReport"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.SecondRechargeActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/MaterialAppTheme"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.BankListScreen"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.DMRReport"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.CommissionSlab.ui.CommissionScreen"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.RechargeHistory"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.LedgerReport"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.PaymentRequest"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.FundReqReport"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.Activities.ROffer.UI.ROffer"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew" />
+        <activity
+            android:name="com.fintech.omnipe.Util.ListScreen"
+            android:label="@string/app_name"
+            android:theme="@style/AppPopUpTheme" />
+
+        <receiver
+            android:name="com.fintech.omnipe.Util.Receiver.InstallReferrerReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.anfu.pos.library.bluetooth4.BluetoothLeService"
+            android:enabled="true" />
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.smart-image-picker-provider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"
+                tools:replace="android:resource" />
+        </provider>
+    </application>
+
+</manifest>

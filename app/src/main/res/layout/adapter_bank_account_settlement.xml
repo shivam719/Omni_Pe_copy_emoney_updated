@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardMaxElevation="@dimen/_4sdp"
+    android:layout_marginBottom="@dimen/_4sdp"
+    android:layout_marginLeft="@dimen/_3sdp"
+    android:layout_marginRight="@dimen/_3sdp"
+    app:cardCornerRadius="@dimen/_5sdp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/topView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/_1sdp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/userNameTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:text="Test User"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                style="@style/AppShapeAppearance.MediumComponent"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:textColor="@color/colorPrimaryDark" />
+
+
+            <LinearLayout
+                android:id="@+id/switchView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:background="@drawable/rounded_light_grey_style"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/activeSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:backgroundTint="@color/white"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/activeTv"
+                    style="@style/TextAppearance.AppCompat.Body2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed-medium"
+                    android:text="Default"
+                    android:textColor="@color/colorAccent" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/approvalStatusview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/_5sdp"
+            app:layout_constraintTop_toBottomOf="@+id/topView">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/AppShapeAppearance.MediumComponent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:text="Approval Status"
+                android:textColor="@color/colorPrimary" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/approvalStatusTv"
+                style="@style/AppShapeAppearance.MediumComponent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:singleLine="true"
+                android:text="NA"
+                android:textColor="@android:color/black"
+                android:layout_marginLeft="@dimen/_3sdp"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/verificationStatusView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/_5sdp"
+            app:layout_constraintTop_toBottomOf="@+id/approvalStatusview">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/AppShapeAppearance.MediumComponent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:text="Verification Status"
+                android:textColor="@color/colorPrimary" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/verifyStatusTv"
+                style="@style/AppShapeAppearance.MediumComponent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="NA"
+                android:textColor="@android:color/black"
+                android:layout_marginLeft="@dimen/_3sdp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bankNameView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/_5sdp"
+            app:layout_constraintTop_toBottomOf="@+id/verificationStatusView">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/AppShapeAppearance.MediumComponent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:text="Bank Name"
+                android:textColor="@color/colorPrimary" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/bankNameTv"
+                style="@style/AppShapeAppearance.MediumComponent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="NA"
+                android:textColor="@android:color/black"
+                android:layout_marginLeft="@dimen/_3sdp"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/bankAccountView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/_5sdp"
+            app:layout_constraintTop_toBottomOf="@+id/bankNameView">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/AppShapeAppearance.MediumComponent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:text="Account No. "
+                android:textColor="@color/colorPrimary" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/accountNoTv"
+                style="@style/AppShapeAppearance.MediumComponent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="NA"
+                android:textColor="@android:color/black"
+                android:layout_marginLeft="@dimen/_3sdp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bankIfscView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/_5sdp"
+            app:layout_constraintTop_toBottomOf="@+id/bankAccountView">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/AppShapeAppearance.MediumComponent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:text="IFSC Code "
+                android:textColor="@color/colorPrimary" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/ifscTv"
+                style="@style/AppShapeAppearance.MediumComponent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="NA"
+                android:textColor="@android:color/black"
+                android:layout_marginLeft="@dimen/_3sdp"/>
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_2sdp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@+id/bankIfscView">
+
+            <Button
+                android:id="@+id/verifyBtn"
+                style="@style/TextAppearance.AppCompat.Body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:gravity="center"
+                android:minWidth="@dimen/_80sdp"
+                android:text="Verify"
+                android:textColor="@android:color/white"
+                android:background="@drawable/rounded_primary_border_fill"/>
+
+
+
+
+            <Button
+                android:id="@+id/updateBtn"
+                style="@style/TextAppearance.AppCompat.Body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:gravity="center"
+                android:minWidth="@dimen/_80sdp"
+                android:text="Update"
+                android:visibility="gone"
+                android:textColor="@android:color/white"
+                app:backgroundTint="@color/darkGreen"
+                />
+            <Button
+                android:id="@+id/deleteBtn"
+                style="@style/TextAppearance.AppCompat.Body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:gravity="center"
+                android:minWidth="@dimen/_80sdp"
+                android:text="Delete"
+                android:textColor="@android:color/white"
+                android:background="@drawable/rounded_primary_border_fill"
+                app:backgroundTint="@color/red"/>
+
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.cardview.widget.CardView>

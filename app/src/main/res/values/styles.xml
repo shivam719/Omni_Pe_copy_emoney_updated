@@ -1,0 +1,372 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!--<style name="logo_image">-->
+    <!--<item name="android:layout_width">wrap_content</item>-->
+    <!--<item name="android:layout_height">120dp</item>-->
+    <!--<item name="android:layout_gravity">center</item>-->
+    <!--<item name="android:layout_margin">10dp</item>-->
+    <!--<item name="android:src">@drawable/aeps_logo</item>-->
+    <!--<item name="android:scaleType">centerInside</item>-->
+    <!--</style>-->
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/style_color_primary</item>
+        <item name="colorPrimaryDark">@color/style_color_primary_dark</item>
+        <item name="colorAccent">@color/style_color_accent</item>
+        <item name="colorControlHighlight">@color/pressed</item>
+    </style>
+
+    <style name="Appnew" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+    </style>
+
+    <style name="Appnew_Wallettowallet" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="MaterialAppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <!--<item name="colorOnSurface">@color/color_on_surface</item>-->
+        <item name="android:colorBackground">@color/color_background</item>
+        <!--<item name="colorOnBackground">@color/color_on_background</item>
+        <item name="android:statusBarColor">@color/color_status_bar</item>-->
+        <item name="materialCardViewStyle">@style/AppCard</item>
+        <item name="textInputStyle">@style/AppTextField</item>
+        <item name="fontFamily">@font/roboto_mono</item>
+        <item name="android:fontFamily">@font/roboto_mono</item>
+        <!-- Global shape attributes -->
+        <item name="shapeAppearanceSmallComponent">@style/AppShapeAppearance.SmallComponent</item>
+        <item name="shapeAppearanceMediumComponent">@style/AppShapeAppearance.MediumComponent</item>
+        <item name="shapeAppearanceLargeComponent">@style/AppShapeAppearance.LargeComponent</item>
+        <item name="materialButtonOutlinedStyle">@style/AppOutlinedButton</item>
+        <item name="materialButtonStyle">@style/AppOutlinedButton</item>
+    </style>
+
+    <style name="AppMaterialUPITheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:textColorPrimary">@color/colorPrimary</item>
+        <item name="colorOnSecondary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="fontFamily">sans-serif-condensed-medium</item>
+        <item name="android:textAppearance">@style/ShapeAppearance.App.SmallComponent</item>
+        <item name="textInputStyle">@style/UPITxtInputTheme</item>
+        <item name="materialButtonStyle">@style/MaterialButton</item>
+
+    </style>
+
+    <style name="Widget.App.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <!--Error-->
+        <item name="errorEnabled">true</item>
+        <item name="errorTextColor">@color/red</item>
+        <item name="errorIconDrawable">@null</item>
+        <item name="errorTextAppearance">@style/ErrorTextAppearance</item>
+        <!--hint and label-->
+        <item name="hintEnabled">false</item>
+        <item name="android:textColorHint">@color/grey_1</item>
+        <item name="hintTextAppearance">@style/TextAppearance.AppCompat.Caption</item>
+        <item name="helperTextTextAppearance">@style/HelperTextAppearance</item>
+
+        <!--Box-->
+        <item name="boxBackgroundMode">outline</item>
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="boxCornerRadiusTopStart">@dimen/_5sdp</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/_5sdp</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/_5sdp</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/_5sdp</item>
+        <item name="boxStrokeColor">@color/text_input_box_stroke</item>
+        <item name="boxStrokeWidth">@dimen/_1sdp</item>
+
+        <!--<item name="startIconDrawable">@drawable/ic_number</item>-->
+        <item name="startIconTint">@color/colorPrimary</item>
+        <item name="endIconTint">@color/red</item>
+        <item name="endIconMode">clear_text</item>
+
+    </style>
+    <style name="ErrorTextAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@android:color/holo_orange_dark</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold|italic</item>
+    </style>
+
+    <style name="HelperTextAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="fontFamily">sans-serif-condensed-medium</item>
+    </style>
+
+
+    <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">4dp</item>
+    </style>
+
+    <style name="MaterialButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:background">@drawable/rect_primary_dark_fill_white_border</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="AppCard" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">?attr/colorSecondary</item>
+        <item name="cardForegroundColor">@color/card_foreground_color</item>
+        <item name="checkedIconTint">?attr/colorPrimary</item>
+        <item name="strokeColor">@android:color/transparent</item>
+        <item name="rippleColor">@color/card_ripple_color</item>
+        <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
+        <item name="cardElevation">@dimen/_4sdp</item>
+        <item name="strokeWidth">0dp</item>
+    </style>
+
+    <style name="AppTextField" parent="Widget.Design.TextInputLayout">
+        <item name="hintEnabled">true</item>
+        <item name="hintTextColor">@color/colorPrimaryDark</item>
+        <item name="android:textColorHint">@color/colorPrimaryDark</item>
+        <item name="errorTextAppearance">@style/AppShapeAppearance.MediumComponent</item>
+        <item name="helperTextEnabled">true</item>
+        <item name="helperTextTextColor">@color/green</item>
+        <item name="helperTextTextAppearance">@style/AppShapeAppearance.MediumComponent</item>
+        <item name="errorEnabled">true</item>
+        <item name="errorTextColor">@color/red</item>
+        <item name="endIconMode">clear_text</item>
+        <item name="endIconTint">@color/colorPrimaryDark</item>
+
+    </style>
+
+    <style name="txtInputTheme" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="textInputStyle">@style/textInputCommonStyle</item>
+        <item name="cornerFamily">cut</item>
+        <item name="cornerRadius">@dimen/_15sdp</item>
+        <item name="startIconDrawable">@drawable/ic_number</item>
+
+    </style>
+
+    <style name="textInputCommonStyle" parent="">
+        <item name="hintTextColor">@color/colorAccent</item>
+        <item name="android:textColorHint">@color/colorAccent</item>
+        <item name="helperTextTextColor">@color/green</item>
+        <item name="helperTextTextAppearance">@style/AppShapeAppearance.MediumComponent</item>
+        <item name="errorEnabled">true</item>
+        <item name="errorTextColor">@color/red</item>
+        <item name="boxStrokeErrorColor">@color/red</item>
+        <item name="endIconMode">clear_text</item>
+        <item name="endIconTint">@color/colorPrimaryDark</item>
+        <item name="errorTextAppearance">@style/AppShapeAppearance.MediumComponent</item>
+        <item name="startIconTint">@color/colorAccent</item>
+        <item name="boxStrokeWidth">@dimen/_2sdp</item>
+        <item name="boxStrokeColor">@color/text_input_box_stroke</item>
+    </style>
+
+    <style name="UPITxtInputTheme" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="textInputStyle">@style/textInputCommonStyle</item>
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerRadius">100dp</item>
+        <item name="boxCornerRadiusTopStart">@dimen/_10sdp</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/_10sdp</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/_10sdp</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/_10sdp</item>
+
+    </style>
+
+
+    <style name="txtInputDropDownTheme" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="hintTextColor">@color/colorAccent</item>
+        <item name="android:textColorHint">@color/colorAccent</item>
+        <item name="helperTextTextColor">@color/green</item>
+        <item name="helperTextTextAppearance">@style/AppShapeAppearance.MediumComponent</item>
+        <item name="errorTextAppearance">@style/AppShapeAppearance.MediumComponent</item>
+        <item name="errorEnabled">true</item>
+        <item name="errorTextColor">@color/red</item>
+        <item name="boxStrokeErrorColor">@color/red</item>
+        <item name="endIconMode">dropdown_menu</item>
+        <item name="endIconTint">@color/colorAccent</item>
+        <item name="cornerFamily">cut</item>
+        <item name="cornerRadius">@dimen/_15sdp</item>
+        <item name="boxStrokeWidth">@dimen/_1sdp</item>
+        <item name="boxStrokeColor">@color/text_input_box_stroke</item>
+        <item name="startIconDrawable">@drawable/ic_number</item>
+        <item name="startIconTint">@color/colorAccent</item>
+
+        <!--<item name="materialThemeOverlay">@style/Theme.MyApp.Spinner.ThemeOverlay</item>-->
+    </style>
+    <style name="Theme.MyApp.Spinner.ThemeOverlay" parent="">
+        <!-- Style inception - hook into styling the AutoCompleteTextView -->
+        <item name="autoCompleteTextViewStyle">@style/Widget.MyApp.Spinner.ThemeOverlay.AutoCompleteTextView</item>
+        <!-- Background color of dropdown (popup) entries -->
+        <item name="colorSurface">@color/colorPrimary</item>
+        <!-- Dropdown arrow color -->
+        <item name="colorOnSurface">@color/pressed</item>
+    </style>
+
+    <!-- Text (NOT the popup) of the child AutoCompleteTextView of our material spinner -->
+    <style name="Widget.MyApp.Spinner.ThemeOverlay.AutoCompleteTextView" parent="Widget.AppCompat.AutoCompleteTextView">
+        <!--
+        Another nasty little bug. Our main spinner style inherits from material
+        TextInputLayout.OutlinedBox.ExposedDropdownMenu, which means we want the
+        spinner to have an outline. But this won't work unless we manually FORCE
+        a null background on the child AutoCompleteTextView.
+        https://github.com/material-components/material-components-android/issues/1989
+        -->
+        <item name="android:background">@null</item>
+        <!-- Restore padding to sanity -->
+        <item name="android:padding">16dp</item>
+        <!-- Color of selected item -->
+        <item name="android:textColor">@color/pressed</item>
+        <!-- Text size of selected item -->
+        <item name="android:textSize">20sp</item>
+    </style>
+    <!-- Material spinner 'item' layout style -->
+    <style name="Widget.MyApp.SpinnerItem" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/pressed</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:padding">16dp</item>
+    </style>
+    <style name="MaterialAppButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:background">@drawable/btn_enable_disable</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="iconTint">@color/white</item>
+        <item name="iconGravity">textStart</item>
+        <item name="boxStrokeColor">@color/white</item>
+        <item name="boxStrokeWidth">@dimen/_1sdp</item>
+    </style>
+
+    <style name="AppShapeAppearance.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">6dp</item>
+        <item name="android:textSize">@dimen/_9sdp</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body2</item>
+    </style>
+
+    <style name="AppShapeAppearance.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">cut</item>
+        <item name="cornerSize">8dp</item>
+        <item name="android:textSize">@dimen/_12sdp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body1</item>
+    </style>
+
+    <style name="AppShapeAppearance.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">cut</item>
+        <item name="cornerSize">8dp</item>
+        <item name="android:textSize">@dimen/_15sdp</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body1</item>
+    </style>
+
+
+
+    <!-- Using AppButton2 to avoid conflicts with the main playground style -->
+    <style name="AppButton2" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">?attr/colorSecondary</item>
+        <item name="android:textColor">@color/button_text_color</item>
+        <item name="iconTint">@color/button_text_color</item>
+        <item name="rippleColor">@color/button_ripple_color</item>
+    </style>
+
+    <style name="AppOutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:background">@drawable/btn_enable_disable_style</item>
+        <item name="android:backgroundTint">@null</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="rippleColor">@color/button_ripple_color</item>
+
+    </style>
+
+    <style name="AppToggleButton" parent="Widget.MaterialComponents.MaterialButtonToggleGroup">
+        <item name="singleSelection">false</item>
+        <item name="selectionRequired">false</item>
+    </style>
+
+
+
+    <!--Material Theme End-->
+    <style name="mySpinnerStyle" parent="android:Widget.Material.Spinner.Underlined" tools:targetApi="lollipop">
+        <item name="android:height">2dp</item>
+        <item name="android:dividerHeight">3dp</item>
+        <item name="android:divider">@color/shadow</item>
+    </style>
+
+    <style name="MyRadioButtonStyle" parent="@android:style/Widget.CompoundButton.RadioButton">
+        <item name="android:button">@drawable/custom_radio</item>
+    </style>
+
+    <style name="MyTabLayoutTextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
+        <item name="android:textSize">@dimen/_13sdp</item>
+        <item name="android:fontFamily">@font/normal</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <!-- Base application popup theme. -->
+    <style name="AppPopUpTheme" parent="Base.Theme.AppCompat.Light.Dialog">
+        <!-- Customize your theme here. -->
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">true</item>
+
+        <item name="colorPrimary">@color/style_color_primary</item>
+        <item name="colorPrimaryDark">@color/style_color_primary_dark</item>
+        <item name="colorAccent">@color/style_color_accent</item>
+
+
+    </style>
+
+    <style name="full_screen_dialog">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <!-- <item name="android:windowNoTitle">true</item>-->
+    </style>
+
+    <style name="bubble_dialog" parent="android:Theme.Dialog">
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.4</item>
+    </style>
+
+    <style name="ColorSwitchStyle">
+        <item name="colorControlActivated">@color/green</item>
+    </style>
+    <style name="TextLabel_error" parent="TextAppearance.Design.Hint">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/red</item>
+        <item name="android:textColorHint">@color/red</item>
+        <item name="android:keyTextColor">@color/colorAccent</item>
+    </style>
+
+    <style name="dialog" parent="Base.Theme.AppCompat.Light.Dialog.Alert">
+
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowCloseOnTouchOutside">false</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="TransparentBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/TransparentBottomSheet</item>
+    </style>
+
+    <style name="TransparentBottomSheet" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+</resources>

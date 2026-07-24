@@ -1,0 +1,20 @@
+<vector android:autoMirrored="true" android:height="200dp"
+    android:viewportHeight="200" android:viewportWidth="200"
+    android:width="200dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="@color/button_color" android:pathData="M55.052,102.273H41.947H28.842c-7.237,0 -13.105,5.868 -13.105,13.105v9.828h52.42v-9.828C68.157,108.142 62.29,102.273 55.052,102.273z"/>
+    <path android:fillColor="@color/button_color" android:pathData="M55.052,89.169v-3.276c0,-7.237 -5.868,-13.105 -13.105,-13.105s-13.105,5.868 -13.105,13.105v3.276c0,7.236 5.868,13.104 13.105,13.104S55.052,96.405 55.052,89.169z"/>
+    <path android:fillColor="@color/button_color" android:pathData="M115.633,112.226h-13.105H89.423c-7.238,0 -13.105,5.868 -13.105,13.105v9.828h52.42v-9.828C128.737,118.094 122.87,112.226 115.633,112.226z"/>
+    <path android:fillColor="@color/button_color" android:pathData="M115.633,99.121v-3.276c0,-7.236 -5.868,-13.104 -13.105,-13.104s-13.104,5.868 -13.104,13.104v3.276c0,7.236 5.867,13.104 13.104,13.104S115.633,106.357 115.633,99.121z"/>
+    <path android:fillColor="@color/button_color" android:pathData="M121.304,50.893h-15.776H89.752c-8.713,0 -15.776,7.064 -15.776,15.776V78.5h63.102V66.669C137.078,57.957 130.016,50.893 121.304,50.893z"/>
+    <path android:fillColor="@color/button_color" android:pathData="M121.304,35.118v-3.944c0,-8.711 -7.064,-15.775 -15.776,-15.775s-15.775,7.064 -15.775,15.775v3.944c0,8.711 7.063,15.775 15.775,15.775S121.304,43.829 121.304,35.118z"/>
+    <path android:fillColor="@color/button_color" android:pathData="M84.522,178.168h31.829v4.722h-31.829z"/>
+    <path android:fillColor="@color/button_color" android:pathData="M122.309,178.168h69.191v4.722h-69.191z"/>
+    <path android:fillColor="@color/button_color" android:pathData="M8.499,177.938h69.192v4.722h-69.192z"/>
+    <path android:fillColor="@color/button_color" android:pathData="M40.734,135.677h4.722v42.49h-4.722z"/>
+    <path android:fillColor="@color/button_color" android:pathData="M158.035,135.677h4.721v42.49h-4.721z"/>
+    <path android:fillColor="@color/button_color" android:pathData="M153.429,137.677a7.176,7.235 0,1 0,14.352 0a7.176,7.235 0,1 0,-14.352 0z"/>
+    <path android:fillColor="@color/button_color" android:pathData="M35.92,137.677a7.176,7.235 0,1 0,14.352 0a7.176,7.235 0,1 0,-14.352 0z"/>
+    <path android:fillColor="@color/button_color" android:pathData="M93.262,180.528a7.176,7.235 0,1 0,14.352 0a7.176,7.235 0,1 0,-14.352 0z"/>
+    <path android:fillColor="@color/button_color" android:pathData="M176.157,102.273h-13.104h-13.104c-7.238,0 -13.105,5.868 -13.105,13.105v9.828h52.42v-9.828C189.263,108.142 183.396,102.273 176.157,102.273z"/>
+    <path android:fillColor="@color/button_color" android:pathData="M176.157,89.169v-3.276c0,-7.237 -5.867,-13.105 -13.104,-13.105s-13.104,5.868 -13.104,13.105v3.276c0,7.236 5.867,13.104 13.104,13.104S176.157,96.405 176.157,89.169z"/>
+</vector>

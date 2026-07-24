@@ -1,0 +1,10 @@
+<vector android:autoMirrored="true" android:height="200dp"
+    android:viewportHeight="200" android:viewportWidth="200"
+    android:width="200dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="@color/button_color" android:pathData="M116.473,19l-8,-16H87.528l-8,16H66v8H30v168h136V27h-36v-8H116.473zM84.472,27l8,-16h11.055l8,16H122v16v8H74v-8V27H84.472zM130,59v-8h12v120H54V51h12v8H130zM158,35v152H38V35h28v8H46v136h104V43h-20v-8H158z"/>
+    <path android:fillColor="@color/button_color" android:pathData="M94,23h8v8h-8z"/>
+    <path android:fillColor="@color/button_color" android:pathData="M70,75h56v8h-56z"/>
+    <path android:fillColor="@color/button_color" android:pathData="M70,99h56v8h-56z"/>
+    <path android:fillColor="@color/button_color" android:pathData="M70,123h56v8h-56z"/>
+    <path android:fillColor="@color/button_color" android:pathData="M70,147h56v8h-56z"/>
+</vector>

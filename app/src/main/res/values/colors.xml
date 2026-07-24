@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimaryMoreDark">#2D4470</color>
+    <color name="colorPrimary">#2D4470</color>
+    <color name="colorPrimaryLight">#CCC46633</color>
+    <color name="colorPrimaryMoreLight">#9917358A</color>
+    <color name="colorPrimaryDark">#2D4470</color>
+    <color name="colorAccent">#1B2A53</color>
+    <!--<color name="colorAccent">#69169C</color>-->
+    <color name="colorPrimaryDark_disable">#B3060632</color>
+    <color name="style_color_primary">#C46633</color>
+
+    <color name="service_icon_color">#C46633</color>
+    <color name="service_inner_icon_color">#99C46633</color>
+    <color name="color_background">#FAFAFA</color>
+    <color name="style_color_primary_dark">#C46633</color>
+    <color name="style_color_accent">#1B2A53</color>
+    <color name="bottommenu">#C46633</color>
+    <color name="lightGrey">#e1e1e1</color>
+    <color name="buttoncolor">#C46633</color>
+    <color name="button_color">#C46633</color>
+    <color name="icon_color">#2D4470</color>
+    <color name="colorBackground">#A9A9A9</color>
+
+    <color name="start_color">#C46633</color>
+    <color name="end_color">#1B2A53</color>
+    <color name="button_disable_color">#4DC46633</color>
+
+
+    <color name="textcolor">#1B2A53</color>
+    <color name="devider_color">#1B2A53</color>
+    <color name="hint_color">#84000000</color>
+    <color name="shadow">#44000000</color>
+    <color name="pressed">#9B28AF</color>
+    <!--main colour-->
+    <color name="back_bg">#e1dede</color>
+    <color name="back_bgg">#F4EBEB</color>
+    <color name="off_white">#CCF4ECEC</color>
+    <color name="transparent">#88a98c8c</color>
+    <color name="aboutpagecolour">#DDDDFA</color>
+
+    <color name="purple">#1f2d20</color>
+    <color name="white">#ffffff</color>
+    <color name="light_white">#FDFBFB</color>
+    <color name="black">#000000</color>
+    <color name="grey">#665f5f</color>
+    <color name="greycon">#383636</color>
+    <color name="light_grey">#a19f9f</color>
+
+    <color name="colorlink">#0645AD</color>
+    <color name="reddishBrown">#B93221</color>
+    <color name="red">#F33434</color>
+    <color name="green">#2b912d</color>
+    <color name="gre">#2a692d</color>
+
+    <!--swipelist.. color-->
+
+    <color name="color_primary">#FF1329</color>
+    <color name="color_primary_dark">#FE0C58</color>
+    <color name="color_accent">#9B28AF</color>
+
+    <color name="color_delete">#ff5722</color>
+    <color name="color_mark">#0eb795</color>
+
+    <!-- Randomized colors -->
+    <color name="color_red">#f44336</color>
+    <color name="color_pink">#e91e63</color>
+    <color name="color_purple">#631974</color>
+    <color name="color_deep_purple">#673ab7</color>
+    <color name="color_indigo">#3f51b5</color>
+    <color name="color_blue">#2196f3</color>
+    <color name="color_light_blue">#03a9f4</color>
+    <color name="color_cyan">#00bcd4</color>
+    <color name="color_teal">#009688</color>
+    <color name="color_green">#4caf50</color>
+    <color name="color_light_green">#8bc34a</color>
+    <color name="color_lime">#cddc39</color>
+    <color name="color_yellow">#F8E324</color>
+    <color name="light_orange">#F7C32B</color>
+    <color name="color_amber">#FCC522</color>
+    <color name="color_orange">#ff9800</color>
+    <color name="color_deep_orange">#EE3D06</color>
+    <color name="color_brown">#795548</color>
+    <color name="color_grey">#9e9e9e</color>
+    <color name="color_blue_grey">#607d8b</color>
+    //new Design
+    <color name="color_login_background">#e5e5e5</color>
+    <color name="blue">#28166f</color>
+    <color name="lightDarkGreen">#34C778</color>
+    <color name="darkGreen">#0C8A46</color>
+    <color name="yellow_dark">#E7D52B</color>
+    <color name="airtelText">#009688</color>
+    <color name="button_color1">#B93221</color>
+
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="viewfinder_laser">#ffcc0000</color>
+    <color name="viewfinder_border">#ffafed44</color>
+    <color name="newcolor">#FAAE4D</color>
+    <color name="whatsappColor">#25D366</color>
+</resources>

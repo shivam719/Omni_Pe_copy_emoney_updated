@@ -1,0 +1,53 @@
+# ===== Android / Gradle =====
+.gradle/
+build/
+**/build/
+
+# ===== Local configuration =====
+local.properties
+sdk.dir
+ndk.dir
+
+# ===== Android Studio =====
+.idea/
+*.iml
+*.ipr
+*.iws
+.idea/caches/
+.idea/libraries/
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+
+# ===== OS generated =====
+.DS_Store
+Thumbs.db
+
+# ===== Logs =====
+*.log
+
+# ===== APK / AAB =====
+*.apk
+*.aab
+
+# ===== External native build =====
+.externalNativeBuild/
+.cxx/
+
+# ===== Fastlane =====
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# ===== Lint =====
+lint/
+lint-results*.html
+lint-results*.xml
+
+# ===== Kotlin =====
+*.kotlin_module
+
+# ===== Crashlytics =====
+crashlytics-build.properties

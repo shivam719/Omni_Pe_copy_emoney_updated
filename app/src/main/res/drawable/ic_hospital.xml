@@ -1,0 +1,16 @@
+<vector android:autoMirrored="true" android:height="50dp"
+    android:viewportHeight="5000" android:viewportWidth="5000"
+    android:width="50dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="@color/button_color" android:pathData="M4834.55,1920.98l0,2925.84 -4681.36,0 0,-2925.84c0,-506.72 412.84,-919.56 919.56,-919.56l417.96,0 0,-835.96 2006.32,0 0,835.96 417.96,0c506.72,0 919.56,412.84 919.56,919.56z"/>
+    <path android:fillColor="@color/button_color" android:pathData="M3497.03,1001.42l417.96,0c506.72,0 919.56,412.84 919.56,919.56l0,2925.84 -2340.68,0 0,-4681.36 1003.16,0 0,835.96z"/>
+    <path android:fillColor="#E1E1E3" android:pathData="M3162.63,2338.94l-1337.52,0c-92.18,0 -167.2,74.4 -167.2,167.2 0,92.79 75.02,167.2 167.2,167.2l1337.52,0c92.79,0 167.2,-74.41 167.2,-167.2 0,-92.8 -74.41,-167.2 -167.2,-167.2z"/>
+    <path android:fillColor="#FEFEFE" android:pathData="M654.75,4178.06l1003.16,0l0,-1337.52l-1003.16,0z"/>
+    <path android:fillColor="#FEFEFE" android:pathData="M3329.83,4178.06l1003.12,0l0,-1337.52l-1003.12,0z"/>
+    <path android:fillColor="#E1E1E3" android:pathData="M1992.31,4846.82l1003.12,0l0,-1671.92l-1003.12,0z"/>
+    <path android:fillColor="@color/button_color" android:pathData="M1490.71,2171.78l2006.32,0l0,-2006.32l-2006.32,0z"/>
+    <path android:fillColor="#FEFEFE" android:pathData="M2493.87,4846.82l501.56,0l0,-1671.92l-501.56,0z"/>
+    <path android:fillColor="#FEFEFE" android:pathData="M3162.63,2338.94c92.79,0 167.2,74.4 167.2,167.2 0,92.79 -74.41,167.2 -167.2,167.2l-668.76,0 0,-334.4 668.76,0z"/>
+    <path android:fillColor="@color/button_color" android:pathData="M2493.87,2171.78l1003.16,0l0,-2006.32l-1003.16,0z"/>
+    <path android:fillColor="#E1E1E3" android:pathData="M2326.67,1335.82l-334.36,0l0,-334.4l334.36,0l0,-334.36l334.4,0l0,334.36l334.36,0l0,334.4l-334.36,0l0,334.36l-334.4,0z"/>
+    <path android:fillColor="#FEFEFE" android:pathData="M2661.07,1001.42l334.36,0l0,334.4l-334.36,0l0,334.36l-167.2,0l0,-1003.12l167.2,0z"/>
+</vector>

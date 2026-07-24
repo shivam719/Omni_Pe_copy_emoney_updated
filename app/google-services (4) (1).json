@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "879697138064",
+    "project_id": "omnipe",
+    "storage_bucket": "omnipe.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:879697138064:android:870fa6cfa8820c00cd2315",
+        "android_client_info": {
+          "package_name": "com.fintech.omnipe"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLhMSYQe3SZSm5u3AUdE4IA8ZA52GUJos"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

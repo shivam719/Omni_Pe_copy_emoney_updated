@@ -1,0 +1,50 @@
+package com.fintech.omnipe.AEPS.FingPay.UI;
+
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.text.Html;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
+
+import com.fintech.omnipe.Fragments.SdkDetail;
+import com.fintech.omnipe.R;
+
+
+public class EKYCProcessActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
+        WindowInsetsControllerCompat controller = new WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
+        controller.setAppearanceLightStatusBars(true);
+        controller.setAppearanceLightNavigationBars(true);
+        setContentView(R.layout.activity_ekyc_process);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("E-KYC verification Process");
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_icon);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+
+        SdkDetail sdkDetail = (SdkDetail) getIntent().getSerializableExtra("SDKDetail");
+        TextView contentTv = findViewById(R.id.contentTv);
+        TextView installApp = findViewById(R.id.installApp);
+        String username = sdkDetail.getApiOutletID();
+        String superMerchantId = sdkDetail.getApiPartnerID();
+        contentTv.setText(Html.fromHtml(getString(R.string.ekyc_steps, username + "", superMerchantId + "")));
+
+        installApp.setOnClickListener(v -> {
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://roundpay.net/apk/Icici.verification.apk")));
+            } catch (ActivityNotFoundException anfe) {
+
+            }
+        });
+    }
+}
