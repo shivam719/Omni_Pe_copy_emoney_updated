@@ -116,7 +116,7 @@ public class GetAdvertisementByCity extends AppCompatActivity {
 
                 @Override
                 public void onError(int error) {
-                    UtilMethods.INSTANCE.NetworkError(GetAdvertisementByCity.this);
+
                 }
             });
         }else{

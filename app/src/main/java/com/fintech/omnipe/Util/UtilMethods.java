@@ -962,7 +962,7 @@ public enum UtilMethods {
                                         setTimer(timerTv, resendCodeTv);
                                     }
                                 } else {
-                                    openOtpDialog(context, 7, LoginDataResponse.getData().getMobileNo(), new DialogOTPCallBack() {
+                                    openOtpDialog(context, 6, LoginDataResponse.getData().getMobileNo(), new DialogOTPCallBack() {
                                         @Override
                                         public void onPositiveClick(EditText edMobileOtp, String otpValue, TextView timerTv, View resendCodeTv, Dialog mDialog) {
                                             loader.show();
@@ -1083,7 +1083,7 @@ public enum UtilMethods {
         dialogOTP = new Dialog(context);
         dialogOTP.setCancelable(false);
         dialogOTP.setContentView(view);
-        dialogOTP.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        Objects.requireNonNull(dialogOTP.getWindow()).setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         setTimer(timerTv, resendTv);
 

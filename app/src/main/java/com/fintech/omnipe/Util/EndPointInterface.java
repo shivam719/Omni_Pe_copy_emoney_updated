@@ -671,7 +671,7 @@ public interface EndPointInterface {
     Call<SettlementAccountResponse> GetSettlementAccount(@Body BasicRequest request);
 
     @Headers("Content-Type: application/json")
-    @POST("App/GetAdvertisementByCity")
+    @POST("App/GetAdvertisementByCity?")
     Call<BasicResponse> GetAdvertisementByCity(@Body BasicRequest request);
 
     @Headers("Content-Type: application/json")

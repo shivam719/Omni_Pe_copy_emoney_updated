@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.TextViewCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
@@ -37,6 +38,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -59,7 +61,7 @@ public class EKycDialogFragment extends DialogFragment {
     private int bioAuthTypeCOB;
     UtilMethods.ApiCallBackOnBoardingMethod mApiCallBackCOB;
 
-    private int INTENT_READ_DEVICE =876;
+    private final int INTENT_READ_DEVICE =876;
     private int selectedDevicePos = -1;
     private GetLocation mGetLocation;
 
@@ -233,19 +235,16 @@ public class EKycDialogFragment extends DialogFragment {
             // mantra();
             clickView.setVisibility(View.GONE);
             loaderView.setVisibility(View.VISIBLE);
-            readDevice("com.mantra.rdservice", "com.mantra.rdservice.RDServiceActivity",
-                    "Mantra", null);
+            readDevice("com.mantra.mfs110.rdservice", "com.mantra.mfs110.rdservice.RDServiceActivity",
+                    "Mantra L1", null);
         } else if (selectedDevicePos == 1) {
             // marpho();
             clickView.setVisibility(View.GONE);
             loaderView.setVisibility(View.VISIBLE);
 
-            String pidData = "<?xml version=\"1.0\"?> <PidOptions ver=\"1.0\"> <Opts fCount=\"1\" fType=\"0\" iCount=\"0\" pCount=\"0\" format=\"0\" pidVer=\"2.0\" timeout=\"10000\" otp=\"\"  posh=\"UNKNOWN\" env=\"P\" /> <CustOpts><Param name=\"marphokey\" value=\"\" /></CustOpts> </PidOptions>";
-            if(bioAuthTypeCOB==2){
-                pidData = "<?xml version=\"1.0\"?> <PidOptions ver=\"1.0\"> <Opts fCount=\"1\" fType=\"0\" iCount=\"0\" pCount=\"0\" format=\"0\" pidVer=\"2.0\" timeout=\"10000\" otp=\"\" wadh=\"E0jzJ/P8UopUHAieZn8CKqS4WPMi5ZSYXgfnlfkWjrc=\" posh=\"UNKNOWN\" env=\"P\" /> <CustOpts><Param name=\"marphokey\" value=\"\" /></CustOpts> </PidOptions>";
-            }
-            readDevice("com.scl.rdservice", "com.scl.rdservice.FingerCaptureActivity",
-                    "Marpho", pidData);
+            String pidData = getPidDataMorphoL1();
+            readDevice("com.idemia.l1rdservice", "com.morpho.registerdeviceservice.CaptureAndInfoActivity",
+                    "Marpho L1", pidData);
         } else if (selectedDevicePos == 2) {
             // tatvik();
             clickView.setVisibility(View.GONE);
@@ -256,8 +255,8 @@ public class EKycDialogFragment extends DialogFragment {
             // startek();
             clickView.setVisibility(View.GONE);
             loaderView.setVisibility(View.VISIBLE);
-            readDevice("com.acpl.registersdk", "com.acpl.registersdk.MainActivity",
-                    "Startek", null);
+            readDevice("com.acpl.registersdk_l1", "com.acpl.registersdk_l1.MainActivity",
+                    "Startek L1", null);
         } else if (selectedDevicePos == 4) {
             //  precision();
             Toast.makeText(getActivity(), "Coming Soon", Toast.LENGTH_SHORT).show();
@@ -279,12 +278,26 @@ public class EKycDialogFragment extends DialogFragment {
             readDevice("com.evolute.rdservice", "com.evolute.rdservice.RDserviceActivity", "Evolute", null);
         }
     }
+
+    @NonNull
+    private String getPidDataMorphoL1() {
+        String pidData;
+        if (bioAuthTypeCOB == 2) {
+            pidData = "<?xml version=\"1.0\"?> <PidOptions ver=\"1.0\"> <Opts fCount=\"1\" fType=\"2\" iCount=\"0\" pCount=\"0\" format=\"0\" pidVer=\"2.0\" timeout=\"10000\" otp=\"\" wadh=\"E0jzJ/P8UopUHAieZn8CKqS4WPMi5ZSYXgfnlfkWjrc=\" posh=\"UNKNOWN\" env=\"P\" /> <CustOpts><Param name=\"marphokey\" value=\"\" /></CustOpts> </PidOptions>";
+
+        } else {
+            pidData = "<?xml version=\"1.0\"?> <PidOptions ver=\"1.0\"> <Opts fCount=\"1\" fType=\"2\" iCount=\"0\" pCount=\"0\" format=\"0\" pidVer=\"2.0\" timeout=\"10000\" otp=\"\" posh=\"UNKNOWN\" env=\"P\" /> <CustOpts><Param name=\"marphokey\" value=\"\" /></CustOpts> </PidOptions>";
+
+        }
+        return pidData;
+    }
+
     private void readDevice(String packageName, String serviceName, String name, String piddata) {
         errorTv.setVisibility(View.GONE);
         if (NUL(packageName, getActivity().getPackageManager())) {
-            String pidData="<?xml version=\"1.0\"?> <PidOptions ver=\"1.0\"> <Opts fCount=\"1\" fType=\"0\" iCount=\"0\" pCount=\"0\" pgCount=\"2\" format=\"0\" pidVer=\"2.0\" timeout=\"10000\" pTimeout=\"20000\" posh=\"UNKNOWN\" env=\"P\" ></Opts> <CustOpts><Param name=\"" + name + "key\" value=\"\" /></CustOpts> </PidOptions>";
+            String pidData="<?xml version=\"1.0\"?> <PidOptions ver=\"1.0\"> <Opts fCount=\"1\" fType=\"2\" iCount=\"0\" pCount=\"0\" pgCount=\"2\" format=\"0\" pidVer=\"2.0\" timeout=\"10000\" pTimeout=\"20000\" posh=\"UNKNOWN\" env=\"P\" ></Opts> <CustOpts><Param name=\"" + name + "key\" value=\"\" /></CustOpts> </PidOptions>";
             if(bioAuthTypeCOB==2){
-                pidData = "<?xml version=\"1.0\"?> <PidOptions ver=\"1.0\"> <Opts fCount=\"1\" fType=\"0\" iCount=\"0\" pCount=\"0\" pgCount=\"2\" format=\"0\" pidVer=\"2.0\" timeout=\"10000\" pTimeout=\"20000\" wadh=\"E0jzJ/P8UopUHAieZn8CKqS4WPMi5ZSYXgfnlfkWjrc=\" posh=\"UNKNOWN\" env=\"P\" ></Opts> <CustOpts><Param name=\"" + name + "key\" value=\"\" /></CustOpts> </PidOptions>";
+                pidData = "<?xml version=\"1.0\"?> <PidOptions ver=\"1.0\"> <Opts fCount=\"1\" fType=\"2\" iCount=\"0\" pCount=\"0\" pgCount=\"2\" format=\"0\" pidVer=\"2.0\" timeout=\"10000\" pTimeout=\"20000\" wadh=\"E0jzJ/P8UopUHAieZn8CKqS4WPMi5ZSYXgfnlfkWjrc=\" posh=\"UNKNOWN\" env=\"P\" ></Opts> <CustOpts><Param name=\"" + name + "key\" value=\"\" /></CustOpts> </PidOptions>";
             }
 
             if (piddata != null && !piddata.isEmpty()) {
@@ -305,7 +318,7 @@ public class EKycDialogFragment extends DialogFragment {
 
     void openServiceOnPlay(String name, String packageName) {
 
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(requireActivity())
                 .setTitle("Get Service")
                 .setMessage(name + " RD Services Not Found.Click OK to Download Now.")
                 .setPositiveButton(android.R.string.yes, (dialog, which) -> {
@@ -477,10 +490,10 @@ public class EKycDialogFragment extends DialogFragment {
         PidDataResp mResp = new PidDataResp();
 
         try {
-            if (paramString != null && !paramString.isEmpty() && paramString.contains("<PidData>")) {
+            if (paramString != null && paramString.contains("<PidData>")) {
                 DocumentBuilderFactory localDocumentBuilderFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder localDocumentBuilder = localDocumentBuilderFactory.newDocumentBuilder();
-                Document localDocument = localDocumentBuilder.parse(new ByteArrayInputStream(paramString.getBytes("UTF-8")));
+                Document localDocument = localDocumentBuilder.parse(new ByteArrayInputStream(paramString.getBytes(StandardCharsets.UTF_8)));
                 NodeList localNodeList1 = localDocument.getElementsByTagName("Resp");
                 Element localElement2 = (Element) localNodeList1.item(0);
                 mResp.setErrCode(localElement2.getAttribute("errCode"));
@@ -494,21 +507,21 @@ public class EKycDialogFragment extends DialogFragment {
                         mProgressDialogCOB.show();
                     }
 
-                    if (UtilMethods.INSTANCE.getLattitude != 0 && UtilMethods.INSTANCE.getLongitude != 0) {
-                        UtilMethods.INSTANCE.CallOnboarding(contextCOB,false,oIdCOB, "", otpRefIDCOB, paramString,bioAuthTypeCOB,true ,fragmentManagerCOB,null,null,null,UtilMethods.INSTANCE.getLattitude, UtilMethods.INSTANCE.getLongitude, mProgressDialogCOB, mApiCallBackCOB);
+                    if (UtilMethods.getLattitude != 0 && UtilMethods.getLongitude != 0) {
+                        UtilMethods.INSTANCE.CallOnboarding(contextCOB,false,oIdCOB, "", otpRefIDCOB, paramString,bioAuthTypeCOB,true ,fragmentManagerCOB,null,null,null, UtilMethods.getLattitude, UtilMethods.getLongitude, mProgressDialogCOB, mApiCallBackCOB);
                     } else {
                         if (mGetLocation != null) {
                             mGetLocation.startLocationUpdates((lattitude, longitude) -> {
-                                UtilMethods.INSTANCE.getLattitude = lattitude;
-                                UtilMethods.INSTANCE.getLongitude = longitude;
-                                UtilMethods.INSTANCE.CallOnboarding(contextCOB,false,oIdCOB, "", otpRefIDCOB, paramString,bioAuthTypeCOB,true ,fragmentManagerCOB,null,null,null,UtilMethods.INSTANCE.getLattitude, UtilMethods.INSTANCE.getLongitude,mProgressDialogCOB, mApiCallBackCOB);
+                                UtilMethods.getLattitude = lattitude;
+                                UtilMethods.getLongitude = longitude;
+                                UtilMethods.INSTANCE.CallOnboarding(contextCOB,false,oIdCOB, "", otpRefIDCOB, paramString,bioAuthTypeCOB,true ,fragmentManagerCOB,null,null,null, UtilMethods.getLattitude, UtilMethods.getLongitude,mProgressDialogCOB, mApiCallBackCOB);
                             });
                         } else {
                             mGetLocation = new GetLocation(requireActivity(), null);
                             mGetLocation.startLocationUpdates((lattitude, longitude) -> {
-                                UtilMethods.INSTANCE.getLattitude = lattitude;
-                                UtilMethods.INSTANCE.getLongitude = longitude;
-                                UtilMethods.INSTANCE.CallOnboarding(contextCOB,false,oIdCOB, "", otpRefIDCOB, paramString,bioAuthTypeCOB,true ,fragmentManagerCOB,null,null,null,UtilMethods.INSTANCE.getLattitude, UtilMethods.INSTANCE.getLongitude,mProgressDialogCOB, mApiCallBackCOB);
+                                UtilMethods.getLattitude = lattitude;
+                                UtilMethods.getLongitude = longitude;
+                                UtilMethods.INSTANCE.CallOnboarding(contextCOB,false,oIdCOB, "", otpRefIDCOB, paramString,bioAuthTypeCOB,true ,fragmentManagerCOB,null,null,null, UtilMethods.getLattitude, UtilMethods.getLongitude,mProgressDialogCOB, mApiCallBackCOB);
                             });
                         }
                     }
@@ -518,7 +531,7 @@ public class EKycDialogFragment extends DialogFragment {
                 } else {
                     errorTv.setVisibility(View.VISIBLE);
                     errorTv.setText("Error Code : " + mResp.getErrCode() + "\n" +
-                            "Error Message : " + mResp.getErrInfo() + "");
+                            "Error Message : " + mResp.getErrInfo());
                 }
             } else {
                 errorTv.setVisibility(View.VISIBLE);
@@ -526,7 +539,7 @@ public class EKycDialogFragment extends DialogFragment {
             }
         } catch (Exception e) {
             errorTv.setVisibility(View.VISIBLE);
-            errorTv.setText(e.getMessage() + "");
+            errorTv.setText(e.getMessage());
             e.printStackTrace();
         }
 
@@ -543,7 +556,7 @@ public class EKycDialogFragment extends DialogFragment {
     }
 
     public void NUL(View paramView, String paramString, int paramInt) {
-        Snackbar localSnackbar = Snackbar.make(paramView, "" + paramString, Snackbar.LENGTH_LONG);
+        Snackbar localSnackbar = Snackbar.make(paramView, paramString, Snackbar.LENGTH_LONG);
         View snackBarView = localSnackbar.getView();
         snackBarView.setBackgroundColor(paramInt);
         TextView mainTextView = snackBarView.findViewById(com.google.android.material.R.id.snackbar_text);
@@ -587,18 +600,30 @@ public class EKycDialogFragment extends DialogFragment {
     @SuppressLint("Range")
     private void setClickedView(LinearLayout selectedView, CardView selectedCardView) {
 
-        for(int selId=0;selId<deviceContainerView.getChildCount(); selId++){
-            if(deviceContainerView.getChildAt(selId)==selectedCardView){
-                selectedView.setBackgroundResource(R.drawable.rounded_border_primary);
-                selectedView.setAlpha((float).8);
-                selectedCardView.setMaxCardElevation(6);
-                selectedCardView.setCardElevation(6);
-            }else {
-                ViewGroup carddView= (ViewGroup)deviceContainerView.getChildAt(selId);
-                carddView.getChildAt(0).setBackgroundResource(R.drawable.rounded_primary);
-                carddView.getChildAt(0).setAlpha(10);
-                //deviceContainerView.getChildAt(selId).set(R.drawable.rounded_primary);
-
+        for (int selId = 0; selId < deviceContainerView.getChildCount(); selId++) {
+            View child = deviceContainerView.getChildAt(selId);
+            if (child instanceof CardView) {
+                CardView cardView = (CardView) child;
+                if (cardView == selectedCardView) {
+                    selectedView.setBackgroundResource(R.drawable.rounded_border_primary);
+                    selectedView.setAlpha(1.0f);
+                    selectedCardView.setMaxCardElevation(6);
+                    selectedCardView.setCardElevation(6);
+                    if (selectedView.getChildCount() > 1 && selectedView.getChildAt(1) instanceof TextView) {
+                        ((TextView) selectedView.getChildAt(1)).setTextColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary));
+                    }
+                } else {
+                    cardView.setMaxCardElevation(0);
+                    cardView.setCardElevation(0);
+                    if (cardView.getChildCount() > 0 && cardView.getChildAt(0) instanceof LinearLayout) {
+                        LinearLayout unselectedView = (LinearLayout) cardView.getChildAt(0);
+                        unselectedView.setBackgroundResource(R.drawable.rounded_primary);
+                        unselectedView.setAlpha(1.0f);
+                        if (unselectedView.getChildCount() > 1 && unselectedView.getChildAt(1) instanceof TextView) {
+                            ((TextView) unselectedView.getChildAt(1)).setTextColor(ContextCompat.getColor(requireContext(), R.color.white));
+                        }
+                    }
+                }
             }
         }
     }
