@@ -39,6 +39,7 @@ import androidx.viewpager.widget.ViewPager;
 
 
 import com.fintech.omnipe.DMTNew.ui.DMTLoginNew;
+import com.fintech.omnipe.UPIATM.UPIATMActivity;
 import com.google.gson.Gson;
 import com.paysprint.onboardinglib.activities.HostActivity;
 import com.roundpay.emoneylib.EMoneyLoginActivity;
@@ -678,6 +679,8 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
             i.putExtra("fromId", 0);
             i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             getActivity().startActivity(i);
+        }else if (id == 135) { //For UPI ATM
+                hitCallOnboarding(id, false);
         } else if (id == 114) {
             Intent i = new Intent(getActivity(), CreateUserActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -1203,6 +1206,13 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
                                         UtilMethods.INSTANCE.Error(getActivity(), "SDK Type Error !! ");
                                     }
 
+
+                                } else if (opTypes==135) {
+                                    Intent i = new Intent(getActivity(), UPIATMActivity.class);
+                                    i.putExtra("from", "UPI ATM");
+                                    i.putExtra("fromId", opTypes);
+                                    i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                    startActivity(i);
 
                                 } else if (opTypes == 44) {
                                     if (mOnboardingResponse.getSdkType() == 1 && mOnboardingResponse.getSdkDetail() != null) { //FingPay
