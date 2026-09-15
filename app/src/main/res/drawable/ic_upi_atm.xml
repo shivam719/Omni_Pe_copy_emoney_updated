@@ -1,0 +1,153 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp"
+    android:height="80dp"
+    android:viewportWidth="122"
+    android:viewportHeight="102">
+
+    <!-- ===================== SHOP ===================== -->
+
+    <!-- Awning band -->
+    <path
+        android:fillColor="@color/button_color"
+        android:pathData="M4,6 H72 V16 H4 Z" />
+
+    <!-- Awning scallops, alternating stripes -->
+    <path android:fillColor="@color/button_color" android:pathData="M4,16 A6.8,6.8 0 0,0 17.6,16 Z" />
+    <path android:fillColor="@color/colorPrimary" android:pathData="M17.6,16 A6.8,6.8 0 0,0 31.2,16 Z" />
+    <path android:fillColor="@color/button_color" android:pathData="M31.2,16 A6.8,6.8 0 0,0 44.8,16 Z" />
+    <path android:fillColor="@color/colorPrimary" android:pathData="M44.8,16 A6.8,6.8 0 0,0 58.4,16 Z" />
+    <path android:fillColor="@color/button_color" android:pathData="M58.4,16 A6.8,6.8 0 0,0 72,16 Z" />
+
+    <!-- Side supports hanging from the awning -->
+    <path android:fillColor="@color/button_color" android:pathData="M4,6 L4,18 L10.5,12.5 Z" />
+    <path android:fillColor="@color/button_color" android:pathData="M72,6 L72,18 L65.5,12.5 Z" />
+
+    <!-- Shopfront body -->
+    <path
+        android:fillColor="@color/button_color"
+        android:pathData="M8,23
+            H68
+            V70
+            A6,6 0 0,1 62,76
+            H14
+            A6,6 0 0,1 8,70
+            Z" />
+
+    <!-- Base shadow strip for depth -->
+    <path
+        android:fillColor="#153037"
+        android:pathData="M8,72 H68 V70 A6,6 0 0,1 62,76 H14 A6,6 0 0,1 8,70 Z" />
+
+    <!-- Window panes -->
+    <path android:fillColor="@color/colorPrimary" android:pathData="M15,29 H32 V45 H15 Z" />
+    <path android:fillColor="@color/colorPrimary" android:pathData="M38,29 H55 V45 H38 Z" />
+
+    <!-- Window highlight (glass shine) -->
+    <path android:fillColor="#A6E2C4" android:pathData="M17,31 H21 V41 H17 Z" />
+    <path android:fillColor="#A6E2C4" android:pathData="M40,31 H44 V41 H40 Z" />
+
+    <!-- Window cross-frames -->
+    <path android:fillColor="@color/button_color" android:pathData="M22.7,29 H24.3 V45 H22.7 Z" />
+    <path android:fillColor="@color/button_color" android:pathData="M15,36.2 H32 V37.8 H15 Z" />
+    <path android:fillColor="@color/button_color" android:pathData="M45.7,29 H47.3 V45 H45.7 Z" />
+    <path android:fillColor="@color/button_color" android:pathData="M38,36.2 H55 V37.8 H38 Z" />
+
+    <!-- Arched door -->
+    <path
+        android:fillColor="@color/colorPrimary"
+        android:pathData="M15,76
+            V60
+            A8.5,8.5 0 0,1 32,60
+            V76
+            Z" />
+    <path android:fillColor="@color/button_color" android:pathData="M20,76 V63 A3.5,3.5 0 0,1 27,63 V76 Z" />
+    <path
+        android:fillColor="@color/button_color"
+        android:pathData="M28.7,66.5
+            m-1.6,0
+            a1.6,1.6 0,1,0 3.2,0
+            a1.6,1.6 0,1,0 -3.2,0 Z" />
+
+    <!-- ===================== QR CODE ===================== -->
+
+    <!-- Outer frame, rounded -->
+    <path
+        android:fillColor="@color/button_color"
+        android:pathData="M58,44
+            H114
+            A6,6 0 0,1 120,50
+            V94
+            A6,6 0 0,1 114,100
+            H58
+            A6,6 0 0,1 52,94
+            V50
+            A6,6 0 0,1 58,44
+            Z" />
+
+    <!-- Inner white face, rounded -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M59,50
+            H113
+            A4,4 0 0,1 117,54
+            V93
+            A4,4 0 0,1 113,97
+            H59
+            A4,4 0 0,1 55,93
+            V54
+            A4,4 0 0,1 59,50
+            Z" />
+
+    <!-- Finder eye: top-left -->
+    <group android:translateX="60" android:translateY="53">
+        <path
+            android:fillColor="@color/button_color"
+            android:fillType="evenOdd"
+            android:pathData="M0,0 H13 V13 H0 Z M3,3 H10 V10 H3 Z" />
+        <path android:fillColor="@color/colorPrimary" android:pathData="M5,5 H8 V8 H5 Z" />
+    </group>
+
+    <!-- Finder eye: top-right -->
+    <group android:translateX="98" android:translateY="53">
+        <path
+            android:fillColor="@color/button_color"
+            android:fillType="evenOdd"
+            android:pathData="M0,0 H13 V13 H0 Z M3,3 H10 V10 H3 Z" />
+        <path android:fillColor="@color/colorPrimary" android:pathData="M5,5 H8 V8 H5 Z" />
+    </group>
+
+    <!-- Finder eye: bottom-left -->
+    <group android:translateX="60" android:translateY="79">
+        <path
+            android:fillColor="@color/button_color"
+            android:fillType="evenOdd"
+            android:pathData="M0,0 H13 V13 H0 Z M3,3 H10 V10 H3 Z" />
+        <path android:fillColor="@color/colorPrimary" android:pathData="M5,5 H8 V8 H5 Z" />
+    </group>
+
+    <!-- Scattered data modules -->
+    <path android:fillColor="@color/button_color" android:pathData="M79,55 H83 V59 H79 Z" />
+    <path android:fillColor="@color/colorPrimary" android:pathData="M85,55 H89 V59 H85 Z" />
+    <path android:fillColor="@color/button_color" android:pathData="M79,61 H83 V65 H79 Z" />
+    <path android:fillColor="@color/colorPrimary" android:pathData="M85,61 H89 V65 H85 Z" />
+    <path android:fillColor="@color/button_color" android:pathData="M91,61 H95 V65 H91 Z" />
+    <path android:fillColor="@color/colorPrimary" android:pathData="M79,67 H83 V71 H79 Z" />
+    <path android:fillColor="@color/button_color" android:pathData="M91,67 H95 V71 H91 Z" />
+    <path android:fillColor="@color/colorPrimary" android:pathData="M97,67 H101 V71 H97 Z" />
+    <path android:fillColor="@color/button_color" android:pathData="M75,79 H79 V83 H75 Z" />
+    <path android:fillColor="@color/colorPrimary" android:pathData="M81,79 H85 V83 H81 Z" />
+    <path android:fillColor="@color/button_color" android:pathData="M75,85 H79 V89 H75 Z" />
+    <path android:fillColor="@color/colorPrimary" android:pathData="M81,85 H85 V89 H81 Z" />
+    <path android:fillColor="@color/button_color" android:pathData="M75,91 H79 V95 H75 Z" />
+    <path android:fillColor="@color/colorPrimary" android:pathData="M98,79 H102 V83 H98 Z" />
+    <path android:fillColor="@color/button_color" android:pathData="M104,79 H108 V83 H104 Z" />
+    <path android:fillColor="@color/colorPrimary" android:pathData="M98,85 H102 V89 H98 Z" />
+    <path android:fillColor="@color/button_color" android:pathData="M104,85 H108 V89 H104 Z" />
+    <path android:fillColor="@color/colorPrimary" android:pathData="M98,91 H102 V95 H98 Z" />
+    <path android:fillColor="@color/button_color" android:pathData="M104,91 H108 V95 H104 Z" />
+
+    <!-- Scan-bracket accents (camera viewfinder style corners) -->
+    <path android:fillColor="@color/colorPrimary" android:pathData="M50,40 H58 V42.4 H52.4 V48 H50 Z" />
+    <path android:fillColor="@color/colorPrimary" android:pathData="M122,40 H114 V42.4 H119.6 V48 H122 Z" />
+
+</vector>

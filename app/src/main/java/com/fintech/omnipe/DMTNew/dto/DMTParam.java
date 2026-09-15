@@ -1,5 +1,4 @@
-package com.fintech.omnipe.DMRNew.Data;
-
+package com.fintech.omnipe.DMTNew.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -81,6 +80,10 @@ public class DMTParam {
     @SerializedName("Longitude")
     @Expose
     public double Longitude;
+
+
+
+
 
     public DMTParam(String SenderMobile, int OID, double latitude, double Lattitude, double Longitude) {
         this.SenderMobile = SenderMobile;
@@ -174,4 +177,20 @@ public class DMTParam {
         this.ReferenceID = ReferenceID;
         this.TransMode = TransMode;
     }
+
+     /*"SenderMobile": "1234567890",
+    "OID": 10,
+    "BeneId": "BENE12345",
+    "BeneName": "Jane Doe",
+    "BankId": 1001,
+    "BankName": "XYZ Bank",
+    "AccountNo": "123456789012",
+    "Ifsc": "ABCD0123456",
+    "SecurityKey": "security_key_value",
+    "Amount": 5000.75,
+    "Lattitude": 28.6139,
+    "Longitude": 77.2090,
+    "OTP": "123456",
+    "RefferenceID": "ref12345",
+    "TransMode": "IMPS"*/
 }

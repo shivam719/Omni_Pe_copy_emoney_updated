@@ -1,5 +1,6 @@
 package com.fintech.omnipe.DashBoard.UI;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -748,35 +749,41 @@ public class DashBoardLayout extends AppCompatActivity implements View.OnClickLi
     }
 
 
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == INTENT_UPGRADE_PACKAGE && resultCode == RESULT_OK) {
-            if (mUpgradePackageCallBack != null) {
+
+        if (requestCode == INTENT_UPGRADE_PACKAGE) {
+            if (resultCode == RESULT_OK && mUpgradePackageCallBack != null) {
                 mUpgradePackageCallBack.onUpgrade();
             }
-        } else{
-            Fragment myFragment = getSupportFragmentManager().findFragmentByTag("Home");
-            if (myFragment != null && myFragment.isVisible()) {
-                HomeFragment fragment = (HomeFragment) myFragment;
-                if (fragment.mGetLocation != null) {
-                    fragment.mGetLocation.onActivityResult(requestCode, resultCode, data);
+            return;
+        }
 
+        List<Fragment> fragments =
+                getSupportFragmentManager().getFragments();
+
+        for (Fragment fragment : fragments) {
+
+            if (fragment instanceof HomeFragment) {
+
+                HomeFragment homeFragment = (HomeFragment) fragment;
+
+                if (homeFragment.mGetLocation != null) {
+                    homeFragment.mGetLocation
+                            .onActivityResult(requestCode, resultCode, data);
                 }
-            }else{
-                List<Fragment> fragments = getSupportFragmentManager().getFragments();
-                for (Fragment f : fragments) {
-                    if (f instanceof ProfileFragment) {
-                        f.onActivityResult(requestCode, resultCode, data);
-                    }
-                }
+
+            } else if (fragment instanceof ProfileFragment) {
+
+                fragment.onActivityResult(
+                        requestCode,
+                        resultCode,
+                        data
+                );
             }
-
         }
     }
-
     public void SetBalance() {
         try {
             if (balanceCheckResponse != null && balanceCheckResponse.getBalanceData() != null) {
@@ -935,6 +942,7 @@ public class DashBoardLayout extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
         try {

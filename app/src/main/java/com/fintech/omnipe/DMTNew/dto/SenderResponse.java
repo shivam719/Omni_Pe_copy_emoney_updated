@@ -1,14 +1,13 @@
-package com.fintech.omnipe.DMRNew.response;
+package com.fintech.omnipe.DMTNew.dto;
 
 
-import com.fintech.omnipe.DMRNew.Data.DMTData;
 
 public class SenderResponse {
     private boolean isSenderNotExists;
     private boolean isEKYCAvailable;
     private boolean isOTPGenerated;
     private boolean isOTPRequired;
-    private String sid;
+    private String sid,wadh;
     private String senderName;
     private String beneName;
     private String senderBalance;
@@ -77,5 +76,9 @@ public class SenderResponse {
 
     public DMTData getData() {
         return data;
+    }
+
+    public String getWadh() {
+        return wadh;
     }
 }

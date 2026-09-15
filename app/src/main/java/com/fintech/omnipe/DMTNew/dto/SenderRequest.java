@@ -1,9 +1,7 @@
-package com.fintech.omnipe.DMRNew.request;
-
+package com.fintech.omnipe.DMTNew.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.fintech.omnipe.DMRNew.Data.DMTParam;
 
 public class SenderRequest {
 
@@ -53,8 +51,15 @@ public class SenderRequest {
     @SerializedName("Param")
     @Expose
     private DMTParam Param;
+
+    @SerializedName("SecurityKey")
+    @Expose
+    public String SecurityKey;
+
+
+
     public SenderRequest(double latitude, double Lattitude, double Longitude, int oid, String Mobile, String sid, DMTParam Param, String userID, String loginTypeID, String appid, String imei,
-                         String regKey, String version, String serialNo, String sessionID, String session) {
+                         String regKey, String version, String serialNo, String sessionID, String session,String SecurityKey) {
         this.Lattitude = Lattitude;
         this.latitude = latitude;
         this.Longitude = Longitude;
@@ -71,6 +76,6 @@ public class SenderRequest {
         this.serialNo = serialNo;
         this.sessionID = sessionID;
         this.session = session;
+        this.SecurityKey = SecurityKey;
     }
 }
-

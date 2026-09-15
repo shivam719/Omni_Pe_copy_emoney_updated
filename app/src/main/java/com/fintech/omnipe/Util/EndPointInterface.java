@@ -91,8 +91,6 @@ import com.fintech.omnipe.AppUser.dto.FosAccStmtAndCollReportResponse;
 import com.fintech.omnipe.AppUser.dto.FosAppUserListRequest;
 import com.fintech.omnipe.CommissionSlab.dto.RSlabRangDetailRequest;
 import com.fintech.omnipe.CommissionSlab.dto.RSlabRangDetailResponse;
-import com.fintech.omnipe.DMRNew.request.SenderRequest;
-import com.fintech.omnipe.DMRNew.response.SenderResponse;
 import com.fintech.omnipe.DMRPipe.dto.ValiSenderRequest;
 import com.fintech.omnipe.DTHSubscription.dto.DTHSubscriptionRequest;
 import com.fintech.omnipe.DTHSubscription.dto.DthSubscriptionReportRequest;
@@ -113,6 +111,8 @@ import com.fintech.omnipe.MicroATM.dto.InitiateMiniBankATMRes;
 import com.fintech.omnipe.MicroATM.dto.UpdateMiniBankStatusReq;
 import com.fintech.omnipe.MoveToWallet.Api.MoveToBankReportRequest;
 import com.fintech.omnipe.MoveToWallet.Api.MoveToBankReportResponse;
+import com.fintech.omnipe.UPIATM.UpiAtmRequest;
+import com.fintech.omnipe.UPIATM.UpiAtmResponse;
 import com.fintech.omnipe.UPIPayment.dto.GetVAResponse;
 import com.fintech.omnipe.UPIPayment.dto.MapQRToUserRequest;
 import com.fintech.omnipe.UPIPayment.dto.UPIPaymentRequest;
@@ -144,6 +144,7 @@ public interface EndPointInterface {
     @Headers("Content-Type: application/json")
     @POST("App/GetUDetailByMob")
     Call<UDetailByMobResponse> getUDetailByMob(@Body UDetailByMobRequest uDetailByMobRequest);
+
     @Headers("Content-Type: application/json")
     @POST("App/WalletToWalletFT")
     Call<UDetailByMobResponse> walletToWalletFT(@Body WalletToWalletFTRequest walletToWalletFTRequest);
@@ -252,7 +253,6 @@ public interface EndPointInterface {
     Call<LoginResponse> GetRoleForReferral(@Body GetRoleForReferralRequest request);
 
 
-
     @Multipart
     @POST("App/AppFundOrder?")
     Call<GetBankAndPaymentModeResponse> AppFundOrder(@Part MultipartBody.Part file, @Part("UserFundRequest") RequestBody userRequest);
@@ -278,6 +278,7 @@ public interface EndPointInterface {
     @Headers("Content-Type: application/json")
     @POST("App/GetSender?")
     Call<CreateSenderResponse> GetSender(@Body GetSenderRequest getSenderRequest);
+
     @Headers("Content-Type: application/json")
     @POST("App/GetSenderP?")
     Call<CreateSenderResponse> GetSenderNew(@Body GetSenderRequest getSenderRequest);
@@ -288,6 +289,7 @@ public interface EndPointInterface {
     @Headers("Content-Type: application/json")
     @POST("App/CreateSender?")
     Call<RechargeReportResponse> CreateSender(@Body GetSenderRequest createsenderRequest);
+
     @Headers("Content-Type: application/json")
     @POST("App/CreateSenderP?")
     Call<RechargeReportResponse> CreateSenderNew(@Body GetSenderRequest createsenderRequest);
@@ -295,6 +297,7 @@ public interface EndPointInterface {
     @Headers("Content-Type: application/json")
     @POST("App/VerifySender?")
     Call<RechargeReportResponse> VerifySender(@Body GetSenderRequest createsenderRequest);
+
     @Headers("Content-Type: application/json")
     @POST("App/VerifySenderP?")
     Call<RechargeReportResponse> VerifySenderNew(@Body GetSenderRequest createsenderRequest);
@@ -323,6 +326,7 @@ public interface EndPointInterface {
     @Headers("Content-Type: application/json")
     @POST("App/AddBeneficiary?")
     Call<RechargeReportResponse> AddBeneficiary(@Body GetSenderRequest balanceRequest);
+
     @Headers("Content-Type: application/json")
     @POST("App/AddBeneficiaryP?")
     Call<RechargeReportResponse> AddBeneficiaryNew(@Body GetSenderRequest balanceRequest);
@@ -331,6 +335,7 @@ public interface EndPointInterface {
     @Headers("Content-Type: application/json")
     @POST("App/VerifyAccount?")
     Call<RechargeReportResponse> VerifyAccount(@Body GetSenderRequest balanceRequest);
+
     @Headers("Content-Type: application/json")
     @POST("App/VerifyAccountP?")
     Call<RechargeReportResponse> VerifyAccountNew(@Body GetSenderRequest balanceRequest);
@@ -342,6 +347,7 @@ public interface EndPointInterface {
     @Headers("Content-Type: application/json")
     @POST("App/GetBeneficiary?")
     Call<RechargeReportResponse> GetBeneficiary(@Body GetSenderRequest balanceRequest);
+
     @Headers("Content-Type: application/json")
     @POST("App/GetBeneficiaryP?")
     Call<RechargeReportResponse> GetBeneficiaryNew(@Body GetSenderRequest balanceRequest);
@@ -349,6 +355,7 @@ public interface EndPointInterface {
     @Headers("Content-Type: application/json")
     @POST("App/GetChargedAmount?")
     Call<RechargeReportResponse> GetChargedAmount(@Body GetChargedAmountRequest getChargedAmountRequeat);
+
     @Headers("Content-Type: application/json")
     @POST("App/GetChargedAmountP?")
     Call<RechargeReportResponse> GetChargedAmountNew(@Body GetChargedAmountRequest getChargedAmountRequeat);
@@ -356,6 +363,7 @@ public interface EndPointInterface {
     @Headers("Content-Type: application/json")
     @POST("App/SendMoney?")
     Call<RechargeReportResponse> SendMoney(@Body SendMoneyRequest sendMoneyRequest);
+
     @Headers("Content-Type: application/json")
     @POST("App/SendMoneyP?")
     Call<RechargeReportResponse> SendMoneyNew(@Body SendMoneyRequest sendMoneyRequest);
@@ -436,7 +444,6 @@ public interface EndPointInterface {
     Call<UpdateKycResponse> UpdateKYCStatus(@Body UpdateKycStatusRequest request);
 
 
-
     @Multipart
     @POST("App/UploadDocs?")
     Call<BasicResponse> UploadDocs(@Part MultipartBody.Part file, @Part("userRequest") RequestBody userRequest);
@@ -474,7 +481,6 @@ public interface EndPointInterface {
     @Headers("Content-Type: application/json")
     @POST("App/IntiateUPI")
     Call<InitiateUpiResponse> IntiateUPI(@Body IntiateUPIRequest request);
-
 
 
     @Headers("Content-Type: application/json")
@@ -779,27 +785,15 @@ public interface EndPointInterface {
     @POST("PGCallback/AllUPIStatusCheck")
     Call<GatwayStatusCheckResponse> AllUPIStatusCheck(@Field("TID") String tid);
 
-
     @Headers("Content-Type: application/json")
     @POST("App/UPIPaymentUpdate")
     Call<InitiateUpiResponse> UPIPaymentUpdate(@Body UpdateUPIRequest request);
 
     @Headers("Content-Type: application/json")
-    @POST("App/GetSender")
-    Call<SenderResponse> getSender(@Body SenderRequest request);
+    @POST("App/GenerateUpiAtmQr")
+    Call<UpiAtmResponse> GenerateUpiAtmQr(@Body UpiAtmRequest request);
 
     @Headers("Content-Type: application/json")
-    @POST("App/CreateSender?")
-    Call<SenderResponse> createSender(@Body SenderRequest request);
-
-
-    @Headers("Content-Type: application/json")
-    @POST("App/VerifyAccount")
-    Call<SenderResponse> verifyAccount(@Body SenderRequest request);
-
-    @Headers("Content-Type: application/json")
-    @POST("App/CreateBeneficiary")
-    Call<SenderResponse> createBeneficiary(@Body SenderRequest request);
-
-
+    @POST("App/CheckUpiAtmStatus")
+    Call<UpiAtmResponse> CheckUpiAtmStatus(@Body UpiAtmRequest request);
 }

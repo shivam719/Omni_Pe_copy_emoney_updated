@@ -276,6 +276,10 @@ public enum ServiceIcon {
 
             bgView.setImageResource(R.drawable.ic_voucher_entry);
         }
+        if (id == 135) {
+
+            bgView.setImageResource(R.drawable.ic_upi_atm);
+        }
     }
 
     public void parentIcon(int id,ImageView bgView){
@@ -287,6 +291,8 @@ public enum ServiceIcon {
         }
         if (id == 30) {
             bgView.setImageResource(R.drawable.ic_dth_subscription);
+        } if (id == 30) {
+            bgView.setImageResource(R.drawable.ic_upi_atm);
         }
     }
 }

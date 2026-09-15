@@ -1,4 +1,4 @@
-package com.fintech.omnipe.DMRNew.fragment;
+package com.fintech.omnipe.DMTNew.fragment;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -24,6 +24,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.fintech.omnipe.AEPS.FingPay.dto.Resp;
+import com.fintech.omnipe.DMTNew.fragment.interfaces.BottomSheetCallBack;
 import com.fintech.omnipe.R;
 
 import org.w3c.dom.Document;
@@ -69,7 +70,7 @@ public class DMTFingerPrintEKycDialogFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_d_m_t_finger_print_e_kyc_dialog, container, false);
+        View v = inflater.inflate(R.layout.fragment_dmt_finger_print_ekyc_dialog, container, false);
 
         setCancelable(false);
         clickView = v.findViewById(R.id.clickView);
@@ -524,7 +525,7 @@ public class DMTFingerPrintEKycDialogFragment extends DialogFragment {
         Snackbar localSnackbar = Snackbar.make(paramView, "" + paramString, Snackbar.LENGTH_LONG);
         View snackBarView = localSnackbar.getView();
         snackBarView.setBackgroundColor(paramInt);
-        TextView mainTextView = snackBarView.findViewById(com.google.android.material.R.id.snackbar_text);
+        TextView mainTextView = snackBarView.findViewById(R.id.snackbar_text);
         mainTextView.setMaxLines(5);
         TextViewCompat.setTextAppearance(mainTextView, R.style.TextAppearance_AppCompat_Body2);
         localSnackbar.show();

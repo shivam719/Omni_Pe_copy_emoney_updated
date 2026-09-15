@@ -15,7 +15,7 @@ import com.fintech.omnipe.AEPS.FingPay.UI.AEPSBankListScreen;
 import com.fintech.omnipe.Activities.BankListScreen;
 import com.fintech.omnipe.Api.Object.BankListObject;
 import com.fintech.omnipe.AppUser.Activity.FosCollectionBankListActivity;
-import com.fintech.omnipe.DMRNew.NewBankListScreen;
+
 import com.fintech.omnipe.R;
 import com.fintech.omnipe.Util.ApplicationConstant;
 
@@ -59,8 +59,6 @@ public class BankListScreenAdapter extends RecyclerView.Adapter<BankListScreenAd
                     ((FosCollectionBankListActivity) mContext).ItemClick(operator);
                 else if(mContext instanceof AEPSBankListScreen)
                     ((AEPSBankListScreen) mContext).ItemClick(operator);
-                else if(mContext instanceof NewBankListScreen)
-                    ((NewBankListScreen) mContext).ItemClick(operator);
             }
         });
     }

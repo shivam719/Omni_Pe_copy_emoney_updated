@@ -3,7 +3,6 @@ android {
     compileSdkVersion 36
     defaultConfig {
         minSdkVersion 24
-        targetSdkVersion 36
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -12,6 +11,10 @@ android {
     namespace 'com.roundpay.image.cropper'
     lint {
         abortOnError false
+        targetSdk 36
+    }
+    testOptions {
+        targetSdk 36
     }
 }
 dependencies {

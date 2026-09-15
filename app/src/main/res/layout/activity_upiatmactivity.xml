@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/clMain"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    android:focusableInTouchMode="true">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/upiBtn"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/_16sdp">
+
+            <!-- Wallet Type Selection -->
+            <LinearLayout
+                android:id="@+id/walletChooserView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/rounded_accent_border"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:padding="@dimen/_8sdp">
+
+                <LinearLayout
+                    android:id="@+id/walletView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Wallet Type"
+                        android:textColor="@color/grey"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/walletTv"
+                        style="@style/TextAppearance.AppCompat.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Prepaid Wallet"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/walletAmountTv"
+                        style="@style/TextAppearance.AppCompat.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="₹ 0"
+                        android:textColor="@color/colorPrimary"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/arrowIv"
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:src="@drawable/ic_arrow_drop_down"
+                        app:tint="@color/colorPrimary" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Top Image -->
+            <ImageView
+                android:id="@+id/storeIv"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_150sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_upi_atm" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:gravity="center"
+                android:text="Select Amount"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!-- Amount Selection Grid -->
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:columnCount="3"
+                android:useDefaultMargins="false">
+
+                <TextView
+                    android:id="@+id/amt100"
+                    android:layout_width="0dp"
+                    android:layout_columnWeight="1"
+                    style="@style/QuickAmountButton"
+                    android:text="100" />
+
+                <TextView
+                    android:id="@+id/amt200"
+                    android:layout_width="0dp"
+                    android:layout_columnWeight="1"
+                    style="@style/QuickAmountButton"
+                    android:text="200" />
+
+                <TextView
+                    android:id="@+id/amt300"
+                    android:layout_width="0dp"
+                    android:layout_columnWeight="1"
+                    style="@style/QuickAmountButton"
+                    android:text="500" />
+
+                <TextView
+                    android:id="@+id/amt500"
+                    style="@style/QuickAmountButton"
+                    android:layout_width="0dp"
+                    android:layout_columnWeight="1"
+                    android:text="1000" />
+
+                <TextView
+                    android:id="@+id/amt1000"
+                    style="@style/QuickAmountButton"
+                    android:layout_width="0dp"
+                    android:layout_columnWeight="1"
+                    android:text="2000" />
+
+                <TextView
+                    android:id="@+id/amt2000"
+                    android:layout_width="0dp"
+                    android:layout_columnWeight="1"
+                    style="@style/QuickAmountButton"
+                    android:text="5000" />
+            </GridLayout>
+
+            <!-- OR Divider -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/devider_color" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:text="OR"
+                    android:textColor="@color/grey"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/devider_color" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:gravity="center"
+                android:text="Enter Amount Manually"
+                android:textColor="@color/greycon"
+                android:textSize="14sp" />
+
+            <!-- Manual Amount Input -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:theme="@style/AppThemeMaterial"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:boxCornerRadiusBottomEnd="@dimen/_8sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_8sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_8sdp"
+                app:boxCornerRadiusTopStart="@dimen/_8sdp"
+                app:boxStrokeColor="@color/colorAccent"
+                app:hintEnabled="false"
+                app:startIconDrawable="@drawable/ic_rupee_indian"
+                app:startIconTint="@color/black">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/amountEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter amount"
+                    android:inputType="number"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Bottom Spacing for Button -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_80sdp" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <!-- Bottom Button -->
+    <LinearLayout
+        android:id="@+id/upiBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/_16sdp"
+        android:background="@drawable/inner_btn_enable_disable"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/_12sdp">
+
+        <ImageView
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_8sdp"
+            android:src="@drawable/ic_qr_code"
+            app:tint="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Generate QR"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</RelativeLayout>

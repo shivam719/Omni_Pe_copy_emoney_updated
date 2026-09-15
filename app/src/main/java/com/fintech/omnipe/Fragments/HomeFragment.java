@@ -38,6 +38,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 
+import com.fintech.omnipe.DMTNew.ui.DMTLoginNew;
 import com.google.gson.Gson;
 import com.paysprint.onboardinglib.activities.HostActivity;
 import com.roundpay.emoneylib.EMoneyLoginActivity;
@@ -92,7 +93,6 @@ import com.fintech.omnipe.CallBackReport.AEPSBalanceActivity;
 import com.fintech.omnipe.CallBackReport.MiniStatementActivity;
 import com.fintech.omnipe.CallBackReport.SlipActivityMicroAtmReport;
 import com.fintech.omnipe.CommissionSlab.ui.CommissionScreen;
-import com.fintech.omnipe.DMRNew.DMRNewLogin;
 import com.fintech.omnipe.DTHSubscription.Activity.DthSubscriptionReportActivity;
 import com.fintech.omnipe.DashBoard.CustomAllTypeService;
 import com.fintech.omnipe.DashBoard.Interface.RefreshOpTypeCallBack;
@@ -204,10 +204,10 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
         if (!isScreenOpen) {
             isScreenOpen = true;
             mGetLocation = new GetLocation(getActivity(), loader);
-            if (UtilMethods.INSTANCE.getLattitude == 0 || UtilMethods.INSTANCE.getLongitude == 0) {
+            if (UtilMethods.getLattitude == 0 || UtilMethods.getLongitude == 0) {
                 mGetLocation.startLocationUpdatesIfSettingEnable((lattitude, longitude) -> {
-                    UtilMethods.INSTANCE.getLattitude = lattitude;
-                    UtilMethods.INSTANCE.getLongitude = longitude;
+                    UtilMethods.getLattitude = lattitude;
+                    UtilMethods.getLongitude = longitude;
                 });
             }
             mBalanceResponse = new Gson().fromJson(myPrefs.getString(ApplicationConstant.INSTANCE.balancePref, ""), BalanceResponse.class);
@@ -312,9 +312,9 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
             @Override
             public void onClick(View v) {
                 startActivityForResult(new Intent(getActivity(), UpgradePackageActivity.class)
-                        .putExtra("UID", loginPrefResponse.getData().getUserID() + "")
+                        .putExtra("UID", loginPrefResponse.getData().getUserID())
                         .putExtra("BENE_NAME", loginPrefResponse.getData().getName() + " (" + loginPrefResponse.getData().getRoleName() + ")")
-                        .putExtra("BENE_MOBILE", loginPrefResponse.getData().getMobileNo() + "")
+                        .putExtra("BENE_MOBILE", loginPrefResponse.getData().getMobileNo())
                         .setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), INTENT_UPGRADE_PACKAGE);
             }
         });
@@ -359,23 +359,23 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
 
     private void setSupportData(AppUserListResponse companyProfileData) {
         if (!companyProfileData.getCompanyProfile().getCustomerCareEmailIds().isEmpty()) {
-            tvsupportEmail.setText(companyProfileData.getCompanyProfile().getCustomerCareEmailIds() + "");
+            tvsupportEmail.setText(companyProfileData.getCompanyProfile().getCustomerCareEmailIds());
             custEmailView.setVisibility(View.VISIBLE);
         } else {
             custEmailView.setVisibility(View.GONE);
         }
 
         if (!companyProfileData.getCompanyProfile().getCustomerCareMobileNos().isEmpty()) {
-            tvSupportNo.setText(companyProfileData.getCompanyProfile().getCustomerCareMobileNos() + "");
+            tvSupportNo.setText(companyProfileData.getCompanyProfile().getCustomerCareMobileNos());
             custPhoneView.setVisibility(View.VISIBLE);
         } else {
             custPhoneView.setVisibility(View.GONE);
         }
         if (!companyProfileData.getCompanyProfile().getCustomerPhoneNos().isEmpty()) {
             if (tvSupportNo.getText().toString().length() > 0) {
-                tvSupportNo.setText(tvSupportNo.getText() + "\n" + companyProfileData.getCompanyProfile().getCustomerPhoneNos() + "");
+                tvSupportNo.setText(tvSupportNo.getText() + "\n" + companyProfileData.getCompanyProfile().getCustomerPhoneNos());
             } else {
-                tvSupportNo.setText(companyProfileData.getCompanyProfile().getCustomerPhoneNos() + "");
+                tvSupportNo.setText(companyProfileData.getCompanyProfile().getCustomerPhoneNos());
             }
 
             custPhoneView.setVisibility(View.VISIBLE);
@@ -385,7 +385,7 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
             }
         }
         if (!companyProfileData.getCompanyProfile().getCustomerWhatsAppNos().isEmpty()) {
-            tvWhatsappNo.setText(companyProfileData.getCompanyProfile().getCustomerWhatsAppNos() + "");
+            tvWhatsappNo.setText(companyProfileData.getCompanyProfile().getCustomerWhatsAppNos());
             custWhatsappView.setVisibility(View.VISIBLE);
         } else {
             custWhatsappView.setVisibility(View.GONE);
@@ -474,42 +474,36 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
         } else if (id == 20) {
             customAlertDialog.showToUserMessage("Dear " + loginPrefResponse.getData().getName(), "You can use this service only on web portal.");
         } else if (id == 14) {
-            UtilMethods.INSTANCE.CallOnboarding(getActivity(), false, id, "", "0", "", 0, false, getActivity().getSupportFragmentManager(), null, null, null, UtilMethods.INSTANCE.getLattitude, UtilMethods.INSTANCE.getLongitude, loader, new UtilMethods.ApiCallBackOnBoardingMethod() {
+            UtilMethods.INSTANCE.CallOnboarding(getActivity(), false, id, "", "0", "", 0, false, getActivity().getSupportFragmentManager(), null, null, null, UtilMethods.getLattitude, UtilMethods.getLongitude, loader, new UtilMethods.ApiCallBackOnBoardingMethod() {
                 @Override
                 public void onSuccess(Object object) {
-                    if (UtilMethods.INSTANCE.getIsDMTWithPipe(getActivity())) {
-                        // if(((DashBoardLayout)getActivity()).isDMTWithPipe){
-                        ArrayList<OperatorList> operatorsList = UtilMethods.INSTANCE.getDMTOperatorList(getActivity());
-                        if (operatorsList != null && operatorsList.size() > 0) {
-                            if (operatorsList.size() > 1) {
-                                customAlertDialog.dmtListDialog("Select DMT", operatorsList, mOperatorList -> {
-                                    Intent i = new Intent(getActivity(), DMRNewLogin.class);
-                                    i.putExtra("OpType", mOperatorList.getOpType());
-                                    i.putExtra("OID", mOperatorList.getOid());
-                                    Log.d("sdfsdfsdfsf", mOperatorList.getOid() + "");
-                                    i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                    startActivity(i);
-                                });
-                            } else {
-                                Intent i = new Intent(getActivity(), DMRNewLogin.class);
-                                i.putExtra("OpType", operatorsList.get(0).getOpType());
-                                i.putExtra("OID", operatorsList.get(0).getOid());
+                    // if(((DashBoardLayout)getActivity()).isDMTWithPipe){
+                    ArrayList<OperatorList> operatorsList = UtilMethods.INSTANCE.getDMTOperatorList(getActivity());
+                    if (operatorsList != null && !operatorsList.isEmpty()) {
+                        if (operatorsList.size() > 1) {
+                            customAlertDialog.dmtListDialog("Select DMT", operatorsList, mOperatorList -> {
+                                Intent i = new Intent(getActivity(), DMTLoginNew.class);
+                                i.putExtra("OpType", mOperatorList.getOpType());
+                                i.putExtra("OID", mOperatorList.getOid());
                                 i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 startActivity(i);
-                            }
+                            });
                         } else {
-                            Intent i = new Intent(getActivity(), DMRNewLogin.class);
+                            Intent i = new Intent(getActivity(), DMTLoginNew.class);
                             i.putExtra("OpType", operatorsList.get(0).getOpType());
                             i.putExtra("OID", operatorsList.get(0).getOid());
                             i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             startActivity(i);
                         }
                     } else {
-                        Intent i = new Intent(getActivity(), DMRNewLogin.class);
-                        i.putExtra("from", 0);
+                        Intent i = new Intent(getActivity(), DMTLoginNew.class);
+                        i.putExtra("OpType", 0);
+                        i.putExtra("OID", 0);
                         i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         startActivity(i);
                     }
+
+
                 }
 
                 @Override
@@ -585,14 +579,14 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
                     .putExtra(KeyContants.IMEI, UtilMethods.INSTANCE.getIMEI(getActivity()))
                     .putExtra(KeyContants.LOGIN_TYPE_ID, Integer.parseInt(loginPrefResponse.getData().getLoginTypeID()))//Integer value
                     .putExtra(KeyContants.WID, loginPrefResponse.getData().getWid())
-                    .putExtra(KeyContants.APPLICATION_PACKAGE, BuildConfig.APPLICATION_ID + "")
+                    .putExtra(KeyContants.APPLICATION_PACKAGE, BuildConfig.APPLICATION_ID)
                     .putExtra(KeyContants.REG_KEY, UtilMethods.INSTANCE.getFCMRegKey(getActivity()))
                     .putExtra(KeyContants.LOGO, R.drawable.rnd_logo)
                     .putExtra(KeyContants.SERIAL_NO, UtilMethods.INSTANCE.getSerialNo(getActivity()))
                     .putExtra(KeyContants.SESSION, loginPrefResponse.getData().getSession())
                     .putExtra(KeyContants.SESSION_ID, loginPrefResponse.getData().getSessionID())
                     .putExtra(KeyContants.USER_ID, loginPrefResponse.getData().getUserID())
-                    .putExtra(KeyContants.MOBILE_NUM, loginPrefResponse.getData().getMobileNo() + "")
+                    .putExtra(KeyContants.MOBILE_NUM, loginPrefResponse.getData().getMobileNo())
                     .putExtra(KeyContants.VERSION_NAME, BuildConfig.VERSION_NAME)
                     .putExtra(KeyContants.BASE_URL, ApplicationConstant.INSTANCE.baseShoppingUrl));
         } else if (id == 62) {
@@ -794,20 +788,20 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
     }
 
     private void getLocation(SdkDetail sdkDetail, boolean isAEPSOnBoard) {
-        if (UtilMethods.INSTANCE.getLattitude != 0 && UtilMethods.INSTANCE.getLongitude != 0) {
-            onBoardingSubmit(isAEPSOnBoard, sdkDetail, UtilMethods.INSTANCE.getLattitude, UtilMethods.INSTANCE.getLongitude);
+        if (UtilMethods.getLattitude != 0 && UtilMethods.getLongitude != 0) {
+            onBoardingSubmit(isAEPSOnBoard, sdkDetail, UtilMethods.getLattitude, UtilMethods.getLongitude);
         } else {
             if (mGetLocation != null) {
                 mGetLocation.startLocationUpdates((lattitude, longitude) -> {
-                    UtilMethods.INSTANCE.getLattitude = lattitude;
-                    UtilMethods.INSTANCE.getLongitude = longitude;
+                    UtilMethods.getLattitude = lattitude;
+                    UtilMethods.getLongitude = longitude;
                     onBoardingSubmit(isAEPSOnBoard, sdkDetail, lattitude, longitude);
                 });
             } else {
                 mGetLocation = new GetLocation(getActivity(), loader);
                 mGetLocation.startLocationUpdates((lattitude, longitude) -> {
-                    UtilMethods.INSTANCE.getLattitude = lattitude;
-                    UtilMethods.INSTANCE.getLongitude = longitude;
+                    UtilMethods.getLattitude = lattitude;
+                    UtilMethods.getLongitude = longitude;
                     onBoardingSubmit(isAEPSOnBoard, sdkDetail, lattitude, longitude);
                 });
             }
@@ -1149,8 +1143,8 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
         }
         if (UtilMethods.INSTANCE.isNetworkAvialable(getActivity())) {
             try {
-                if (UtilMethods.INSTANCE.getLattitude != 0 && UtilMethods.INSTANCE.getLongitude != 0) {
-                    UtilMethods.INSTANCE.CallOnboarding(getActivity(), isPan, opID, "", "0", "", 0, false, getActivity().getSupportFragmentManager(), null, null, null, UtilMethods.INSTANCE.getLattitude, UtilMethods.INSTANCE.getLongitude, loader, new UtilMethods.ApiCallBackOnBoardingMethod() {
+                if (UtilMethods.getLattitude != 0 && UtilMethods.getLongitude != 0) {
+                    UtilMethods.INSTANCE.CallOnboarding(getActivity(), isPan, opID, "", "0", "", 0, false, getActivity().getSupportFragmentManager(), null, null, null, UtilMethods.getLattitude, UtilMethods.getLongitude, loader, new UtilMethods.ApiCallBackOnBoardingMethod() {
                         @Override
                         public void onSuccess(Object object) {
                             if (object != null && object instanceof OnboardingResponse) {
@@ -1198,6 +1192,8 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
                                                     .putExtra(KeyConstant.USER_ID, partnerid)
                                                     .putExtra(KeyConstant.OUTLET_ID, outletId)
                                                     .putExtra(KeyConstant.PARTNER_ID, 0)
+                                                    .putExtra(KeyConstant.LATITUDE, UtilMethods.getLattitude)
+                                                    .putExtra(KeyConstant.LONGITUDE, UtilMethods.getLongitude)
                                                     .putExtra(KeyConstant.PIN, mOnboardingResponse.getSdkDetail().getApiOutletPassword())
                                                     .putExtra(KeyConstant.SERVICE_TYPE, KeyConstant.AEPS), REQUEST_CODE_ROUNDPAY_AEPS);
                                         } else {
@@ -1256,6 +1252,8 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
                                                 .putExtra(KeyConstant.USER_ID, partnerid)
                                                 .putExtra(KeyConstant.OUTLET_ID, outletId)
                                                 .putExtra(KeyConstant.PARTNER_ID, 0)
+                                                .putExtra(KeyConstant.LATITUDE, UtilMethods.getLattitude)
+                                                .putExtra(KeyConstant.LONGITUDE, UtilMethods.getLongitude)
                                                 .putExtra(KeyConstant.PIN, apiOutletPassword)
                                                 .putExtra(KeyConstant.SERVICE_TYPE, KeyConstant.MICRO_ATM), REQUEST_CODE_RDP_MINI_ATM);
                                     } else if (sdkType == 7 && mOnboardingResponse.getSdkDetail() != null) {
@@ -1280,7 +1278,7 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
                             if (object != null && object instanceof OnboardingResponse) {
                                 OnboardingResponse response = (OnboardingResponse) object;
                                 sdkType = response.getSdkType();
-                                boolean isAEPS = opTypes == 22 ? true : false;
+                                boolean isAEPS = opTypes == 22;
                                 if (sdkType == 7 && response.getSdkDetail() != null) {
                                     mSdkDetail = response.getSdkDetail();
                                     getLocation(mSdkDetail, isAEPS);
@@ -1362,9 +1360,9 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
                 } else {
                     if (mGetLocation != null) {
                         mGetLocation.startLocationUpdates((lattitude, longitude) -> {
-                            UtilMethods.INSTANCE.getLattitude = lattitude;
-                            UtilMethods.INSTANCE.getLongitude = longitude;
-                            UtilMethods.INSTANCE.CallOnboarding(getActivity(), isPan, opID, "", "0", "", 0, false, getActivity().getSupportFragmentManager(), null, null, null, UtilMethods.INSTANCE.getLattitude, UtilMethods.INSTANCE.getLongitude, loader, new UtilMethods.ApiCallBackOnBoardingMethod() {
+                            UtilMethods.getLattitude = lattitude;
+                            UtilMethods.getLongitude = longitude;
+                            UtilMethods.INSTANCE.CallOnboarding(getActivity(), isPan, opID, "", "0", "", 0, false, getActivity().getSupportFragmentManager(), null, null, null, UtilMethods.getLattitude, UtilMethods.getLongitude, loader, new UtilMethods.ApiCallBackOnBoardingMethod() {
                                 @Override
                                 public void onSuccess(Object object) {
                                     if (object != null && object instanceof OnboardingResponse) {
@@ -1412,6 +1410,8 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
                                                             .putExtra(KeyConstant.USER_ID, partnerid)
                                                             .putExtra(KeyConstant.OUTLET_ID, outletId)
                                                             .putExtra(KeyConstant.PARTNER_ID, 0)
+                                                            .putExtra(KeyConstant.LATITUDE, UtilMethods.getLattitude)
+                                                            .putExtra(KeyConstant.LONGITUDE, UtilMethods.getLongitude)
                                                             .putExtra(KeyConstant.PIN, mOnboardingResponse.getSdkDetail().getApiOutletPassword())
                                                             .putExtra(KeyConstant.SERVICE_TYPE, KeyConstant.AEPS), REQUEST_CODE_ROUNDPAY_AEPS);
                                                 } else {
@@ -1470,6 +1470,8 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
                                                         .putExtra(KeyConstant.USER_ID, partnerid)
                                                         .putExtra(KeyConstant.OUTLET_ID, outletId)
                                                         .putExtra(KeyConstant.PARTNER_ID, 0)
+                                                        .putExtra(KeyConstant.LATITUDE, UtilMethods.getLattitude)
+                                                        .putExtra(KeyConstant.LONGITUDE, UtilMethods.getLongitude)
                                                         .putExtra(KeyConstant.PIN, apiOutletPassword)
                                                         .putExtra(KeyConstant.SERVICE_TYPE, KeyConstant.MICRO_ATM), REQUEST_CODE_RDP_MINI_ATM);
                                             } else if (sdkType == 7 && mOnboardingResponse.getSdkDetail() != null) {
@@ -1494,7 +1496,7 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
                                     if (object != null && object instanceof OnboardingResponse) {
                                         OnboardingResponse response = (OnboardingResponse) object;
                                         sdkType = response.getSdkType();
-                                        boolean isAEPS = opTypes == 22 ? true : false;
+                                        boolean isAEPS = opTypes == 22;
                                         if (sdkType == 7 && response.getSdkDetail() != null) {
                                             mSdkDetail = response.getSdkDetail();
                                             getLocation(mSdkDetail, isAEPS);
@@ -1577,9 +1579,9 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
                     } else {
                         mGetLocation = new GetLocation(requireActivity(), loader);
                         mGetLocation.startLocationUpdates((lattitude, longitude) -> {
-                            UtilMethods.INSTANCE.getLattitude = lattitude;
-                            UtilMethods.INSTANCE.getLongitude = longitude;
-                            UtilMethods.INSTANCE.CallOnboarding(getActivity(), isPan, opID, "", "0", "", 0, false, getActivity().getSupportFragmentManager(), null, null, null, UtilMethods.INSTANCE.getLattitude, UtilMethods.INSTANCE.getLongitude, loader, new UtilMethods.ApiCallBackOnBoardingMethod() {
+                            UtilMethods.getLattitude = lattitude;
+                            UtilMethods.getLongitude = longitude;
+                            UtilMethods.INSTANCE.CallOnboarding(getActivity(), isPan, opID, "", "0", "", 0, false, getActivity().getSupportFragmentManager(), null, null, null, UtilMethods.getLattitude, UtilMethods.getLongitude, loader, new UtilMethods.ApiCallBackOnBoardingMethod() {
                                 @Override
                                 public void onSuccess(Object object) {
                                     if (object != null && object instanceof OnboardingResponse) {
@@ -1627,6 +1629,8 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
                                                             .putExtra(KeyConstant.USER_ID, partnerid)
                                                             .putExtra(KeyConstant.OUTLET_ID, outletId)
                                                             .putExtra(KeyConstant.PARTNER_ID, 0)
+                                                            .putExtra(KeyConstant.LATITUDE, UtilMethods.getLattitude)
+                                                            .putExtra(KeyConstant.LONGITUDE, UtilMethods.getLongitude)
                                                             .putExtra(KeyConstant.PIN, mOnboardingResponse.getSdkDetail().getApiOutletPassword())
                                                             .putExtra(KeyConstant.SERVICE_TYPE, KeyConstant.AEPS), REQUEST_CODE_ROUNDPAY_AEPS);
                                                 } else {
@@ -1686,6 +1690,8 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
                                                         .putExtra(KeyConstant.OUTLET_ID, outletId)
                                                         .putExtra(KeyConstant.PARTNER_ID, 0)
                                                         .putExtra(KeyConstant.PIN, apiOutletPassword)
+                                                        .putExtra(KeyConstant.LATITUDE, UtilMethods.getLattitude)
+                                                        .putExtra(KeyConstant.LONGITUDE, UtilMethods.getLongitude)
                                                         .putExtra(KeyConstant.SERVICE_TYPE, KeyConstant.MICRO_ATM), REQUEST_CODE_RDP_MINI_ATM);
                                             } else if (sdkType == 7 && mOnboardingResponse.getSdkDetail() != null) {
                                                 mSdkDetail = mOnboardingResponse.getSdkDetail();
@@ -1709,7 +1715,7 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
                                     if (object != null && object instanceof OnboardingResponse) {
                                         OnboardingResponse response = (OnboardingResponse) object;
                                         sdkType = response.getSdkType();
-                                        boolean isAEPS = opTypes == 22 ? true : false;
+                                        boolean isAEPS = opTypes == 22;
                                         if (sdkType == 7 && response.getSdkDetail() != null) {
                                             mSdkDetail = response.getSdkDetail();
                                             getLocation(mSdkDetail, isAEPS);
@@ -2040,7 +2046,7 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
                                     if (!response.body().isVersionValid()) {
                                         UtilMethods.INSTANCE.versionDialog(getActivity());
                                     } else {
-                                        UtilMethods.INSTANCE.Error(getActivity(), response.body().getMsg() + "");
+                                        UtilMethods.INSTANCE.Error(getActivity(), response.body().getMsg());
                                     }
                                 }
 
@@ -2073,7 +2079,7 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
                                                 if (!response.body().isVersionValid()) {
                                                     UtilMethods.INSTANCE.versionDialog(getActivity());
                                                 } else {
-                                                    UtilMethods.INSTANCE.Error(getActivity(), response.body().getMsg() + "");
+                                                    UtilMethods.INSTANCE.Error(getActivity(), response.body().getMsg());
                                                 }
                                             }
 
@@ -2356,8 +2362,8 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
                 reportActivity.putExtra("requesttxn", transType);
                 reportActivity.putExtra("msg", response);
                 reportActivity.putExtra("refstan", "");
-                reportActivity.putExtra("cardno", "" + cardNum);
-                reportActivity.putExtra("date", "" + "");
+                reportActivity.putExtra("cardno", cardNum);
+                reportActivity.putExtra("date", "");
                 reportActivity.putExtra("amount", "" + balAmount);
                 reportActivity.putExtra("invoicenumber", "");
                 reportActivity.putExtra("mid", "");
@@ -2405,23 +2411,23 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
                 amount = data.getStringExtra("amount");//Account Balance
 
                 Intent reportActivity = new Intent(getActivity(), SlipActivityMicroAtmReport.class);
-                reportActivity.putExtra("requesttxn", "" + requestTxn);
-                reportActivity.putExtra("msg", "" + bankRemarks);
-                reportActivity.putExtra("refstan", "" + refStan);
-                reportActivity.putExtra("cardno", "" + cardNo);
-                reportActivity.putExtra("date", "" + date);
-                reportActivity.putExtra("amount", "" + amount);
-                reportActivity.putExtra("invoicenumber", "" + invoiceNumber);
-                reportActivity.putExtra("mid", "" + mID);
-                reportActivity.putExtra("tid", "" + tID);
-                reportActivity.putExtra("clientrefid", "" + clientRefID);
-                reportActivity.putExtra("vendorid", "" + vendorID);
-                reportActivity.putExtra("udf1", "" + udf1);
-                reportActivity.putExtra("udf2", "" + udf2);
-                reportActivity.putExtra("udf3", "" + udf3);
-                reportActivity.putExtra("udf4", "" + udf4);
-                reportActivity.putExtra("txnamount", "" + txnAmount);
-                reportActivity.putExtra("rrn", "" + rrn);
+                reportActivity.putExtra("requesttxn", requestTxn);
+                reportActivity.putExtra("msg", bankRemarks);
+                reportActivity.putExtra("refstan", refStan);
+                reportActivity.putExtra("cardno", cardNo);
+                reportActivity.putExtra("date", date);
+                reportActivity.putExtra("amount", amount);
+                reportActivity.putExtra("invoicenumber", invoiceNumber);
+                reportActivity.putExtra("mid", mID);
+                reportActivity.putExtra("tid", tID);
+                reportActivity.putExtra("clientrefid", clientRefID);
+                reportActivity.putExtra("vendorid", vendorID);
+                reportActivity.putExtra("udf1", udf1);
+                reportActivity.putExtra("udf2", udf2);
+                reportActivity.putExtra("udf3", udf3);
+                reportActivity.putExtra("udf4", udf4);
+                reportActivity.putExtra("txnamount", txnAmount);
+                reportActivity.putExtra("rrn", rrn);
                 reportActivity.putExtra("bankName", "");
                 reportActivity.putExtra("cardType", "");
                 reportActivity.putExtra("terminalId", "");
@@ -2464,7 +2470,7 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
                         e.printStackTrace();
                     }
                 } else {
-                    UtilMethods.INSTANCE.Error(getActivity(), "" + data.getStringExtra("message"));
+                    UtilMethods.INSTANCE.Error(getActivity(), data.getStringExtra("message"));
                 }
                 aPIStatus = "1";
                 final String bankRemarks = data.getStringExtra("message");
@@ -2534,30 +2540,30 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
             customAlertDialog.serviceListDialog(mAssignedOpType.getService(), subOpTypeList, new CustomAlertDialog.DialogServiceListCallBack() {
                 @Override
                 public void onIconClick(AssignedOpType mAssignedOpType) {
-                    if (UtilMethods.INSTANCE.getLattitude > 0 && UtilMethods.INSTANCE.getLongitude > 0) {
+                    if (UtilMethods.getLattitude > 0 && UtilMethods.getLongitude > 0) {
                         openNewScreen(mAssignedOpType);
                     } else {
                         if (mGetLocation != null) {
                             mGetLocation = new GetLocation(getActivity(), loader);
                         }
                         mGetLocation.startLocationUpdates((lattitude, longitude) -> {
-                            UtilMethods.INSTANCE.getLattitude = lattitude;
-                            UtilMethods.INSTANCE.getLongitude = longitude;
+                            UtilMethods.getLattitude = lattitude;
+                            UtilMethods.getLongitude = longitude;
                             openNewScreen(mAssignedOpType);
                         });
                     }
                 }
             });
         } else {
-            if (UtilMethods.INSTANCE.getLattitude > 0 && UtilMethods.INSTANCE.getLongitude > 0) {
+            if (UtilMethods.getLattitude > 0 && UtilMethods.getLongitude > 0) {
                 openNewScreen(mAssignedOpType);
             } else {
                 if (mGetLocation != null) {
                     mGetLocation = new GetLocation(getActivity(), loader);
                 }
                 mGetLocation.startLocationUpdates((lattitude, longitude) -> {
-                    UtilMethods.INSTANCE.getLattitude = lattitude;
-                    UtilMethods.INSTANCE.getLongitude = longitude;
+                    UtilMethods.getLattitude = lattitude;
+                    UtilMethods.getLongitude = longitude;
                     openNewScreen(mAssignedOpType);
                 });
             }
@@ -2567,9 +2573,9 @@ public class HomeFragment extends Fragment implements UpgradePackageCallBack, Re
     @Override
     public void onPackageUpgradeClick() {
         startActivityForResult(new Intent(getActivity(), UpgradePackageActivity.class)
-                .putExtra("UID", loginPrefResponse.getData().getUserID() + "")
+                .putExtra("UID", loginPrefResponse.getData().getUserID())
                 .putExtra("BENE_NAME", loginPrefResponse.getData().getName() + " (" + loginPrefResponse.getData().getRoleName() + ")")
-                .putExtra("BENE_MOBILE", loginPrefResponse.getData().getMobileNo() + "")
+                .putExtra("BENE_MOBILE", loginPrefResponse.getData().getMobileNo())
                 .setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), INTENT_UPGRADE_PACKAGE);
     }
 /*    public void destroyBanner() {

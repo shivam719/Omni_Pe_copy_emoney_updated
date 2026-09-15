@@ -1,5 +1,4 @@
-package com.fintech.omnipe.DMRNew.Data;
-
+package com.fintech.omnipe.DMTNew.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -660,6 +660,41 @@
             android:label="@string/app_name"
             android:theme="@style/AppPopUpTheme" />
 
+        <activity
+            android:name=".DMTNew.ui.DMTLoginNew"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name=".DMTNew.ui.AddBeneficiaryNew"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+
+
+        <activity
+            android:name=".DMTNew.ui.BeneficiaryListScreenNew"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name=".DMTNew.ui.MoneyTransferNew"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appnew"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".UPIATM.UPIATMActivity"
+            android:exported="false"
+            android:theme="@style/AppThemeMaterial"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".UPIATM.UPIATMReceiptActivity"
+            android:exported="false"
+            android:theme="@style/AppThemeMaterial"
+            android:windowSoftInputMode="adjustResize" />
+
         <receiver
             android:name="com.fintech.omnipe.Util.Receiver.InstallReferrerReceiver"
             android:exported="true">

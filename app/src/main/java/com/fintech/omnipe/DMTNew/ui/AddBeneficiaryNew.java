@@ -1,4 +1,4 @@
-package com.fintech.omnipe.DMRNew;
+package com.fintech.omnipe.DMTNew.ui;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -13,10 +13,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.view.WindowCompat;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.WindowInsetsControllerCompat;
 
-import com.fintech.omnipe.DMRNew.response.SenderResponse;
+import com.fintech.omnipe.Activities.BankListScreen;
+import com.fintech.omnipe.DMTNew.dto.SenderResponse;
+import com.fintech.omnipe.DMTNew.networkAPI.UtilsMethodDMTNew;
 import com.fintech.omnipe.R;
 import com.fintech.omnipe.Util.ApplicationConstant;
 import com.fintech.omnipe.Util.GetLocation;
@@ -27,8 +29,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class AddBeneficiary extends AppCompatActivity implements View.OnClickListener {
-    EditText beneficiaryName, beneficiaryNumber, bank, accountNumber, ifsc, ifscCode, dob, address, pincode;
+public class AddBeneficiaryNew extends AppCompatActivity implements View.OnClickListener {
+
+
+    EditText beneficiaryName, beneficiaryNumber, bank, accountNumber, ifsc, ifscCode,dob,address,pincode;
     TextView accVerify;
     Button create;
     CustomLoader loader;
@@ -46,11 +50,10 @@ public class AddBeneficiary extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
         WindowInsetsControllerCompat controller = new WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
         controller.setAppearanceLightStatusBars(true);
         controller.setAppearanceLightNavigationBars(true);
-        setContentView(R.layout.activity_add_beneficiery);
+        setContentView(R.layout.activity_add_beneficiary_new);
         opTypeIntent = getIntent().getIntExtra("OpType", 0);
         oidIntent = getIntent().getIntExtra("OID", 0);
         sidIntent = getIntent().getStringExtra("SID");
@@ -61,10 +64,25 @@ public class AddBeneficiary extends AppCompatActivity implements View.OnClickLis
         }
         loader = new CustomLoader(this, android.R.style.Theme_Translucent_NoTitleBar);
         mGetLocation = new GetLocation(this, loader);
+        SharedPreferences prefs = getSharedPreferences(ApplicationConstant.INSTANCE.prefNamePref, MODE_PRIVATE);
+        String response = prefs.getString(ApplicationConstant.INSTANCE.bankListPref, null);
+        if (response== null) {
+            UtilMethods.INSTANCE.GetBanklist(this, loader, null );
+        }
         GetId();
     }
 
     private void GetId() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Add Beneficiary");
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_icon);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         beneficiaryName = (EditText) findViewById(R.id.beneficiaryName);
         beneficiaryNumber = (EditText) findViewById(R.id.beneficiaryNumber);
@@ -81,14 +99,10 @@ public class AddBeneficiary extends AppCompatActivity implements View.OnClickLis
         ifscCode = (EditText) findViewById(R.id.ifscCode);
         accVerify = (TextView) findViewById(R.id.accVerify);
         create = (Button) findViewById(R.id.create);
-        SetListener();
-    }
 
-    private void SetListener() {
-        accVerify.setOnClickListener(this);
-        bank.setOnClickListener(this);
-        dob.setOnClickListener(this);
-        create.setOnClickListener(this);
+
+
+        SetListener();
     }
 
     @Override
@@ -99,14 +113,22 @@ public class AddBeneficiary extends AppCompatActivity implements View.OnClickLis
         super.onPause();
     }
 
+    private void SetListener() {
+        accVerify.setOnClickListener(this);
+        bank.setOnClickListener(this);
+        dob.setOnClickListener(this);
+        create.setOnClickListener(this);
+    }
+
     @Override
     public void onClick(View v) {
         if (v == bank) {
-            Intent bankIntent = new Intent(this, NewBankListScreen.class);
+
+            Intent bankIntent = new Intent(this, BankListScreen.class);
             bankIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivityForResult(bankIntent, 4);
         }
-        if (v == dob) {
+        else if (v == dob) {
             final Calendar myCalendar = Calendar.getInstance();
             final DatePickerDialog.OnDateSetListener date = (view, year, monthOfYear, dayOfMonth) -> {
 
@@ -122,7 +144,9 @@ public class AddBeneficiary extends AppCompatActivity implements View.OnClickLis
 
             mDatePicker.show();
 
-        } else if (v == accVerify) {
+        }
+
+        else if (v == accVerify) {
             if (validationAddBeneficiary("accVerif") == 0) {
 
                 if (UtilMethods.INSTANCE.isNetworkAvialable(this)) {
@@ -131,10 +155,10 @@ public class AddBeneficiary extends AppCompatActivity implements View.OnClickLis
                     loader.setCancelable(false);
                     loader.setCanceledOnTouchOutside(false);
 
-                    UtilMethods.INSTANCE.verifyAccount(this, oidIntent, senderNumber, sidIntent, ifsc.getText().toString().trim(),
-                            accountNumber.getText().toString().trim(), beneficiaryName.getText().toString(), bankName, Integer.parseInt(bankId), loader, mGetLocation, new UtilMethods.ApiCallBack() {
+                    UtilsMethodDMTNew.INSTANCE.verifyAccount(this, oidIntent, senderNumber, sidIntent, ifsc.getText().toString().trim(),
+                            accountNumber.getText().toString().trim(), beneficiaryName.getText().toString(), bankName, Integer.parseInt(bankId), loader, mGetLocation, new UtilsMethodDMTNew.ApiCallBack() {
                                 @Override
-                                public void onSucess(Object object) {
+                                public void onSuccess(Object object) {
                                     SenderResponse senderResponse = (SenderResponse) object;
                                     accVerify.setVisibility(View.GONE);
                                     if (senderResponse.getData() != null) {
@@ -147,19 +171,20 @@ public class AddBeneficiary extends AppCompatActivity implements View.OnClickLis
                     UtilMethods.INSTANCE.NetworkError(this);
                 }
             }
-        } else if (v == create) {
-            if (validationAddBeneficiary("") == 0) {
+        }
 
+        else if (v == create) {
+            if (validationAddBeneficiary("") == 0) {
                 if (UtilMethods.INSTANCE.isNetworkAvialable(this)) {
                     loader.show();
                     loader.setCancelable(false);
                     loader.setCanceledOnTouchOutside(false);
-                    UtilMethods.INSTANCE.addBeneficiary(this, oidIntent, sidIntent, senderNumber, dob.getText().toString().trim(),
+                    UtilsMethodDMTNew.INSTANCE.addBeneficiary(this, oidIntent, sidIntent, senderNumber, dob.getText().toString().trim(),
                             address.getText().toString().trim(), pincode.getText().toString().trim(),
                             beneficiaryName.getText().toString().trim(), ifsc.getText().toString().trim(), accountNumber.getText().toString().trim(),
-                            Integer.parseInt(bankId), loader, mGetLocation, new UtilMethods.ApiCallBack() {
+                            Integer.parseInt(bankId), loader, mGetLocation, new UtilsMethodDMTNew.ApiCallBack() {
                                 @Override
-                                public void onSucess(Object object) {
+                                public void onSuccess(Object object) {
                                     beneficiaryName.setText("");
                                     beneficiaryNumber.setText(senderNumber);
                                     accountNumber.setText("");
@@ -194,19 +219,40 @@ public class AddBeneficiary extends AppCompatActivity implements View.OnClickLis
             bank.requestFocus();
             flag++;
         }
-
+/*
+        if (beneficiaryNumber.getText() != null && beneficiaryNumber.getText().toString().trim().length() > 0 &&
+                !(beneficiaryNumber.getText().toString().trim().length() < 10)) {
+        } else {
+            beneficiaryNumber.setError(getResources().getString(R.string.mobilenumber_error));
+            beneficiaryNumber.requestFocus();
+            flag++;
+        }*/
 
         return flag;
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    /*@Subscribe
+    public void onActivityActivityMessage(ActivityActivityMessage activityFragmentMessage) {
+        if (activityFragmentMessage.getMessage().equalsIgnoreCase("AccountVerified")) {
 
-        if (mGetLocation != null) {
-            mGetLocation.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            accVerify.setVisibility(View.GONE);
+            beneficiaryName.setText("" + activityFragmentMessage.getFrom());
+            verified = "1";
         }
-    }
+        if (activityFragmentMessage.getFrom().equalsIgnoreCase("beneAdded")) {
+            beneficiaryName.setText("");
+            beneficiaryNumber.setText(currentSenderNumber);
+            accountNumber.setText("");
+            ifsc.setText("");
+            ifscCode.setText("");
+            bank.setText("");
+        }
+    }*/
+
+
+
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -223,7 +269,6 @@ public class AddBeneficiary extends AppCompatActivity implements View.OnClickLis
                 isImps = data.getExtras().getString("imps");
                 accLmt = data.getExtras().getString("accLmt");
                 ekO_BankID = data.getExtras().getString("ekO_BankID");
-
                 bank.setText("" + bankName);
                 if (fullIfscCode != null && fullIfscCode.length() > 0) {
                     // ifscCode.setText("" + shortCode);
@@ -245,5 +290,24 @@ public class AddBeneficiary extends AppCompatActivity implements View.OnClickLis
             }
         }
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (mGetLocation != null) {
+            mGetLocation.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    public void SetNumber(final String Number) {
+        String Number1 = Number.replace("+91", "");
+        String Number2 = Number1.replace("(", "");
+        String Number3 = Number2.replace(")", "");
+        String Number4 = Number3.replace(" ", "");
+        String Number5 = Number4.replace("-", "");
+        String Number6 = Number5.replace("_", "");
+        beneficiaryNumber.setText(Number6);
     }
 }

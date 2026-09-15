@@ -5,6 +5,7 @@ import static android.content.Context.MODE_PRIVATE;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -146,9 +147,7 @@ import com.fintech.omnipe.CommissionSlab.dto.RSlabRangDetailRequest;
 import com.fintech.omnipe.CommissionSlab.dto.RSlabRangDetailResponse;
 import com.fintech.omnipe.CommissionSlab.ui.CommissionScreen;
 import com.fintech.omnipe.CommissionSlab.ui.CommissionSlabDetailAdapter;
-import com.fintech.omnipe.DMRNew.Data.DMTParam;
-import com.fintech.omnipe.DMRNew.request.SenderRequest;
-import com.fintech.omnipe.DMRNew.response.SenderResponse;
+
 import com.fintech.omnipe.DMROld.ui.DMRReciept;
 import com.fintech.omnipe.DMRPipe.dto.ValiSenderRequest;
 import com.fintech.omnipe.DTHSubscription.dto.DTHSubscriptionRequest;
@@ -171,6 +170,8 @@ import com.fintech.omnipe.MoveToWallet.UI.MoveToWalletActivity;
 import com.fintech.omnipe.PSA.ui.PanApplicationActivity;
 import com.fintech.omnipe.R;
 import com.fintech.omnipe.Splash.Splash;
+import com.fintech.omnipe.UPIATM.UpiAtmRequest;
+import com.fintech.omnipe.UPIATM.UpiAtmResponse;
 import com.fintech.omnipe.UPIPayment.dto.GetVAResponse;
 import com.fintech.omnipe.UPIPayment.dto.UPIPaymentRequest;
 import com.fintech.omnipe.usefull.CustomLoader;
@@ -198,6 +199,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -396,7 +398,7 @@ public enum UtilMethods {
             Call<NumberListResponse> call = git.GetNumberList(new NunberListRequest(ApplicationConstant.INSTANCE.APP_ID, getIMEI(context), "", BuildConfig.VERSION_NAME, getSerialNo(context)));
             call.enqueue(new Callback<NumberListResponse>() {
                 @Override
-                public void onResponse(Call<NumberListResponse> call, final retrofit2.Response<NumberListResponse> response) {
+                public void onResponse(Call<NumberListResponse> call, final Response<NumberListResponse> response) {
 
                     try {
                         if (loader != null && loader.isShowing()) {
@@ -479,7 +481,7 @@ public enum UtilMethods {
                     "", BuildConfig.VERSION_NAME, UtilMethods.INSTANCE.getSerialNo(context), Latitude, Longitude));
             call.enqueue(new Callback<LoginResponse>() {
                 @Override
-                public void onResponse(Call<LoginResponse> call, final retrofit2.Response<LoginResponse> response) {
+                public void onResponse(Call<LoginResponse> call, final Response<LoginResponse> response) {
                     try {
                         if (response.body() != null && response.body().getStatuscode() != null) {
                             if (response.body().getStatuscode().equalsIgnoreCase("1")) {
@@ -497,7 +499,7 @@ public enum UtilMethods {
                                 UtilMethods.INSTANCE.setWIDPref(context, response.body().getData().getWid());
                                 setLoginPref(context, response.body().getData().getMobileNo(), new Gson().toJson(response.body()));
                                 updateFcm(context);
-                                UtilMethods.INSTANCE.GetActiveService(context, new UtilMethods.ApiCallBackTwoMethod() {
+                                UtilMethods.INSTANCE.GetActiveService(context, new ApiCallBackTwoMethod() {
                                     @Override
                                     public void onSucess(Object object) {
                                         if (object instanceof CustomAllTypeService) {
@@ -523,6 +525,9 @@ public enum UtilMethods {
 
 
                             } else if (response.body().getStatuscode().equalsIgnoreCase("2")) {
+                                if (loader != null && loader.isShowing()) {
+                                    loader.dismiss();
+                                }
                                 openOTPDialog(context, new DialogCallBack() {
                                     @Override
                                     public void onPositiveClick(String value) {
@@ -532,7 +537,15 @@ public enum UtilMethods {
 
                                     @Override
                                     public void onCancelClick() {
+                                        if (loader != null && loader.isShowing()) {
+                                            loader.dismiss();
+                                        }
+                                    }
 
+                                    @Override
+                                    public void onResendClick() {
+                                        if (loader != null) loader.show();
+                                        secureLogin(context, mobile, password, loader,getLattitude+"",getLongitude+"");
                                     }
                                 });
 
@@ -635,7 +648,7 @@ public enum UtilMethods {
 
             call.enqueue(new Callback<BasicResponse>() {
                 @Override
-                public void onResponse(Call<BasicResponse> call, final retrofit2.Response<BasicResponse> response) {
+                public void onResponse(Call<BasicResponse> call, final Response<BasicResponse> response) {
                     // Log.e("activity_login", "is : " + new Gson().toJson(response.body()).toString());
 
                     try {
@@ -678,7 +691,7 @@ public enum UtilMethods {
 
             call.enqueue(new Callback<BasicResponse>() {
                 @Override
-                public void onResponse(Call<BasicResponse> call, final retrofit2.Response<BasicResponse> response) {
+                public void onResponse(Call<BasicResponse> call, final Response<BasicResponse> response) {
                     try {
                         loader.dismiss();
                         if (response.body() != null ) {
@@ -744,6 +757,14 @@ public enum UtilMethods {
             @Override
             public void onClick(View v) {
                 otpDialog.dismiss();
+                if (loader != null && loader.isShowing()) {
+                    loader.dismiss();
+                }
+            }
+        });
+        otpDialog.setOnCancelListener(dialogInterface -> {
+            if (loader != null && loader.isShowing()) {
+                loader.dismiss();
             }
         });
         okButton.setOnClickListener(new View.OnClickListener() {
@@ -791,7 +812,7 @@ public enum UtilMethods {
             Call<BalanceResponse> call = git.Balancecheck(new BalanceRequest(LoginDataResponse.getData().getUserID() + "", LoginDataResponse.getData().getLoginTypeID() + "", ApplicationConstant.INSTANCE.APP_ID, getIMEI(context), "", BuildConfig.VERSION_NAME, getSerialNo(context), LoginDataResponse.getData().getSessionID(), LoginDataResponse.getData().getSession()));
             call.enqueue(new Callback<BalanceResponse>() {
                 @Override
-                public void onResponse(Call<BalanceResponse> call, final retrofit2.Response<BalanceResponse> response) {
+                public void onResponse(Call<BalanceResponse> call, final Response<BalanceResponse> response) {
 
                     try {
                         if (loader != null) {
@@ -925,7 +946,7 @@ public enum UtilMethods {
                                         mApiCallBack.onOnBoarding(mOnBoardingResponse);
                                     }
 
-                                } catch (android.content.ActivityNotFoundException anfe) {
+                                } catch (ActivityNotFoundException anfe) {
                                     if (mDialog != null && mDialog.isShowing()) {
                                         mDialog.dismiss();
                                     }
@@ -936,7 +957,7 @@ public enum UtilMethods {
                                         mDialog.dismiss();
                                     }
                                     context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse( /*ApplicationConstant.INSTANCE.baseUrl + */mOnBoardingResponse.getExternalURL())));
-                                } catch (android.content.ActivityNotFoundException anfe) {
+                                } catch (ActivityNotFoundException anfe) {
                                     Intent dialIntent = new Intent(Intent.ACTION_VIEW);
                                     dialIntent.setData(Uri.parse(/*ApplicationConstant.INSTANCE.baseUrl + */mOnBoardingResponse.getExternalURL()));
                                     context.startActivity(dialIntent);
@@ -1146,7 +1167,7 @@ public enum UtilMethods {
             Call<BalanceResponse> call = git.Balancecheck(new BalanceRequest(LoginDataResponse.getData().getUserID() + "", LoginDataResponse.getData().getLoginTypeID() + "", ApplicationConstant.INSTANCE.APP_ID, getIMEI(context), "", BuildConfig.VERSION_NAME, getSerialNo(context), LoginDataResponse.getData().getSessionID(), LoginDataResponse.getData().getSession()));
             call.enqueue(new Callback<BalanceResponse>() {
                 @Override
-                public void onResponse(Call<BalanceResponse> call, final retrofit2.Response<BalanceResponse> response) {
+                public void onResponse(Call<BalanceResponse> call, final Response<BalanceResponse> response) {
 
                     try {
                         if (response.body() != null && response.body().getBalanceData() != null && response.body().getBalanceData().isPN()) {
@@ -1336,8 +1357,8 @@ public enum UtilMethods {
         if (alertDialogMobile != null && alertDialogMobile.isShowing()) {
             return;
         }
-        androidx.appcompat.app.AlertDialog.Builder dialogBuilder;
-        dialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(context);
+        AlertDialog.Builder dialogBuilder;
+        dialogBuilder = new AlertDialog.Builder(context);
 
         alertDialogMobile = dialogBuilder.create();
         alertDialogMobile.setCancelable(true);
@@ -1404,7 +1425,7 @@ public enum UtilMethods {
             Call<BankListResponse> call = git.GetBankList(new BalanceRequest(LoginDataResponse.getData().getUserID() + "", LoginDataResponse.getData().getLoginTypeID() + "", ApplicationConstant.INSTANCE.APP_ID, getIMEI(context), "", BuildConfig.VERSION_NAME, getSerialNo(context), LoginDataResponse.getData().getSessionID(), LoginDataResponse.getData().getSession()));
             call.enqueue(new Callback<BankListResponse>() {
                 @Override
-                public void onResponse(Call<BankListResponse> call, final retrofit2.Response<BankListResponse> response) {
+                public void onResponse(Call<BankListResponse> call, final Response<BankListResponse> response) {
                     Log.e("   GetBanklist", "is : " + new Gson().toJson(response.body()));
                     try {
                         if (loader != null) {
@@ -1468,7 +1489,7 @@ public enum UtilMethods {
                         call.enqueue(new Callback<UDetailByMobResponse>() {
 
                             @Override
-                            public void onResponse(Call<UDetailByMobResponse> call, retrofit2.Response<UDetailByMobResponse> response) {
+                            public void onResponse(Call<UDetailByMobResponse> call, Response<UDetailByMobResponse> response) {
                                 if (loader != null && loader.isShowing()) loader.dismiss();
 
                                 if (response.body() != null) {
@@ -1535,7 +1556,7 @@ public enum UtilMethods {
             Call<FundreqToResponse> call = git.FundRequestTo(new BalanceRequest(LoginDataResponse.getData().getUserID() + "", LoginDataResponse.getData().getLoginTypeID() + "", ApplicationConstant.INSTANCE.APP_ID, getIMEI(context), "", BuildConfig.VERSION_NAME, getSerialNo(context), LoginDataResponse.getData().getSessionID(), LoginDataResponse.getData().getSession()));
             call.enqueue(new Callback<FundreqToResponse>() {
                 @Override
-                public void onResponse(Call<FundreqToResponse> call, final retrofit2.Response<FundreqToResponse> response) {
+                public void onResponse(Call<FundreqToResponse> call, final Response<FundreqToResponse> response) {
 
                     try {
                         if (loader != null) {
@@ -1591,7 +1612,7 @@ public enum UtilMethods {
             Call<GetBankAndPaymentModeResponse> call = git.GetBankAndPaymentMode(mBalanceRequest);
             call.enqueue(new Callback<GetBankAndPaymentModeResponse>() {
                 @Override
-                public void onResponse(Call<GetBankAndPaymentModeResponse> call, final retrofit2.Response<GetBankAndPaymentModeResponse> response) {
+                public void onResponse(Call<GetBankAndPaymentModeResponse> call, final Response<GetBankAndPaymentModeResponse> response) {
 
                     try {
                         if (loader != null) {
@@ -1651,7 +1672,7 @@ public enum UtilMethods {
 
             call.enqueue(new Callback<GetAvailablePackageResponse>() {
                 @Override
-                public void onResponse(Call<GetAvailablePackageResponse> call, final retrofit2.Response<GetAvailablePackageResponse> response) {
+                public void onResponse(Call<GetAvailablePackageResponse> call, final Response<GetAvailablePackageResponse> response) {
                     try {
                         if (loader != null) {
                             if (loader.isShowing()) {
@@ -1719,7 +1740,7 @@ public enum UtilMethods {
 
             call.enqueue(new Callback<BasicResponse>() {
                 @Override
-                public void onResponse(Call<BasicResponse> call, final retrofit2.Response<BasicResponse> response) {
+                public void onResponse(Call<BasicResponse> call, final Response<BasicResponse> response) {
                     try {
                         if (loader != null) {
                             if (loader.isShowing()) {
@@ -1844,7 +1865,7 @@ public enum UtilMethods {
             Call<RechargeCResponse> call = git.Recharge(new RechargeRequest(ApplicationConstant.INSTANCE.APP_ID, getIMEI(context), "", BuildConfig.VERSION_NAME, getSerialNo(context), LoginDataResponse.getData().getLoginTypeID(), Opid, AccountNo, Amount, o1, o2, o3, o4, customerNo, refID, GeoCode, LoginDataResponse.getData().getUserID(), LoginDataResponse.getData().getSessionID(), LoginDataResponse.getData().getSession(), securityKey, isReal, fetchBillID));
             call.enqueue(new Callback<RechargeCResponse>() {
                 @Override
-                public void onResponse(Call<RechargeCResponse> call, final retrofit2.Response<RechargeCResponse> response) {
+                public void onResponse(Call<RechargeCResponse> call, final Response<RechargeCResponse> response) {
                     Log.e("balance", "is : " + new Gson().toJson(response.body()));
                     try {
                         if (loader != null) {
@@ -1930,7 +1951,7 @@ public enum UtilMethods {
                     "", BuildConfig.VERSION_NAME, getSerialNo(context)));*/
             call.enqueue(new Callback<RofferResponse>() {
                 @Override
-                public void onResponse(Call<RofferResponse> call, final retrofit2.Response<RofferResponse> response) {
+                public void onResponse(Call<RofferResponse> call, final Response<RofferResponse> response) {
 
                     try {
                         if (loader != null) {
@@ -2015,7 +2036,7 @@ public enum UtilMethods {
 
             call.enqueue(new Callback<ResponsePlan>() {
                 @Override
-                public void onResponse(Call<ResponsePlan> call, final retrofit2.Response<ResponsePlan> response) {
+                public void onResponse(Call<ResponsePlan> call, final Response<ResponsePlan> response) {
 
                     try {
                         if (loader != null) {
@@ -2091,7 +2112,7 @@ public enum UtilMethods {
             Call<RechargeReportResponse> call = git.RechargeReport(new RechargeReportRequest(isRecent, opTypeId, "0", ApplicationConstant.INSTANCE.APP_ID, getIMEI(context), "", BuildConfig.VERSION_NAME, getSerialNo(context), topValue, status, fromDate, toDate, transactionID, accountNo, childMobNo, isExport, LoginDataResponse.getData().getUserID(), LoginDataResponse.getData().getSessionID(), LoginDataResponse.getData().getSession(), LoginDataResponse.getData().getLoginTypeID()));
             call.enqueue(new Callback<RechargeReportResponse>() {
                 @Override
-                public void onResponse(Call<RechargeReportResponse> call, final retrofit2.Response<RechargeReportResponse> response) {
+                public void onResponse(Call<RechargeReportResponse> call, final Response<RechargeReportResponse> response) {
                     Log.e("plan", "is : " + new Gson().toJson(response.body()));
                     try {
                         if (loader != null) {
@@ -2158,7 +2179,7 @@ public enum UtilMethods {
             Call<RechargeReportResponse> call = git.LedgerReport(new LedgerReportRequest(topRow, oid, status, fromDate, toDate, transactionID, accountNo, isExport, LoginDataResponse.getData().getUserID(), LoginDataResponse.getData().getSessionID(), LoginDataResponse.getData().getSession(), ApplicationConstant.INSTANCE.APP_ID, getIMEI(context), "", BuildConfig.VERSION_NAME, getSerialNo(context), LoginDataResponse.getData().getLoginTypeID(), walletTypeID));
             call.enqueue(new Callback<RechargeReportResponse>() {
                 @Override
-                public void onResponse(Call<RechargeReportResponse> call, final retrofit2.Response<RechargeReportResponse> response) {
+                public void onResponse(Call<RechargeReportResponse> call, final Response<RechargeReportResponse> response) {
 
                     try {
                         if (loader != null) {
@@ -2225,7 +2246,7 @@ public enum UtilMethods {
             Call<RechargeReportResponse> call = git.FundOrderReport(new LedgerReportRequest(topCount, status, "", fromDate, toDate, transactionID, accountNo, isExport, LoginDataResponse.getData().getUserID(), LoginDataResponse.getData().getSessionID(), LoginDataResponse.getData().getSession(), ApplicationConstant.INSTANCE.APP_ID, getIMEI(context), "", BuildConfig.VERSION_NAME, getSerialNo(context), LoginDataResponse.getData().getLoginTypeID(), tMode, isSelf, uMobile));
             call.enqueue(new Callback<RechargeReportResponse>() {
                 @Override
-                public void onResponse(Call<RechargeReportResponse> call, final retrofit2.Response<RechargeReportResponse> response) {
+                public void onResponse(Call<RechargeReportResponse> call, final Response<RechargeReportResponse> response) {
                     Log.e("plan", "is : " + new Gson().toJson(response.body()));
                     try {
                         if (loader != null) {
@@ -2293,7 +2314,7 @@ public enum UtilMethods {
 
             call.enqueue(new Callback<RechargeCResponse>() {
                 @Override
-                public void onResponse(Call<RechargeCResponse> call, final retrofit2.Response<RechargeCResponse> response) {
+                public void onResponse(Call<RechargeCResponse> call, final Response<RechargeCResponse> response) {
                     Log.e("balance", "is : " + new Gson().toJson(response.body()));
                     try {
 
@@ -2360,7 +2381,7 @@ public enum UtilMethods {
 
             call.enqueue(new Callback<AppUserListResponse>() {
                 @Override
-                public void onResponse(Call<AppUserListResponse> call, final retrofit2.Response<AppUserListResponse> response) {
+                public void onResponse(Call<AppUserListResponse> call, final Response<AppUserListResponse> response) {
 
                     try {
 
@@ -2404,7 +2425,7 @@ public enum UtilMethods {
             Call<RechargeReportResponse> call = git.FundDCReport(mFundDCReportRequest);
             call.enqueue(new Callback<RechargeReportResponse>() {
                 @Override
-                public void onResponse(Call<RechargeReportResponse> call, final retrofit2.Response<RechargeReportResponse> response) {
+                public void onResponse(Call<RechargeReportResponse> call, final Response<RechargeReportResponse> response) {
 
                     try {
                         if (loader != null) {
@@ -2473,7 +2494,7 @@ public enum UtilMethods {
             Call<AppUserListResponse> call = git.RefundLog(mRefundLogRequest);
             call.enqueue(new Callback<AppUserListResponse>() {
                 @Override
-                public void onResponse(Call<AppUserListResponse> call, final retrofit2.Response<AppUserListResponse> response) {
+                public void onResponse(Call<AppUserListResponse> call, final Response<AppUserListResponse> response) {
                     Log.e("plan", "is : " + new Gson().toJson(response.body()));
                     try {
                         if (loader != null) {
@@ -2545,7 +2566,7 @@ public enum UtilMethods {
 
             call.enqueue(new Callback<AppUserListResponse>() {
                 @Override
-                public void onResponse(Call<AppUserListResponse> call, final retrofit2.Response<AppUserListResponse> response) {
+                public void onResponse(Call<AppUserListResponse> call, final Response<AppUserListResponse> response) {
                     try {
                         if (loader != null) {
                             if (loader.isShowing()) loader.dismiss();
@@ -2606,7 +2627,7 @@ public enum UtilMethods {
 
             call.enqueue(new Callback<AppUserListResponse>() {
                 @Override
-                public void onResponse(Call<AppUserListResponse> call, final retrofit2.Response<AppUserListResponse> response) {
+                public void onResponse(Call<AppUserListResponse> call, final Response<AppUserListResponse> response) {
                     try {
                         if (loader != null) {
                             if (loader.isShowing()) loader.dismiss();
@@ -2737,7 +2758,7 @@ public enum UtilMethods {
             Call<RechargeReportResponse> call = git.RechargeReport(new RechargeReportRequest(true, "0", oid, ApplicationConstant.INSTANCE.APP_ID, getIMEI(context), "", BuildConfig.VERSION_NAME, getSerialNo(context), "5", status, fromDate, toDate, transactionID, accountNo, "", isExport, LoginDataResponse.getData().getUserID(), LoginDataResponse.getData().getSessionID(), LoginDataResponse.getData().getSession(), LoginDataResponse.getData().getLoginTypeID()));
             call.enqueue(new Callback<RechargeReportResponse>() {
                 @Override
-                public void onResponse(Call<RechargeReportResponse> call, final retrofit2.Response<RechargeReportResponse> response) {
+                public void onResponse(Call<RechargeReportResponse> call, final Response<RechargeReportResponse> response) {
                     Log.e("plan", "is : " + new Gson().toJson(response.body()).toString());
                     try {
                         if (loader != null) {
@@ -2806,7 +2827,7 @@ public enum UtilMethods {
             Call<LoginResponse> call = git.ValidateOTP(new OtpRequest(Otp, Otpsession, otpType, ApplicationConstant.INSTANCE.Domain, ApplicationConstant.INSTANCE.APP_ID, getIMEI(context), "", BuildConfig.VERSION_NAME, ""));
             call.enqueue(new Callback<LoginResponse>() {
                 @Override
-                public void onResponse(Call<LoginResponse> call, final retrofit2.Response<LoginResponse> response) {
+                public void onResponse(Call<LoginResponse> call, final Response<LoginResponse> response) {
 
                     if (loader != null) {
                         if (loader.isShowing()) loader.dismiss();
@@ -2870,7 +2891,7 @@ public enum UtilMethods {
             Call<BalanceResponse> call = git.GetPopupAfterLogin(new BalanceRequest(LoginDataResponse.getData().getUserID() + "", LoginDataResponse.getData().getLoginTypeID() + "", ApplicationConstant.INSTANCE.APP_ID, UtilMethods.INSTANCE.getIMEI(context), "", BuildConfig.VERSION_NAME, UtilMethods.INSTANCE.getSerialNo(context), LoginDataResponse.getData().getSessionID(), LoginDataResponse.getData().getSession()));
             call.enqueue(new Callback<BalanceResponse>() {
                 @Override
-                public void onResponse(Call<BalanceResponse> call, final retrofit2.Response<BalanceResponse> response) {
+                public void onResponse(Call<BalanceResponse> call, final Response<BalanceResponse> response) {
 
                     try {
                         if (loader != null) {
@@ -2917,8 +2938,8 @@ public enum UtilMethods {
         if (alertDialogMobile != null && alertDialogMobile.isShowing()) {
             return;
         }
-        androidx.appcompat.app.AlertDialog.Builder dialogBuilder;
-        dialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(context);
+        AlertDialog.Builder dialogBuilder;
+        dialogBuilder = new AlertDialog.Builder(context);
 
         alertDialogMobile = dialogBuilder.create();
         alertDialogMobile.setCancelable(true);
@@ -3577,14 +3598,79 @@ public enum UtilMethods {
         final TextInputLayout tilMobileOtp = view.findViewById(R.id.til_mobile_otp);
         final Button okButton = view.findViewById(R.id.okButton);
         final Button cancelButton = view.findViewById(R.id.cancelButton);
+        final TextView timerTv = view.findViewById(R.id.timer);
+        final TextView resendTv = view.findViewById(R.id.resend);
+        final Button resendBtn = view.findViewById(R.id.resendButton);
+
+        final View activeResendView = (resendTv != null) ? resendTv : resendBtn;
+
         final Dialog dialog = new Dialog(context);
         dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(view);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        }
+
+        setTimer(timerTv, activeResendView, 120000);
+
+        View.OnClickListener resendClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setTimer(timerTv, activeResendView, 120000);
+                if (dialogCallBack != null) {
+                    dialogCallBack.onResendClick();
+                }
+            }
+        };
+
+        if (resendTv != null) {
+            resendTv.setOnClickListener(resendClickListener);
+        }
+        if (resendBtn != null) {
+            resendBtn.setOnClickListener(resendClickListener);
+        }
+
+        final boolean[] isPositiveClicked = {false};
+
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (countDownTimer != null) {
+                    countDownTimer.cancel();
+                    countDownTimer = null;
+                }
                 dialog.dismiss();
+                if (dialogCallBack != null) {
+                    dialogCallBack.onCancelClick();
+                }
+            }
+        });
+
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                if (countDownTimer != null) {
+                    countDownTimer.cancel();
+                    countDownTimer = null;
+                }
+                if (!isPositiveClicked[0] && dialogCallBack != null) {
+                    dialogCallBack.onCancelClick();
+                }
+            }
+        });
+
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                if (countDownTimer != null) {
+                    countDownTimer.cancel();
+                    countDownTimer = null;
+                }
+                if (!isPositiveClicked[0] && dialogCallBack != null) {
+                    dialogCallBack.onCancelClick();
+                }
             }
         });
 
@@ -3615,6 +3701,12 @@ public enum UtilMethods {
             public void onClick(View v) {
                 if (edMobileOtp.getText() != null && edMobileOtp.getText().length() == 6) {
                     tilMobileOtp.setErrorEnabled(false);
+                    isPositiveClicked[0] = true;
+                    if (countDownTimer != null) {
+                        countDownTimer.cancel();
+                        countDownTimer = null;
+                    }
+                    dialog.dismiss();
                     if (dialogCallBack != null)
                         dialogCallBack.onPositiveClick(edMobileOtp.getText().toString());
 
@@ -3694,7 +3786,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<GetBankAndPaymentModeResponse>() {
 
                 @Override
-                public void onResponse(Call<GetBankAndPaymentModeResponse> call, retrofit2.Response<GetBankAndPaymentModeResponse> response) {
+                public void onResponse(Call<GetBankAndPaymentModeResponse> call, Response<GetBankAndPaymentModeResponse> response) {
 //
                     if (loader.isShowing()) loader.dismiss();
 
@@ -3750,7 +3842,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<SlabCommissionResponse>() {
 
                 @Override
-                public void onResponse(Call<SlabCommissionResponse> call, retrofit2.Response<SlabCommissionResponse> response) {
+                public void onResponse(Call<SlabCommissionResponse> call, Response<SlabCommissionResponse> response) {
 
                     if (loader != null && loader.isShowing()) loader.dismiss();
 
@@ -3823,7 +3915,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<OpTypeResponse>() {
 
                 @Override
-                public void onResponse(Call<OpTypeResponse> call, retrofit2.Response<OpTypeResponse> response) {
+                public void onResponse(Call<OpTypeResponse> call, Response<OpTypeResponse> response) {
 
                     OpTypeResponse apiData = response.body();
                     boolean isAepsReport = false, isDMTReport = false, isDTHSubscriptionReport = false, isMoveToBankEnable = false, isUPIPay = false;
@@ -3973,7 +4065,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<WalletTypeResponse>() {
 
                 @Override
-                public void onResponse(Call<WalletTypeResponse> call, retrofit2.Response<WalletTypeResponse> response) {
+                public void onResponse(Call<WalletTypeResponse> call, Response<WalletTypeResponse> response) {
 
                     if (loader != null && loader.isShowing()) loader.dismiss();
 
@@ -4048,7 +4140,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<AppUserListResponse>() {
 
                 @Override
-                public void onResponse(Call<AppUserListResponse> call, retrofit2.Response<AppUserListResponse> response) {
+                public void onResponse(Call<AppUserListResponse> call, Response<AppUserListResponse> response) {
 
                     AppUserListResponse apiData = response.body();
                     if (apiData != null && apiData.getStatuscode() != null) {
@@ -4113,7 +4205,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<AppUserListResponse>() {
 
                 @Override
-                public void onResponse(Call<AppUserListResponse> call, retrofit2.Response<AppUserListResponse> response) {
+                public void onResponse(Call<AppUserListResponse> call, Response<AppUserListResponse> response) {
 
                     AppUserListResponse apiData = response.body();
                     if (apiData != null && apiData.getStatuscode() != null) {
@@ -4194,7 +4286,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<GetVAResponse>() {
 
                 @Override
-                public void onResponse(Call<GetVAResponse> call, retrofit2.Response<GetVAResponse> response) {
+                public void onResponse(Call<GetVAResponse> call, Response<GetVAResponse> response) {
                     if (loader != null && loader.isShowing()) {
                         loader.dismiss();
                     }
@@ -4258,7 +4350,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<InitiateUpiResponse>() {
 
                 @Override
-                public void onResponse(Call<InitiateUpiResponse> call, retrofit2.Response<InitiateUpiResponse> response) {
+                public void onResponse(Call<InitiateUpiResponse> call, Response<InitiateUpiResponse> response) {
                     if (loader != null && loader.isShowing()) {
                         loader.dismiss();
                     }
@@ -4322,7 +4414,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<InitiateUpiResponse>() {
 
                 @Override
-                public void onResponse(Call<InitiateUpiResponse> call, retrofit2.Response<InitiateUpiResponse> response) {
+                public void onResponse(Call<InitiateUpiResponse> call, Response<InitiateUpiResponse> response) {
                     if (loader != null && loader.isShowing()) {
                         loader.dismiss();
                     }
@@ -4388,7 +4480,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<RefundRequestResponse>() {
 
                 @Override
-                public void onResponse(Call<RefundRequestResponse> call, retrofit2.Response<RefundRequestResponse> response) {
+                public void onResponse(Call<RefundRequestResponse> call, Response<RefundRequestResponse> response) {
 
                     if (loader.isShowing()) loader.dismiss();
 
@@ -4452,7 +4544,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<FetchBillResponse>() {
 
                 @Override
-                public void onResponse(Call<FetchBillResponse> call, retrofit2.Response<FetchBillResponse> response) {
+                public void onResponse(Call<FetchBillResponse> call, Response<FetchBillResponse> response) {
                     if (loader != null && loader.isShowing()) {
                         loader.dismiss();
                     }
@@ -4674,7 +4766,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<CreateSenderResponse>() {
 
                 @Override
-                public void onResponse(Call<CreateSenderResponse> call, retrofit2.Response<CreateSenderResponse> response) {
+                public void onResponse(Call<CreateSenderResponse> call, Response<CreateSenderResponse> response) {
 
                     if (loader.isShowing()) loader.dismiss();
 
@@ -4744,7 +4836,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<CreateSenderResponse>() {
 
                 @Override
-                public void onResponse(Call<CreateSenderResponse> call, retrofit2.Response<CreateSenderResponse> response) {
+                public void onResponse(Call<CreateSenderResponse> call, Response<CreateSenderResponse> response) {
 
                     if (loader.isShowing()) loader.dismiss();
                     if (response.isSuccessful()) {
@@ -4800,7 +4892,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<RechargeReportResponse>() {
 
                 @Override
-                public void onResponse(Call<RechargeReportResponse> call, retrofit2.Response<RechargeReportResponse> response) {
+                public void onResponse(Call<RechargeReportResponse> call, Response<RechargeReportResponse> response) {
 
                     if (loader != null && loader.isShowing()) loader.dismiss();
 
@@ -4863,7 +4955,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<RechargeReportResponse>() {
 
                 @Override
-                public void onResponse(Call<RechargeReportResponse> call, retrofit2.Response<RechargeReportResponse> response) {
+                public void onResponse(Call<RechargeReportResponse> call, Response<RechargeReportResponse> response) {
 
                     if (loader.isShowing()) loader.dismiss();
                     if (response.isSuccessful()) {
@@ -4912,7 +5004,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<RechargeReportResponse>() {
 
                 @Override
-                public void onResponse(Call<RechargeReportResponse> call, retrofit2.Response<RechargeReportResponse> response) {
+                public void onResponse(Call<RechargeReportResponse> call, Response<RechargeReportResponse> response) {
                     Log.e("GetChargedAmount", "hello response : " + new Gson().toJson(response.body()));
                     if (loader.isShowing()) loader.dismiss();
 
@@ -5004,7 +5096,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<RechargeReportResponse>() {
 
                 @Override
-                public void onResponse(Call<RechargeReportResponse> call, retrofit2.Response<RechargeReportResponse> response) {
+                public void onResponse(Call<RechargeReportResponse> call, Response<RechargeReportResponse> response) {
 
                     if (loader.isShowing()) loader.dismiss();
                     if (response.isSuccessful()) {
@@ -5083,7 +5175,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<RechargeReportResponse>() {
 
                 @Override
-                public void onResponse(Call<RechargeReportResponse> call, retrofit2.Response<RechargeReportResponse> response) {
+                public void onResponse(Call<RechargeReportResponse> call, Response<RechargeReportResponse> response) {
                     Log.e("GetSender", "hello response : " + new Gson().toJson(response.body()));
                     if (loader.isShowing()) loader.dismiss();
                     if (response.body() != null && response.body().getStatuscode() != null) {
@@ -5159,7 +5251,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<RechargeReportResponse>() {
 
                 @Override
-                public void onResponse(Call<RechargeReportResponse> call, retrofit2.Response<RechargeReportResponse> response) {
+                public void onResponse(Call<RechargeReportResponse> call, Response<RechargeReportResponse> response) {
 
                     if (loader.isShowing()) loader.dismiss();
                     if (response.isSuccessful()) {
@@ -5291,7 +5383,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<DMTReceiptResponse>() {
 
                 @Override
-                public void onResponse(Call<DMTReceiptResponse> call, retrofit2.Response<DMTReceiptResponse> response) {
+                public void onResponse(Call<DMTReceiptResponse> call, Response<DMTReceiptResponse> response) {
                     Log.e("GetDMTReceipt", "hello response : " + new Gson().toJson(response.body()));
                     if (loader.isShowing()) loader.dismiss();
 
@@ -5358,7 +5450,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<RechargeReportResponse>() {
 
                 @Override
-                public void onResponse(Call<RechargeReportResponse> call, retrofit2.Response<RechargeReportResponse> response) {
+                public void onResponse(Call<RechargeReportResponse> call, Response<RechargeReportResponse> response) {
                     Log.e("GetDMTReceipt", "hello response : " + new Gson().toJson(response.body()));
                     if (loader.isShowing()) loader.dismiss();
 
@@ -5420,12 +5512,13 @@ public enum UtilMethods {
             call.enqueue(new Callback<RechargeReportResponse>() {
 
                 @Override
-                public void onResponse(Call<RechargeReportResponse> call, retrofit2.Response<RechargeReportResponse> response) {
+                public void onResponse(Call<RechargeReportResponse> call, Response<RechargeReportResponse> response) {
 
                     if (loader != null && loader.isShowing()) loader.dismiss();
 
                     if (response.body() != null && response.body().getStatuscode() != null) {
                         if (response.body().getStatuscode().equalsIgnoreCase("1")) {
+                            if (loader != null && loader.isShowing()) loader.dismiss();
                             openOTPDialog(context, new DialogCallBack() {
                                 @Override
                                 public void onPositiveClick(String otp) {
@@ -5435,7 +5528,13 @@ public enum UtilMethods {
 
                                 @Override
                                 public void onCancelClick() {
+                                    if (loader != null && loader.isShowing()) loader.dismiss();
+                                }
 
+                                @Override
+                                public void onResendClick() {
+                                    if (loader != null) loader.show();
+                                    GetSender(context, MobileNumber, loader);
                                 }
                             });
 
@@ -5491,12 +5590,12 @@ public enum UtilMethods {
             call.enqueue(new Callback<RechargeReportResponse>() {
 
                 @Override
-                public void onResponse(Call<RechargeReportResponse> call, retrofit2.Response<RechargeReportResponse> response) {
+                public void onResponse(Call<RechargeReportResponse> call, Response<RechargeReportResponse> response) {
                     if (loader.isShowing()) loader.dismiss();
                     if (response.isSuccessful()) {
                         if (response.body() != null && response.body().getStatuscode() != null) {
                             if (response.body().getStatuscode().equalsIgnoreCase("1")) {
-
+                                if (loader != null && loader.isShowing()) loader.dismiss();
                                 openOTPDialog(context, new DialogCallBack() {
                                     @Override
                                     public void onPositiveClick(String otp) {
@@ -5506,7 +5605,13 @@ public enum UtilMethods {
 
                                     @Override
                                     public void onCancelClick() {
+                                        if (loader != null && loader.isShowing()) loader.dismiss();
+                                    }
 
+                                    @Override
+                                    public void onResendClick() {
+                                        if (loader != null) loader.show();
+                                        CreateSenderNew(context, oid, MobileNumber, name, lastName, pincode, address, otp, dob, loader);
                                     }
                                 });
                             } else if (response.body().getStatuscode().equalsIgnoreCase("-1")) {
@@ -5547,13 +5652,13 @@ public enum UtilMethods {
             call.enqueue(new Callback<RechargeReportResponse>() {
 
                 @Override
-                public void onResponse(Call<RechargeReportResponse> call, retrofit2.Response<RechargeReportResponse> response) {
+                public void onResponse(Call<RechargeReportResponse> call, Response<RechargeReportResponse> response) {
 
                     if (loader.isShowing()) loader.dismiss();
 
                     if (response.body() != null && response.body().getStatuscode() != null) {
                         if (response.body().getStatuscode().equalsIgnoreCase("1")) {
-
+                            if (loader != null && loader.isShowing()) loader.dismiss();
                             openOTPDialog(context, new DialogCallBack() {
                                 @Override
                                 public void onPositiveClick(String value) {
@@ -5563,7 +5668,13 @@ public enum UtilMethods {
 
                                 @Override
                                 public void onCancelClick() {
+                                    if (loader != null && loader.isShowing()) loader.dismiss();
+                                }
 
+                                @Override
+                                public void onResendClick() {
+                                    if (loader != null) loader.show();
+                                    Deletebeneficiary(context, MobileNumber, beneID, loader);
                                 }
                             });
                         } else if (response.body().getStatuscode().equalsIgnoreCase("-1")) {
@@ -5618,15 +5729,15 @@ public enum UtilMethods {
             call.enqueue(new Callback<RechargeReportResponse>() {
 
                 @Override
-                public void onResponse(Call<RechargeReportResponse> call, retrofit2.Response<RechargeReportResponse> response) {
+                public void onResponse(Call<RechargeReportResponse> call, Response<RechargeReportResponse> response) {
                     if (loader.isShowing()) loader.dismiss();
                     if (response.isSuccessful()) {
                         if (response.body() != null && response.body().getStatuscode() != null) {
                             if (response.body().getStatuscode().equalsIgnoreCase("1")) {
 
                                 if (response.body().isOTPRequired()) {
-                                    loader.show();
-                                    UtilMethods.INSTANCE.openOTPDialog(context, new UtilMethods.DialogCallBack() {
+                                    if (loader != null && loader.isShowing()) loader.dismiss();
+                                    UtilMethods.INSTANCE.openOTPDialog(context, new DialogCallBack() {
                                         @Override
                                         public void onPositiveClick(String value) {
                                             loader.show();
@@ -5636,7 +5747,7 @@ public enum UtilMethods {
 
                                         @Override
                                         public void onCancelClick() {
-
+                                            if (loader != null && loader.isShowing()) loader.dismiss();
                                         }
                                     });
                                 } else {
@@ -5685,7 +5796,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<RechargeReportResponse>() {
 
                 @Override
-                public void onResponse(Call<RechargeReportResponse> call, retrofit2.Response<RechargeReportResponse> response) {
+                public void onResponse(Call<RechargeReportResponse> call, Response<RechargeReportResponse> response) {
 
                     if (loader.isShowing()) loader.dismiss();
 
@@ -5745,7 +5856,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<RechargeReportResponse>() {
 
                 @Override
-                public void onResponse(Call<RechargeReportResponse> call, retrofit2.Response<RechargeReportResponse> response) {
+                public void onResponse(Call<RechargeReportResponse> call, Response<RechargeReportResponse> response) {
                     if (loader.isShowing()) loader.dismiss();
                     if (response.isSuccessful()) {
                         if (response.body() != null && response.body().getStatuscode() != null) {
@@ -5792,7 +5903,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<RechargeReportResponse>() {
 
                 @Override
-                public void onResponse(Call<RechargeReportResponse> call, retrofit2.Response<RechargeReportResponse> response) {
+                public void onResponse(Call<RechargeReportResponse> call, Response<RechargeReportResponse> response) {
                     Log.e("CreateSender", "hello response : " + new Gson().toJson(response.body()));
                     if (loader.isShowing()) loader.dismiss();
 
@@ -5858,7 +5969,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<DFStatusResponse>() {
 
                 @Override
-                public void onResponse(Call<DFStatusResponse> call, retrofit2.Response<DFStatusResponse> response) {
+                public void onResponse(Call<DFStatusResponse> call, Response<DFStatusResponse> response) {
                     Log.e("CreateSender", "hello response : " + new Gson().toJson(response.body()));
                     if (loader.isShowing()) loader.dismiss();
 
@@ -5919,7 +6030,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<RechargeReportResponse>() {
 
                 @Override
-                public void onResponse(Call<RechargeReportResponse> call, retrofit2.Response<RechargeReportResponse> response) {
+                public void onResponse(Call<RechargeReportResponse> call, Response<RechargeReportResponse> response) {
                     Log.e("CreateSender", "hello response : " + new Gson().toJson(response.body()));
                     if (loader.isShowing()) loader.dismiss();
 
@@ -5981,7 +6092,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<RechargeReportResponse>() {
 
                 @Override
-                public void onResponse(Call<RechargeReportResponse> call, retrofit2.Response<RechargeReportResponse> response) {
+                public void onResponse(Call<RechargeReportResponse> call, Response<RechargeReportResponse> response) {
                     if (loader.isShowing()) loader.dismiss();
                     if (response.isSuccessful()) {
                         if (response.body() != null && response.body().getStatuscode() != null) {
@@ -6028,7 +6139,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<RechargeReportResponse>() {
 
                 @Override
-                public void onResponse(Call<RechargeReportResponse> call, retrofit2.Response<RechargeReportResponse> response) {
+                public void onResponse(Call<RechargeReportResponse> call, Response<RechargeReportResponse> response) {
                     Log.e("VerifyAccount", "hello response : " + new Gson().toJson(response.body()));
                     if (loader.isShowing()) loader.dismiss();
                     if (response.body() != null && response.body().getStatuscode() != null) {
@@ -6084,7 +6195,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<RechargeReportResponse>() {
 
                 @Override
-                public void onResponse(Call<RechargeReportResponse> call, retrofit2.Response<RechargeReportResponse> response) {
+                public void onResponse(Call<RechargeReportResponse> call, Response<RechargeReportResponse> response) {
                     if (loader.isShowing()) loader.dismiss();
                     if (response.isSuccessful()) {
                         if (response.body() != null && response.body().getStatuscode() != null) {
@@ -6464,17 +6575,17 @@ public enum UtilMethods {
     public String getSerialNo(Context context) {
         String serialNo = "";
 
-        if (android.os.Build.VERSION.SDK_INT >= 29) {
+        if (Build.VERSION.SDK_INT >= 29) {
             serialNo = androidId(context);
-        } else if (android.os.Build.VERSION.SDK_INT >= 26) {
+        } else if (Build.VERSION.SDK_INT >= 26) {
             // only for gingerbread and newer versions
 
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
                 return null;
             }
-            serialNo = android.os.Build.getSerial() + "";
-        } else if (android.os.Build.VERSION.SDK_INT <= 25) {
-            serialNo = android.os.Build.SERIAL + "";
+            serialNo = Build.getSerial() + "";
+        } else if (Build.VERSION.SDK_INT <= 25) {
+            serialNo = Build.SERIAL + "";
         }
 
         return serialNo;
@@ -6540,7 +6651,7 @@ public enum UtilMethods {
             TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
             try {
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP_MR1) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                     final SubscriptionManager subscriptionManager;
                     subscriptionManager = SubscriptionManager.from(context);
                     final List<SubscriptionInfo> activeSubscriptionInfoList = subscriptionManager.getActiveSubscriptionInfoList();
@@ -6586,7 +6697,7 @@ public enum UtilMethods {
 
         try {
             mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID)));
-        } catch (android.content.ActivityNotFoundException anfe) {
+        } catch (ActivityNotFoundException anfe) {
             mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)));
         }
         // finish();
@@ -6600,7 +6711,7 @@ public enum UtilMethods {
             public void onClick(View view) {
                 try {
                     context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(span.getURL())).setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
-                } catch (android.content.ActivityNotFoundException anfe) {
+                } catch (ActivityNotFoundException anfe) {
 
                 }
             }
@@ -6662,7 +6773,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<UDetailByMobResponse>() {
 
                 @Override
-                public void onResponse(Call<UDetailByMobResponse> call, retrofit2.Response<UDetailByMobResponse> response) {
+                public void onResponse(Call<UDetailByMobResponse> call, Response<UDetailByMobResponse> response) {
                     if (loader != null && loader.isShowing()) loader.dismiss();
 
                     if (response.body() != null) {
@@ -6723,7 +6834,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<UDetailByMobResponse>() {
 
                 @Override
-                public void onResponse(Call<UDetailByMobResponse> call, retrofit2.Response<UDetailByMobResponse> response) {
+                public void onResponse(Call<UDetailByMobResponse> call, Response<UDetailByMobResponse> response) {
                     if (loader != null && loader.isShowing()) loader.dismiss();
 
                     if (response.body() != null) {
@@ -6790,138 +6901,108 @@ public enum UtilMethods {
         editor.commit();
     }
 
-
-    public void createSender(final Activity context, final int oid, final String MobileNumber, String sidValue, String firstName, String lastName, final String otp, String refrenceId, final CustomLoader loader, GetLocation mGetLocation, ApiCallBack mApiCallBack) {
+    public void GenerateUpiAtmQr(final Activity context, double lat, double lon, double amount, final CustomLoader loader,
+                                 LoginResponse LoginDataResponse, String deviceId, String deviceSerialNum, int oid, final ApiCallBack mApiCallBack) {
         try {
-            String loginPref = UtilMethods.INSTANCE.getLoginPref(context);
-            LoginResponse mLoginDataResponse = new Gson().fromJson(loginPref, LoginResponse.class);
-
+            if (loader != null) loader.show();
             EndPointInterface git = ApiClient.getClient().create(EndPointInterface.class);
-            Call<SenderResponse> call = git.createSender(new SenderRequest(UtilMethods.INSTANCE.getLattitude, UtilMethods.INSTANCE.getLattitude, UtilMethods.INSTANCE.getLongitude, oid, MobileNumber, sidValue, new DMTParam(MobileNumber, oid, UtilMethods.INSTANCE.getLattitude, UtilMethods.INSTANCE.getLattitude, UtilMethods.INSTANCE.getLongitude, firstName, lastName, otp, refrenceId, refrenceId), mLoginDataResponse.getData().getUserID(), mLoginDataResponse.getData().getLoginTypeID(), ApplicationConstant.INSTANCE.APP_ID, UtilMethods.INSTANCE.getIMEI(context), "", BuildConfig.VERSION_NAME, UtilMethods.INSTANCE.getSerialNo(context), mLoginDataResponse.getData().getSessionID(), mLoginDataResponse.getData().getSession()));
 
-            call.enqueue(new Callback<SenderResponse>() {
+            UpiAtmRequest request = new UpiAtmRequest();
+            request.appid = ApplicationConstant.INSTANCE.APP_ID;
+            request.imei = deviceId;
+            request.regKey = "";
+            request.version = BuildConfig.VERSION_NAME;
+            request.serialNo = deviceSerialNum;
+            request.loginTypeID = LoginDataResponse.getData().getLoginTypeID();
+            request.userID = Integer.parseInt(LoginDataResponse.getData().getUserID());
+            request.sessionID = Integer.parseInt(LoginDataResponse.getData().getSessionID());
+            request.session = LoginDataResponse.getData().getSession();
+            request.oid = oid;
+            request.securityKey = "";
+            request.name = LoginDataResponse.getData().getName();
+            request.mobile = LoginDataResponse.getData().getMobileNo();
+            request.param = new HashMap<>();
+            request.param.put("Lattitude", lat);
+            request.param.put("Longitude", lon);
+            request.param.put("Amount", amount);
 
+            Call<UpiAtmResponse> call = git.GenerateUpiAtmQr(request);
+            call.enqueue(new Callback<UpiAtmResponse>() {
                 @Override
-                public void onResponse(Call<SenderResponse> call, retrofit2.Response<SenderResponse> response) {
-                    if (loader.isShowing()) loader.dismiss();
-                    if (response.isSuccessful()) {
-                        if (response.body() != null) {
-                            if (response.body().getStatuscode() == 1) {
-                                if (mApiCallBack != null) {
-                                    mApiCallBack.onSucess(response.body());
-                                }
+                public void onResponse(@NonNull Call<UpiAtmResponse> call, @NonNull Response<UpiAtmResponse> response) {
+                    if (loader != null && loader.isShowing()) loader.dismiss();
+                    if (response.isSuccessful() && response.body() != null) {
+                        if (response.body().getStatuscode() == 1) {
+                            if (mApiCallBack != null) mApiCallBack.onSucess(response.body());
+                        } else {
+                            if (!response.body().isVersionValid()) {
+                                versionDialog(context);
                             } else {
-                                UtilMethods.INSTANCE.getErrorHandler(context, response.body().isVersionValid(), true, response.body().getMsg(), mGetLocation, loader, () -> createSender(context, oid, MobileNumber, sidValue, firstName, lastName, otp, refrenceId, loader, mGetLocation, mApiCallBack));
+                                Error(context, response.body().getMsg());
                             }
-
                         }
                     } else {
-                        UtilMethods.INSTANCE.apiErrorHandle(context, response.code(), response.message());
+                        apiErrorHandle(context, response.code(), response.message());
                     }
                 }
 
                 @Override
-                public void onFailure(Call<SenderResponse> call, Throwable t) {
-
-                    if (loader.isShowing()) loader.dismiss();
-                    UtilMethods.INSTANCE.apiFailureError(context, t);
+                public void onFailure(Call<UpiAtmResponse> call, Throwable t) {
+                    if (loader != null && loader.isShowing()) loader.dismiss();
+                    apiFailureError(context, t);
                 }
+
             });
-
         } catch (Exception e) {
-            e.printStackTrace();
+            if (loader != null && loader.isShowing()) loader.dismiss();
+            Error(context, e.getMessage());
         }
-
     }
 
-    public void verifyAccount(Activity context, int oid, String senderNo, String sidValue, String ifsc, String accountNo, String beneName, String bankName, int bankId, CustomLoader loader, GetLocation mGetLocation, ApiCallBack mApiCallBack) {
+    public void CheckUpiAtmStatus(final Activity context, String transactionId,
+                                  LoginResponse LoginDataResponse, String deviceId, String deviceSerialNum, int oid, final ApiCallBack mApiCallBack) {
         try {
-            String LoginResponse = UtilMethods.INSTANCE.getLoginPref(context);
-            LoginResponse mLoginDataResponse = new Gson().fromJson(LoginResponse, LoginResponse.class);
             EndPointInterface git = ApiClient.getClient().create(EndPointInterface.class);
-            Call<SenderResponse> call = git.verifyAccount(new SenderRequest(UtilMethods.INSTANCE.getLattitude, UtilMethods.INSTANCE.getLattitude, UtilMethods.INSTANCE.getLongitude, oid, senderNo, sidValue, new DMTParam(senderNo, oid, UtilMethods.INSTANCE.getLattitude, UtilMethods.INSTANCE.getLattitude, UtilMethods.INSTANCE.getLongitude, beneName, accountNo, ifsc, bankId, bankName), mLoginDataResponse.getData().getUserID() + "", mLoginDataResponse.getData().getLoginTypeID(), ApplicationConstant.INSTANCE.APP_ID, UtilMethods.INSTANCE.getIMEI(context), "", BuildConfig.VERSION_NAME, UtilMethods.INSTANCE.getSerialNo(context), mLoginDataResponse.getData().getSessionID(), mLoginDataResponse.getData().getSession()));
 
-            call.enqueue(new Callback<SenderResponse>() {
+            UpiAtmRequest request = new UpiAtmRequest();
+            request.appid = ApplicationConstant.INSTANCE.APP_ID;
+            request.imei = deviceId;
+            request.regKey = "";
+            request.oid = oid;
+            request.version = BuildConfig.VERSION_NAME;
+            request.serialNo = deviceSerialNum;
+            request.loginTypeID = LoginDataResponse.getData().getLoginTypeID();
+            request.userID = Integer.parseInt(LoginDataResponse.getData().getUserID());
+            request.sessionID = Integer.parseInt(LoginDataResponse.getData().getSessionID());
+            request.session = LoginDataResponse.getData().getSession();
+            request.param = new HashMap<>();
+            request.param.put("transactionId", transactionId);
 
+            Call<UpiAtmResponse> call = git.CheckUpiAtmStatus(request);
+            call.enqueue(new Callback<UpiAtmResponse>() {
                 @Override
-                public void onResponse(Call<SenderResponse> call, retrofit2.Response<SenderResponse> response) {
-                    if (loader.isShowing()) loader.dismiss();
-                    if (response.isSuccessful()) {
-                        if (response.body() != null) {
-                            if (response.body().getStatuscode() == 2) {
-                                UtilMethods.INSTANCE.Successful(context, "Verifications successfully done.");
-                                if (mApiCallBack != null) {
-                                    mApiCallBack.onSucess(response.body());
-                                }
-                            } else {
-                                UtilMethods.INSTANCE.getErrorHandler(context, response.body().isVersionValid(), true, response.body().getMsg(), mGetLocation, loader, () -> verifyAccount(context, oid, senderNo, sidValue, ifsc, accountNo, beneName, bankName, bankId, loader, mGetLocation, mApiCallBack));
-                            }
-
-                        }
-                    } else {
-                        UtilMethods.INSTANCE.apiErrorHandle(context, response.code(), response.message());
+                public void onResponse(Call<UpiAtmResponse> call, Response<UpiAtmResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        if (mApiCallBack != null) mApiCallBack.onSucess(response.body());
                     }
                 }
 
                 @Override
-                public void onFailure(Call<SenderResponse> call, Throwable t) {
-                    if (loader.isShowing()) loader.dismiss();
-                    UtilMethods.INSTANCE.apiFailureError(context, t);
+                public void onFailure(Call<UpiAtmResponse> call, Throwable t) {
                 }
             });
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-
-    public void addBeneficiary(final Activity context, int oid, String sid, String senderNO, String dob, String address, String pinCode, String beniName, String ifsc, String accountNo, int bankId, final CustomLoader loader, GetLocation mGetLocation, ApiCallBack mApiCallBack) {
-        try {
-            String LoginResponse = UtilMethods.INSTANCE.getLoginPref(context);
-            LoginResponse mLoginDataResponse = new Gson().fromJson(LoginResponse, LoginResponse.class);
-            EndPointInterface git = ApiClient.getClient().create(EndPointInterface.class);
-            Call<SenderResponse> call = git.createBeneficiary(new SenderRequest(UtilMethods.INSTANCE.getLattitude, UtilMethods.INSTANCE.getLattitude, UtilMethods.INSTANCE.getLongitude, oid, senderNO, sid, new DMTParam(senderNO, oid, UtilMethods.INSTANCE.getLattitude, UtilMethods.INSTANCE.getLattitude, UtilMethods.INSTANCE.getLongitude, beniName, accountNo, ifsc, dob, address, pinCode, bankId), mLoginDataResponse.getData().getUserID() + "", mLoginDataResponse.getData().getLoginTypeID(), ApplicationConstant.INSTANCE.APP_ID, UtilMethods.INSTANCE.getIMEI(context), "", BuildConfig.VERSION_NAME, UtilMethods.INSTANCE.getSerialNo(context), mLoginDataResponse.getData().getSessionID(), mLoginDataResponse.getData().getSession()));
-
-            call.enqueue(new Callback<SenderResponse>() {
-
-                @Override
-                public void onResponse(Call<SenderResponse> call, retrofit2.Response<SenderResponse> response) {
-                    if (loader.isShowing()) loader.dismiss();
-                    if (response.isSuccessful()) {
-                        if (response.body() != null) {
-                            if (response.body().getStatuscode() == 1) {
-                                if (mApiCallBack != null) {
-                                    mApiCallBack.onSucess(response.body());
-                                }
-                                UtilMethods.INSTANCE.Successfulok(response.body().getMsg() + "", context);
-                            } else {
-                                UtilMethods.INSTANCE.getErrorHandler(context, response.body().isVersionValid(), true, response.body().getMsg(), mGetLocation, loader, () -> addBeneficiary(context, oid, sid, senderNO, dob, address, pinCode, beniName, ifsc, accountNo, bankId, loader, mGetLocation, mApiCallBack));
-                            }
-
-                        }
-                    } else {
-                        UtilMethods.INSTANCE.apiErrorHandle(context, response.code(), response.message());
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<SenderResponse> call, Throwable t) {
-
-                    if (loader.isShowing()) loader.dismiss();
-                    UtilMethods.INSTANCE.apiFailureError(context, t);
-                }
-            });
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public interface DialogCallBack {
         void onPositiveClick(String value);
 
         void onCancelClick();
+
+        default void onResendClick() {}
     }
 
     public interface ApiCallBack {
@@ -7111,7 +7192,7 @@ public enum UtilMethods {
             Call<AEPSResponse> call = git.getAEPSReport(aepsReportRequest);
             call.enqueue(new Callback<AEPSResponse>() {
                 @Override
-                public void onResponse(Call<AEPSResponse> call, final retrofit2.Response<AEPSResponse> response) {
+                public void onResponse(Call<AEPSResponse> call, final Response<AEPSResponse> response) {
                     Log.e("AEPSReport", "Response : " + new Gson().toJson(response.body()));
                     try {
                         if (loader != null) {
@@ -7232,7 +7313,7 @@ public enum UtilMethods {
     public void viewRangeClick(SlabDetailDisplayLvl operator, CustomLoader loader, Activity context) {
 
         if (UtilMethods.INSTANCE.isNetworkAvialable(context)) {
-            UtilMethods.INSTANCE.RSlabRangDetail(context, operator.getOid(), loader, new UtilMethods.ApiCallBack() {
+            UtilMethods.INSTANCE.RSlabRangDetail(context, operator.getOid(), loader, new ApiCallBack() {
                 @Override
                 public void onSucess(Object object) {
                     if (object != null && object instanceof RSlabRangDetailResponse) {
@@ -7300,7 +7381,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<RSlabRangDetailResponse>() {
 
                 @Override
-                public void onResponse(Call<RSlabRangDetailResponse> call, retrofit2.Response<RSlabRangDetailResponse> response) {
+                public void onResponse(Call<RSlabRangDetailResponse> call, Response<RSlabRangDetailResponse> response) {
                     if (loader != null && loader.isShowing()) loader.dismiss();
 
                     try {
@@ -7350,7 +7431,7 @@ public enum UtilMethods {
 
             call.enqueue(new Callback<AppUserListResponse>() {
                 @Override
-                public void onResponse(Call<AppUserListResponse> call, final retrofit2.Response<AppUserListResponse> response) {
+                public void onResponse(Call<AppUserListResponse> call, final Response<AppUserListResponse> response) {
 
                     try {
                         if (loader != null) {
@@ -7454,7 +7535,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<BasicResponse>() {
 
                 @Override
-                public void onResponse(Call<BasicResponse> call, retrofit2.Response<BasicResponse> response) {
+                public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
 
                     if (loader.isShowing()) loader.dismiss();
                     BasicResponse mBasicResponse = response.body();
@@ -7517,7 +7598,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<BasicResponse>() {
 
                 @Override
-                public void onResponse(Call<BasicResponse> call, retrofit2.Response<BasicResponse> response) {
+                public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
                     if (loader != null && loader.isShowing()) {
                         loader.dismiss();
                     }
@@ -7570,7 +7651,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<BasicResponse>() {
 
                 @Override
-                public void onResponse(Call<BasicResponse> call, retrofit2.Response<BasicResponse> response) {
+                public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
                     if (loader != null && loader.isShowing()) {
                         loader.dismiss();
                     }
@@ -7634,7 +7715,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<BasicResponse>() {
 
                 @Override
-                public void onResponse(Call<BasicResponse> call, retrofit2.Response<BasicResponse> response) {
+                public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
                     try {
                         if (loader != null && loader.isShowing()) {
                             loader.dismiss();
@@ -7708,7 +7789,7 @@ public enum UtilMethods {
             Call<AppUserListResponse> call = git.WTRLog(mRefundLogRequest);
             call.enqueue(new Callback<AppUserListResponse>() {
                 @Override
-                public void onResponse(Call<AppUserListResponse> call, final retrofit2.Response<AppUserListResponse> response) {
+                public void onResponse(Call<AppUserListResponse> call, final Response<AppUserListResponse> response) {
 
                     try {
                         if (loader != null) {
@@ -7764,7 +7845,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<RechargeReportResponse>() {
 
                 @Override
-                public void onResponse(Call<RechargeReportResponse> call, retrofit2.Response<RechargeReportResponse> response) {
+                public void onResponse(Call<RechargeReportResponse> call, Response<RechargeReportResponse> response) {
                     if (loader != null && loader.isShowing()) loader.dismiss();
 
                     if (response.body() != null && response.body().getStatuscode() != null) {
@@ -7812,7 +7893,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<RechargeReportResponse>() {
 
                 @Override
-                public void onResponse(Call<RechargeReportResponse> call, retrofit2.Response<RechargeReportResponse> response) {
+                public void onResponse(Call<RechargeReportResponse> call, Response<RechargeReportResponse> response) {
 
                     if (loader != null && loader.isShowing()) loader.dismiss();
 
@@ -7862,7 +7943,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<GetDthPackageResponse>() {
 
                 @Override
-                public void onResponse(Call<GetDthPackageResponse> call, retrofit2.Response<GetDthPackageResponse> response) {
+                public void onResponse(Call<GetDthPackageResponse> call, Response<GetDthPackageResponse> response) {
                     loader.dismiss();
                     if (response.body() != null && response.body().getStatuscode() == 1) {
                         if (response.body().getDthPackage() != null && response.body().getDthPackage().size() > 0) {
@@ -7909,7 +7990,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<GetDthPackageResponse>() {
 
                 @Override
-                public void onResponse(Call<GetDthPackageResponse> call, retrofit2.Response<GetDthPackageResponse> response) {
+                public void onResponse(Call<GetDthPackageResponse> call, Response<GetDthPackageResponse> response) {
                     loader.dismiss();
                     if (response.body() != null && response.body().getStatuscode() == 1) {
                         if (response.body().getDthChannels() != null && response.body().getDthChannels().size() > 0) {
@@ -8150,7 +8231,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<BasicResponse>() {
 
                 @Override
-                public void onResponse(Call<BasicResponse> call, retrofit2.Response<BasicResponse> response) {
+                public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
 
                     try {
                         if (loader != null) {
@@ -8233,7 +8314,7 @@ public enum UtilMethods {
             Call<AppUserListResponse> call = git.IncentiveDetail(new IncentiveDetailRequest(opTypeId, LoginDataResponse.getData().getUserID(), LoginDataResponse.getData().getLoginTypeID(), ApplicationConstant.INSTANCE.APP_ID, getIMEI(context), "", BuildConfig.VERSION_NAME, getSerialNo(context), LoginDataResponse.getData().getSessionID(), LoginDataResponse.getData().getSession()));
             call.enqueue(new Callback<AppUserListResponse>() {
                 @Override
-                public void onResponse(Call<AppUserListResponse> call, final retrofit2.Response<AppUserListResponse> response) {
+                public void onResponse(Call<AppUserListResponse> call, final Response<AppUserListResponse> response) {
                     try {
                         if (loader != null) {
                             if (loader.isShowing()) loader.dismiss();
@@ -8296,7 +8377,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<FosAccStmtAndCollReportResponse>() {
 
                 @Override
-                public void onResponse(Call<FosAccStmtAndCollReportResponse> call, final retrofit2.Response<FosAccStmtAndCollReportResponse> response) {
+                public void onResponse(Call<FosAccStmtAndCollReportResponse> call, final Response<FosAccStmtAndCollReportResponse> response) {
 
                     try {
                         if (loader != null) {
@@ -8362,7 +8443,7 @@ public enum UtilMethods {
             Call<AppGetAMResponse> call = git.AppGetAM(new AppGetAMRequest(ApplicationConstant.INSTANCE.APP_ID, UtilMethods.INSTANCE.getIMEI(context), "", UtilMethods.INSTANCE.getSerialNo(context), LoginDataResponse.getData().getSession(), LoginDataResponse.getData().getSessionID(), BuildConfig.VERSION_NAME, LoginDataResponse.getData().getLoginTypeID(), LoginDataResponse.getData().getUserID()));
             call.enqueue(new Callback<AppGetAMResponse>() {
                 @Override
-                public void onResponse(Call<AppGetAMResponse> call, final retrofit2.Response<AppGetAMResponse> response) {
+                public void onResponse(Call<AppGetAMResponse> call, final Response<AppGetAMResponse> response) {
                     try {
 
                         if (loader != null) {
@@ -8443,7 +8524,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<AppUserListResponse>() {
 
                 @Override
-                public void onResponse(Call<AppUserListResponse> call, retrofit2.Response<AppUserListResponse> response) {
+                public void onResponse(Call<AppUserListResponse> call, Response<AppUserListResponse> response) {
 
 
                     try {
@@ -8525,7 +8606,7 @@ public enum UtilMethods {
             Call<BankListResponse> call = git.GetASCollectBank(new BalanceRequest(LoginDataResponse.getData().getUserID() + "", LoginDataResponse.getData().getLoginTypeID(), ApplicationConstant.INSTANCE.APP_ID, UtilMethods.INSTANCE.getIMEI(context), "", BuildConfig.VERSION_NAME, UtilMethods.INSTANCE.getSerialNo(context), LoginDataResponse.getData().getSessionID(), LoginDataResponse.getData().getSession()));
             call.enqueue(new Callback<BankListResponse>() {
                 @Override
-                public void onResponse(Call<BankListResponse> call, final retrofit2.Response<BankListResponse> response) {
+                public void onResponse(Call<BankListResponse> call, final Response<BankListResponse> response) {
                     try {
 
                         if (loader != null) {
@@ -8608,7 +8689,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<AppUserListResponse>() {
 
                 @Override
-                public void onResponse(Call<AppUserListResponse> call, retrofit2.Response<AppUserListResponse> response) {
+                public void onResponse(Call<AppUserListResponse> call, Response<AppUserListResponse> response) {
 
                     if (loader.isShowing()) loader.dismiss();
                     AppUserListResponse data = response.body();
@@ -8777,7 +8858,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<BasicResponse>() {
 
                 @Override
-                public void onResponse(Call<BasicResponse> call, retrofit2.Response<BasicResponse> response) {
+                public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
                     if (response.isSuccessful()) {
                         try {
 
@@ -8836,7 +8917,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<BasicResponse>() {
 
                 @Override
-                public void onResponse(Call<BasicResponse> call, retrofit2.Response<BasicResponse> response) {
+                public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
 
                     try {
                         if (loader != null) {
@@ -8925,7 +9006,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<BasicResponse>() {
 
                 @Override
-                public void onResponse(Call<BasicResponse> call, retrofit2.Response<BasicResponse> response) {
+                public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
 
 
                     try {
@@ -9114,7 +9195,7 @@ public enum UtilMethods {
             Call<AccountOpenListResponse> call = git.GetAccountOpeningList(new AccountOpenListRequest(opTypeId, LoginDataResponse.getData().getUserID() + "", LoginDataResponse.getData().getLoginTypeID() + "", ApplicationConstant.INSTANCE.APP_ID, UtilMethods.INSTANCE.getIMEI(context), "", BuildConfig.VERSION_NAME, UtilMethods.INSTANCE.getSerialNo(context), LoginDataResponse.getData().getSessionID(), LoginDataResponse.getData().getSession()));
             call.enqueue(new Callback<AccountOpenListResponse>() {
                 @Override
-                public void onResponse(Call<AccountOpenListResponse> call, final retrofit2.Response<AccountOpenListResponse> response) {
+                public void onResponse(Call<AccountOpenListResponse> call, final Response<AccountOpenListResponse> response) {
 
                     try {
                         if (loader != null) {
@@ -9180,7 +9261,7 @@ public enum UtilMethods {
             Call<BankListResponse> call = git.GetAEPSBanks(new BalanceRequest(LoginDataResponse.getData().getUserID() + "", LoginDataResponse.getData().getLoginTypeID() + "", ApplicationConstant.INSTANCE.APP_ID, UtilMethods.INSTANCE.getIMEI(context), "", BuildConfig.VERSION_NAME, UtilMethods.INSTANCE.getSerialNo(context), LoginDataResponse.getData().getSessionID(), LoginDataResponse.getData().getSession()));
             call.enqueue(new Callback<BankListResponse>() {
                 @Override
-                public void onResponse(Call<BankListResponse> call, final retrofit2.Response<BankListResponse> response) {
+                public void onResponse(Call<BankListResponse> call, final Response<BankListResponse> response) {
 
                     try {
                         if (loader != null) {
@@ -9241,7 +9322,7 @@ public enum UtilMethods {
             Call<GenerateDepositOTPResponse> call = git.DepositNow(new GenerateDepositOTPRequest(lati, longi, reff1, reff2, reff3, otp, aadhar, amount, interfaceType, bankIIn, LoginDataResponse.getData().getUserID() + "", LoginDataResponse.getData().getLoginTypeID() + "", ApplicationConstant.INSTANCE.APP_ID, UtilMethods.INSTANCE.getIMEI(context), "", BuildConfig.VERSION_NAME, UtilMethods.INSTANCE.getSerialNo(context), LoginDataResponse.getData().getSessionID(), LoginDataResponse.getData().getSession()));
             call.enqueue(new Callback<GenerateDepositOTPResponse>() {
                 @Override
-                public void onResponse(Call<GenerateDepositOTPResponse> call, final retrofit2.Response<GenerateDepositOTPResponse> response) {
+                public void onResponse(Call<GenerateDepositOTPResponse> call, final Response<GenerateDepositOTPResponse> response) {
 
                     try {
                         if (loader != null) {
@@ -9294,14 +9375,14 @@ public enum UtilMethods {
         }
     }
 
-    public void GetWithdrawlAEPS(final Activity context, int bankID, String pidOptions, String deviceName, String Lattitude, String Longitude, String pidDataXML, PidData mPidData, String aadhar, String amount, int bankIIn, int interfaceType, final CustomLoader loader, LoginResponse LoginDataResponse, final UtilMethods.ApiCallBack mApiCallBack) {
+    public void GetWithdrawlAEPS(final Activity context, int bankID, String pidOptions, String deviceName, String Lattitude, String Longitude, String pidDataXML, PidData mPidData, String aadhar, String amount, int bankIIn, int interfaceType, final CustomLoader loader, LoginResponse LoginDataResponse, final ApiCallBack mApiCallBack) {
         try {
             loader.show();
             EndPointInterface git = ApiClient.getClient().create(EndPointInterface.class);
             Call<GetAEPSResponse> call = git.AEPSWithdrawal(new GetAepsRequest(bankID, pidOptions, deviceName, Lattitude, Longitude, pidDataXML, mPidData, aadhar, amount, interfaceType, bankIIn, LoginDataResponse.getData().getUserID() + "", LoginDataResponse.getData().getLoginTypeID() + "", ApplicationConstant.INSTANCE.APP_ID, UtilMethods.INSTANCE.getIMEI(context), "", BuildConfig.VERSION_NAME, UtilMethods.INSTANCE.getSerialNo(context), LoginDataResponse.getData().getSessionID(), LoginDataResponse.getData().getSession()));
             call.enqueue(new Callback<GetAEPSResponse>() {
                 @Override
-                public void onResponse(Call<GetAEPSResponse> call, final retrofit2.Response<GetAEPSResponse> response) {
+                public void onResponse(Call<GetAEPSResponse> call, final Response<GetAEPSResponse> response) {
 
                     try {
                         if (loader != null) {
@@ -9353,7 +9434,7 @@ public enum UtilMethods {
         }
     }
 
-    public void GetBalanceAEPS(final Activity context, int bankID, String pidOptions, String deviceName, String Lattitude, String Longitude, String pidDataXML, PidData mPidData, String aadhar, int bankIIn, int interfaceType, final CustomLoader loader, LoginResponse LoginDataResponse, final UtilMethods.ApiCallBack mApiCallBack) {
+    public void GetBalanceAEPS(final Activity context, int bankID, String pidOptions, String deviceName, String Lattitude, String Longitude, String pidDataXML, PidData mPidData, String aadhar, int bankIIn, int interfaceType, final CustomLoader loader, LoginResponse LoginDataResponse, final ApiCallBack mApiCallBack) {
         try {
             loader.show();
             EndPointInterface git = ApiClient.getClient().create(EndPointInterface.class);
@@ -9361,7 +9442,7 @@ public enum UtilMethods {
             Call<GetAEPSResponse> call = git.GetBalanceAEPS(new GetAepsRequest(bankID, pidOptions, deviceName, Lattitude, Longitude, pidDataXML, mPidData, aadhar, interfaceType, bankIIn, LoginDataResponse.getData().getUserID() + "", LoginDataResponse.getData().getLoginTypeID() + "", ApplicationConstant.INSTANCE.APP_ID, UtilMethods.INSTANCE.getIMEI(context), "", BuildConfig.VERSION_NAME, UtilMethods.INSTANCE.getSerialNo(context), LoginDataResponse.getData().getSessionID(), LoginDataResponse.getData().getSession()));
             call.enqueue(new Callback<GetAEPSResponse>() {
                 @Override
-                public void onResponse(Call<GetAEPSResponse> call, final retrofit2.Response<GetAEPSResponse> response) {
+                public void onResponse(Call<GetAEPSResponse> call, final Response<GetAEPSResponse> response) {
 
                     try {
                         if (loader != null) {
@@ -9414,14 +9495,14 @@ public enum UtilMethods {
     }
 
 
-    public void GetMINIStatementAEPS(final Activity context, int bankID, String pidOptions, String deviceName, String Lattitude, String Longitude, String pidDataXML, PidData mPidData, String aadhar, int bankIIn, String bankName, int interfaceType, final CustomLoader loader, LoginResponse LoginDataResponse, final UtilMethods.ApiCallBack mApiCallBack) {
+    public void GetMINIStatementAEPS(final Activity context, int bankID, String pidOptions, String deviceName, String Lattitude, String Longitude, String pidDataXML, PidData mPidData, String aadhar, int bankIIn, String bankName, int interfaceType, final CustomLoader loader, LoginResponse LoginDataResponse, final ApiCallBack mApiCallBack) {
         try {
             loader.show();
             EndPointInterface git = ApiClient.getClient().create(EndPointInterface.class);
             Call<GetAEPSResponse> call = git.BankMiniStatement(new GetAepsRequest(bankID, pidOptions, deviceName, Lattitude, Longitude, pidDataXML, mPidData, aadhar, interfaceType, bankIIn, bankName, LoginDataResponse.getData().getUserID() + "", LoginDataResponse.getData().getLoginTypeID() + "", ApplicationConstant.INSTANCE.APP_ID, UtilMethods.INSTANCE.getIMEI(context), "", BuildConfig.VERSION_NAME, UtilMethods.INSTANCE.getSerialNo(context), LoginDataResponse.getData().getSessionID(), LoginDataResponse.getData().getSession()));
             call.enqueue(new Callback<GetAEPSResponse>() {
                 @Override
-                public void onResponse(Call<GetAEPSResponse> call, final retrofit2.Response<GetAEPSResponse> response) {
+                public void onResponse(Call<GetAEPSResponse> call, final Response<GetAEPSResponse> response) {
 
                     try {
                         if (loader != null) {
@@ -9478,7 +9559,7 @@ public enum UtilMethods {
     }
 
 
-    public void GetAadharPay(final Activity context, int bankID, String pidOptions, String deviceName, String pidDataXML, String lati, String longi, PidData mPidData, String aadhar, String amount, int bankIIn, int interfaceType, final CustomLoader loader, LoginResponse LoginDataResponse, final UtilMethods.ApiCallBack mApiCallBack) {
+    public void GetAadharPay(final Activity context, int bankID, String pidOptions, String deviceName, String pidDataXML, String lati, String longi, PidData mPidData, String aadhar, String amount, int bankIIn, int interfaceType, final CustomLoader loader, LoginResponse LoginDataResponse, final ApiCallBack mApiCallBack) {
         try {
             loader.show();
             EndPointInterface git = ApiClient.getClient().create(EndPointInterface.class);
@@ -9486,7 +9567,7 @@ public enum UtilMethods {
             Call<GetAEPSResponse> call = git.Aadharpay(new GetAepsRequest(bankID, pidOptions, deviceName, lati, longi, pidDataXML, mPidData, aadhar, amount, interfaceType, bankIIn, LoginDataResponse.getData().getUserID() + "", LoginDataResponse.getData().getLoginTypeID() + "", ApplicationConstant.INSTANCE.APP_ID, UtilMethods.INSTANCE.getIMEI(context), "", BuildConfig.VERSION_NAME, UtilMethods.INSTANCE.getSerialNo(context), LoginDataResponse.getData().getSessionID(), LoginDataResponse.getData().getSession()));
             call.enqueue(new Callback<GetAEPSResponse>() {
                 @Override
-                public void onResponse(Call<GetAEPSResponse> call, final retrofit2.Response<GetAEPSResponse> response) {
+                public void onResponse(Call<GetAEPSResponse> call, final Response<GetAEPSResponse> response) {
 
                     try {
                         if (loader != null) {
@@ -9547,7 +9628,7 @@ public enum UtilMethods {
             Call<GenerateDepositOTPResponse> call = git.GenerateDepositOTP(new GenerateDepositOTPRequest(lati, longi, aadhar, amount, interfaceType, bankIIn, LoginDataResponse.getData().getUserID() + "", LoginDataResponse.getData().getLoginTypeID() + "", ApplicationConstant.INSTANCE.APP_ID, UtilMethods.INSTANCE.getIMEI(context), "", BuildConfig.VERSION_NAME, UtilMethods.INSTANCE.getSerialNo(context), LoginDataResponse.getData().getSessionID(), LoginDataResponse.getData().getSession()));
             call.enqueue(new Callback<GenerateDepositOTPResponse>() {
                 @Override
-                public void onResponse(Call<GenerateDepositOTPResponse> call, final retrofit2.Response<GenerateDepositOTPResponse> response) {
+                public void onResponse(Call<GenerateDepositOTPResponse> call, final Response<GenerateDepositOTPResponse> response) {
 
                     try {
                         if (loader != null) {
@@ -9607,7 +9688,7 @@ public enum UtilMethods {
             Call<GenerateDepositOTPResponse> call = git.VerifyDepositOTP(new GenerateDepositOTPRequest(lati, longi, reff1, reff2, reff3, otp, aadhar, amount, interfaceType, bankIIn, LoginDataResponse.getData().getUserID() + "", LoginDataResponse.getData().getLoginTypeID() + "", ApplicationConstant.INSTANCE.APP_ID, UtilMethods.INSTANCE.getIMEI(context), "", BuildConfig.VERSION_NAME, UtilMethods.INSTANCE.getSerialNo(context), LoginDataResponse.getData().getSessionID(), LoginDataResponse.getData().getSession()));
             call.enqueue(new Callback<GenerateDepositOTPResponse>() {
                 @Override
-                public void onResponse(Call<GenerateDepositOTPResponse> call, final retrofit2.Response<GenerateDepositOTPResponse> response) {
+                public void onResponse(Call<GenerateDepositOTPResponse> call, final Response<GenerateDepositOTPResponse> response) {
 
                     try {
                         if (loader != null) {
@@ -9687,7 +9768,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<FosAccStmtAndCollReportResponse>() {
 
                 @Override
-                public void onResponse(Call<FosAccStmtAndCollReportResponse> call, final retrofit2.Response<FosAccStmtAndCollReportResponse> response) {
+                public void onResponse(Call<FosAccStmtAndCollReportResponse> call, final Response<FosAccStmtAndCollReportResponse> response) {
 
                     try {
                         if (loader != null) {
@@ -9777,7 +9858,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<RechargeReportResponse>() {
 
                 @Override
-                public void onResponse(Call<RechargeReportResponse> call, retrofit2.Response<RechargeReportResponse> response) {
+                public void onResponse(Call<RechargeReportResponse> call, Response<RechargeReportResponse> response) {
 
                     if (loader != null && loader.isShowing()) loader.dismiss();
                     if (response.isSuccessful()) {
@@ -9836,7 +9917,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<MoveToBankReportResponse>() {
 
                 @Override
-                public void onResponse(Call<MoveToBankReportResponse> call, retrofit2.Response<MoveToBankReportResponse> response) {
+                public void onResponse(Call<MoveToBankReportResponse> call, Response<MoveToBankReportResponse> response) {
 
                     try {
                         if (loader != null) {
@@ -9987,19 +10068,37 @@ public enum UtilMethods {
     }
 
     public void setTimer(final TextView timer, final View resendcode) {
+        setTimer(timer, resendcode, 120000);
+    }
+
+    public void setTimer(final TextView timer, final View resendcode, long millisInFuture) {
         if (countDownTimer != null) {
             countDownTimer.cancel();
         }
-        timer.setText("Resend OTP - 00:00");
-        countDownTimer = new CountDownTimer(30000, 1000) { // adjust the milli seconds here
+        if (resendcode != null) {
+            resendcode.setVisibility(View.GONE);
+        }
+        if (timer != null) {
+            timer.setVisibility(View.VISIBLE);
+            timer.setText("Resend OTP in 02:00");
+        }
+        countDownTimer = new CountDownTimer(millisInFuture, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                timer.setText("Resend OTP - " + String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished), TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+                if (timer != null) {
+                    long minutes = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished);
+                    long seconds = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(minutes);
+                    timer.setText("Resend OTP in " + String.format("%02d:%02d", minutes, seconds));
+                }
             }
 
             public void onFinish() {
-                timer.setText("");
-                resendcode.setVisibility(View.VISIBLE);
+                if (timer != null) {
+                    timer.setText("Didn't receive OTP?");
+                }
+                if (resendcode != null) {
+                    resendcode.setVisibility(View.VISIBLE);
+                }
             }
         }.start();
     }
@@ -10147,8 +10246,8 @@ public enum UtilMethods {
         if (alertDialogMobile != null && alertDialogMobile.isShowing()) {
             return;
         }
-        androidx.appcompat.app.AlertDialog.Builder dialogBuilder;
-        dialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(context);
+        AlertDialog.Builder dialogBuilder;
+        dialogBuilder = new AlertDialog.Builder(context);
 
         alertDialogMobile = dialogBuilder.create();
         alertDialogMobile.setCancelable(true);
@@ -10228,7 +10327,7 @@ public enum UtilMethods {
             call.enqueue(new Callback<RSlabRangDetailResponse>() {
 
                 @Override
-                public void onResponse(Call<RSlabRangDetailResponse> call, retrofit2.Response<RSlabRangDetailResponse> response) {
+                public void onResponse(Call<RSlabRangDetailResponse> call, Response<RSlabRangDetailResponse> response) {
 
                     try {
                         if (loader != null) {
@@ -10305,7 +10404,7 @@ public enum UtilMethods {
             Call<BasicResponse> call = git.GetAdvertisementByCity(new BasicRequest(mLoginDataResponse.getData().getUserID() + "", mLoginDataResponse.getData().getLoginTypeID(), ApplicationConstant.INSTANCE.APP_ID, UtilMethods.INSTANCE.getDeviceId(mActivity), UtilMethods.INSTANCE.getFCMRegKey(mActivity), BuildConfig.VERSION_NAME, UtilMethods.INSTANCE.getSerialNo(mActivity), mLoginDataResponse.getData().getSessionID(), mLoginDataResponse.getData().getSession()));
             call.enqueue(new Callback<BasicResponse>() {
                 @Override
-                public void onResponse(Call<BasicResponse> call, final retrofit2.Response<BasicResponse> response) {
+                public void onResponse(Call<BasicResponse> call, final Response<BasicResponse> response) {
 
                     try {
 
@@ -10386,7 +10485,7 @@ public enum UtilMethods {
             Call<SettlementAccountResponse> call = git.GetSettlementAccount(new BasicRequest(mLoginDataResponse.getData().getUserID() + "", mLoginDataResponse.getData().getLoginTypeID(), ApplicationConstant.INSTANCE.APP_ID, UtilMethods.INSTANCE.getDeviceId(mActivity), UtilMethods.INSTANCE.getFCMRegKey(mActivity), BuildConfig.VERSION_NAME, UtilMethods.INSTANCE.getSerialNo(mActivity), mLoginDataResponse.getData().getSessionID(), mLoginDataResponse.getData().getSession()));
             call.enqueue(new Callback<SettlementAccountResponse>() {
                 @Override
-                public void onResponse(Call<SettlementAccountResponse> call, final retrofit2.Response<SettlementAccountResponse> response) {
+                public void onResponse(Call<SettlementAccountResponse> call, final Response<SettlementAccountResponse> response) {
 
                     try {
 
@@ -10465,7 +10564,7 @@ public enum UtilMethods {
             Call<BasicResponse> call = git.UpdateSettlementAccount(new UpdateSettlementAccountRequest(mLoginDataResponse.getData().getUserID(), mLoginDataResponse.getData().getLoginTypeID(), ApplicationConstant.INSTANCE.APP_ID, UtilMethods.INSTANCE.getDeviceId(mActivity), UtilMethods.INSTANCE.getFCMRegKey(mActivity), BuildConfig.VERSION_NAME, UtilMethods.INSTANCE.getSerialNo(mActivity), mLoginDataResponse.getData().getSessionID(), mLoginDataResponse.getData().getSession(), AccountName, AccountNumber, bankId, selectedBank, updatedId, IFSC));
             call.enqueue(new Callback<BasicResponse>() {
                 @Override
-                public void onResponse(Call<BasicResponse> call, final retrofit2.Response<BasicResponse> response) {
+                public void onResponse(Call<BasicResponse> call, final Response<BasicResponse> response) {
 
                     try {
 
@@ -10539,7 +10638,7 @@ public enum UtilMethods {
             Call<BasicResponse> call = git.VerifySettlementAccountOfUser(new UpdateSettlementAccountRequest(mLoginDataResponse.getData().getUserID(), mLoginDataResponse.getData().getLoginTypeID(), ApplicationConstant.INSTANCE.APP_ID, UtilMethods.INSTANCE.getDeviceId(mActivity), UtilMethods.INSTANCE.getFCMRegKey(mActivity), BuildConfig.VERSION_NAME, UtilMethods.INSTANCE.getSerialNo(mActivity), mLoginDataResponse.getData().getSessionID(), mLoginDataResponse.getData().getSession(), updatedId));
             call.enqueue(new Callback<BasicResponse>() {
                 @Override
-                public void onResponse(Call<BasicResponse> call, final retrofit2.Response<BasicResponse> response) {
+                public void onResponse(Call<BasicResponse> call, final Response<BasicResponse> response) {
 
                     try {
 
@@ -10613,7 +10712,7 @@ public enum UtilMethods {
             Call<BasicResponse> call = git.UpdateUTRByUser(new UpdateSettlementAccountRequest(mLoginDataResponse.getData().getUserID(), mLoginDataResponse.getData().getLoginTypeID(), ApplicationConstant.INSTANCE.APP_ID, UtilMethods.INSTANCE.getDeviceId(mActivity), UtilMethods.INSTANCE.getFCMRegKey(mActivity), BuildConfig.VERSION_NAME, UtilMethods.INSTANCE.getSerialNo(mActivity), mLoginDataResponse.getData().getSessionID(), mLoginDataResponse.getData().getSession(), updatedId, utrTxt));
             call.enqueue(new Callback<BasicResponse>() {
                 @Override
-                public void onResponse(Call<BasicResponse> call, final retrofit2.Response<BasicResponse> response) {
+                public void onResponse(Call<BasicResponse> call, final Response<BasicResponse> response) {
 
                     try {
 
@@ -10687,7 +10786,7 @@ public enum UtilMethods {
             Call<BasicResponse> call = git.ToggleDefaultSettlementAcount(new UpdateSettlementAccountRequest(mLoginDataResponse.getData().getUserID(), mLoginDataResponse.getData().getLoginTypeID(), ApplicationConstant.INSTANCE.APP_ID, UtilMethods.INSTANCE.getDeviceId(mActivity), UtilMethods.INSTANCE.getFCMRegKey(mActivity), BuildConfig.VERSION_NAME, UtilMethods.INSTANCE.getSerialNo(mActivity), mLoginDataResponse.getData().getSessionID(), mLoginDataResponse.getData().getSession(), updatedId));
             call.enqueue(new Callback<BasicResponse>() {
                 @Override
-                public void onResponse(Call<BasicResponse> call, final retrofit2.Response<BasicResponse> response) {
+                public void onResponse(Call<BasicResponse> call, final Response<BasicResponse> response) {
 
                     try {
 
@@ -10761,7 +10860,7 @@ public enum UtilMethods {
             Call<BasicResponse> call = git.DeleteSettlementAcount(new UpdateSettlementAccountRequest(mLoginDataResponse.getData().getUserID(), mLoginDataResponse.getData().getLoginTypeID(), ApplicationConstant.INSTANCE.APP_ID, UtilMethods.INSTANCE.getDeviceId(mActivity), UtilMethods.INSTANCE.getFCMRegKey(mActivity), BuildConfig.VERSION_NAME, UtilMethods.INSTANCE.getSerialNo(mActivity), mLoginDataResponse.getData().getSessionID(), mLoginDataResponse.getData().getSession(), updatedId));
             call.enqueue(new Callback<BasicResponse>() {
                 @Override
-                public void onResponse(Call<BasicResponse> call, final retrofit2.Response<BasicResponse> response) {
+                public void onResponse(Call<BasicResponse> call, final Response<BasicResponse> response) {
 
                     try {
 
@@ -10826,52 +10925,6 @@ public enum UtilMethods {
             }
             UtilMethods.INSTANCE.Error(mActivity, e.getMessage());
 
-        }
-    }
-
-
-    //New Dmt
-
-    public void getSender(Activity context, int oid, String MobileNumber, String sidValue, CustomLoader loader, GetLocation mGetLocation, ApiCallBack mApiCallBack) {
-        try {
-            String loginPref = UtilMethods.INSTANCE.getLoginPref(context);
-            LoginResponse mLoginDataResponse = new Gson().fromJson(loginPref, LoginResponse.class);
-            EndPointInterface git = ApiClient.getClient().create(EndPointInterface.class);
-            Call<SenderResponse> call = git.getSender(new SenderRequest(UtilMethods.INSTANCE.getLattitude, UtilMethods.INSTANCE.getLattitude, UtilMethods.INSTANCE.getLongitude, oid, MobileNumber, sidValue, new DMTParam(MobileNumber, oid, UtilMethods.INSTANCE.getLattitude, UtilMethods.INSTANCE.getLattitude, UtilMethods.INSTANCE.getLongitude), mLoginDataResponse.getData().getUserID(), mLoginDataResponse.getData().getLoginTypeID(), ApplicationConstant.INSTANCE.APP_ID, UtilMethods.INSTANCE.getIMEI(context), "", BuildConfig.VERSION_NAME, UtilMethods.INSTANCE.getSerialNo(context), mLoginDataResponse.getData().getSessionID(), mLoginDataResponse.getData().getSession()));
-
-            call.enqueue(new Callback<SenderResponse>() {
-
-                @Override
-                public void onResponse(Call<SenderResponse> call, retrofit2.Response<SenderResponse> response) {
-                    if (loader.isShowing()) loader.dismiss();
-                    if (response.isSuccessful()) {
-                        if (response.body() != null) {
-                            if (response.body().getStatuscode() == 1) {
-                                if (mApiCallBack != null) {
-                                    mApiCallBack.onSucess(response.body());
-                                }
-
-                            } else {
-                                UtilMethods.INSTANCE.getErrorHandler(context, response.body().isVersionValid(), true, response.body().getMsg(), mGetLocation, loader, () -> getSender(context, oid, MobileNumber, sidValue, loader, mGetLocation, mApiCallBack));
-                            }
-
-                        }
-                    } else {
-                        UtilMethods.INSTANCE.apiErrorHandle(context, response.code(), response.message());
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<SenderResponse> call, Throwable t) {
-                    if (loader.isShowing()) loader.dismiss();
-                    UtilMethods.INSTANCE.apiFailureError(context, t);
-                }
-            });
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (loader.isShowing()) loader.dismiss();
-            UtilMethods.INSTANCE.Error(context, e.getMessage());
         }
     }
 

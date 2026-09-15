@@ -5,14 +5,13 @@ repositories {
 }
 
 android {
-    compileSdkVersion 36
+    compileSdkVersion 37
     defaultConfig {
         minSdkVersion 24
-        targetSdkVersion 36
     }
     buildTypes {
         release {
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.txt'
         }
     }
     sourceSets {
@@ -24,6 +23,12 @@ android {
         }
     }
     namespace "com.special.ResideMenu"
+    lint {
+        targetSdk 36
+    }
+    testOptions {
+        targetSdk 36
+    }
 }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
